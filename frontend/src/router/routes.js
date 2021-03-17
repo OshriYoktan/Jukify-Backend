@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import home from '../views/home.vue'
-import stationEdit from '../views/station-edit.vue'
 import userProfile from '../views/user-profile.vue'
 import explore from '../views/explore.vue'
 import stationDetails from '../views/station-details.vue'
@@ -17,11 +16,6 @@ const routes = [{
         path: '/user',
         name: 'user',
         component: userProfile
-    },
-    {
-        path: '/edit',
-        name: 'edit',
-        component: stationEdit
     },
     {
         path: '/explore',

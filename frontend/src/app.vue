@@ -8,7 +8,7 @@
         <div>
           <router-link to="/">Home</router-link> |
           <router-link to="/explore">Explore</router-link> |
-          <router-link to="/edit">Create station</router-link> |
+          <router-link to="/details">Create station</router-link> |
           <router-link to="/user">user</router-link>
         </div>
       </div>
@@ -19,5 +19,10 @@
   </div>
 </template>
 
-<style lang="scss">
-</style>
+<script>
+export default {
+  created() {
+    this.$store.dispatch({type: 'loadStations'})
+  }
+}
+</script>

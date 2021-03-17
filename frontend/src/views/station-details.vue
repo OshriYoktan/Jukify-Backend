@@ -1,25 +1,22 @@
 <template>
-  <section>
-    <h1>{{ stationName }}</h1>
+  <section v-if="currStation">
+    <h1>{{ currStation.name }}</h1>
     <h2>GENRES</h2>
-    <div class="station-img">
-      <img :src="stationImg" alt="" />
-    </div>
-    <form @submit.prevent="addSong">
+    <form @submit.prevent="searchSongs">
       <input type="text" placeholder="Search song online" v-model="search" />
       <button>Find</button>
     </form>
-    <ul v-if="searchedSongs.length">
-      <li v-for="(searchedSong, idx) in searchedSongs" :key="idx">
-        {{ searchedSong.snippet.title }}
-        <button @click="addToStaion(searchedSong.snippet.title)">+</button>
+    <ul v-if="currStation">
+      <li v-for="song in currStation.songs" :key="song._id">
+        {{ song.name }}
+        <!-- <button @click="removeSong(song._id)">x</button> -->
       </li>
     </ul>
-    <div v-if="songs.length">
+    <div v-if="foundSongs">
       <ul>
-        <li v-for="(song, idx) in songs" :key="idx">
-          {{ song.title }}
-          <button @click="removeSong(song.videoId)">x</button>
+        <li v-for="(song, idx) in foundSongs" :key="idx">
+          {{ song.snippet.title }}
+          <button @click="addToStaion(idx)">+</button>
         </li>
       </ul>
     </div>
@@ -27,72 +24,55 @@
 </template>
 
 <script>
-import { stationService } from "../services/station.service.js";
+import { stationService } from "../services/station.service";
+
 export default {
   name: "station-details",
   data() {
     return {
-      songs: [],
-      stationName: this.$route.params.stationName,
-      stationImg: "",
+      currStation: null,
+      foundSongs: null,
       search: "",
-      searchedSongs: [],
     };
   },
   methods: {
-    removeSong(id) {
-      const idx = this.songs.findIndex((song) => {
-       return song.videoId === id
-      });
-      this.songs.splice(idx, 1)
+    async removeSong(id) {
+      try {
+        await this.$store.dispatch({ type: "removeSong", id: id });
+      } catch {}
     },
-
-
-    
-    loadSongs() {
-      const name = this.$route.params.stationName;
-      stationService.askSearch(name).then((songs) => {
-        this.stationImg = songs[0].snippet.thumbnails.default.url;
-        songs.forEach((song) => {
-          const songToStation = {
-            title: song.snippet.title,
-            artist: song.snippet.channelTitle,
-            desc: song.snippet.description,
-            img: song.snippet.thumbnails.default.url,
-            videoId: song.id.videoId,
-            publishAt: song.snippet.publishedAt,
-          };
-          this.songs.push(songToStation);
-        });
-      });
+    async loadSongs() {
+      try {
+        await this.$store.dispatch({ type: "loadSongs" });
+      } catch {}
     },
-    addSong() {
-      const searchedSong = this.search;
-      stationService.askSearch(searchedSong).then((songs) => {
-        songs.forEach((song) => {
-          this.searchedSongs.push(song);
-        });
-      });
-      this.searchedSongs = [];
+    async searchSongs() {
+      try {
+        const songs = await stationService.askSearch(this.search);
+        this.foundSongs = songs;
+      } catch {}
     },
-    addToStaion(songTitle) {
-      stationService.askSearch(songTitle).then((song) => {
-        var currSong = {
-          title: song[0].snippet.title,
-          artist: song[0].snippet.channelTitle,
-          desc: song[0].snippet.description,
-          img: song[0].snippet.thumbnails.default.url,
-          videoId: song[0].id.videoId,
-          publishAt: song[0].snippet.publishedAt,
+    async addToStaion(idx) {
+      try {
+        const selectedSong = this.foundSongs[idx];
+        const payload = {
+          selectedSong,
+          stationId: this.currStation._id,
         };
-        this.songs.push(currSong);
-      });
-      this.searchedSongs = [];
+        await this.$store.dispatch({ type: "addToStation", payload });
+      } catch {}
+    },
+  },
+  computed: {
+    songs() {
+      return this.$store.state.stationState.songs;
     },
   },
   created() {
-    // this.$store.dispatch({ type: "loadStations" });
-    this.loadSongs();
+    const id = this.$route.params.stationName;
+    stationService.getStationById(id).then((station) => {
+      this.currStation = station;
+    });
   },
 };
 </script>
