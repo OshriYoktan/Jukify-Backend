@@ -1,23 +1,11 @@
 <template>
   <div>
-    <h1>Explore</h1>
-    <div>
-    </div>
+    <h1>Looking For Playlist</h1>
+    <h3>Start listening to the best new releases</h3>
     <div v-if="stations.length">
       <ul>
-        <li
-          v-for="(station, idx) in stations"
-          :key="idx"
-          @click="loadStations(station)"
-        >
-          {{ station }}
-        </li>
-      </ul>
-    </div>
-    <div v-if="songs.length">
-      <ul>
-        <li v-for="(song, idx) in songs" :key="idx">
-          {{ song.title }}
+        <li v-for="(station, idx) in stations" :key="idx">
+          <router-link :to="'/explore/' + station">{{ station }}</router-link>
         </li>
       </ul>
     </div>
@@ -32,28 +20,14 @@ export default {
   data() {
     return {
       stations: ["Omer Adam", "noga erez", "eyal golan"],
-      songs: [],
+      // stations: [
+      //   { name: "Omer Adam", genres: "mizrahit" },
+      //   { name: "Noga Erez", genres: "yam tihoni" },
+      //   { name: "Eyal Golan", genres: "mizrahit" },
+      // ],
     };
   },
-  methods: {
-    loadStations(song) {
-      this.songs = [];
-      stationService.askSearch(song).then((res) => {
-        console.log("res:", res);
-        res.forEach((song) => {
-          const station = {
-            title: song.snippet.title,
-            artist: song.snippet.channelTitle,
-            desc: song.snippet.description,
-            img: song.snippet.thumbnails.default.url,
-            videoId: song.id.videoId,
-            publishAt: song.snippet.publishedAt,
-          };
-          this.songs.push(station);
-        });
-      });
-    },
-  },
+  methods: {},
   components: {
     youtube,
   },
@@ -62,3 +36,4 @@ export default {
 
 <style>
 </style>
+

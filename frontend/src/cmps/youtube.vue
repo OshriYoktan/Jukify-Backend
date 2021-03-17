@@ -34,8 +34,6 @@ export default {
     updateTime() {
       setInterval(() => {
         this.$refs.youtube.player.getCurrentTime().then((time) => {
-          console.log("hello");
-          console.log("time:", time);
           this.currTime = time;
         });
       }, 1000);
@@ -43,7 +41,6 @@ export default {
     playVideo() {
       this.currTime2 = true;
       this.updateTime();
-      console.log("this.$refs.youtube.player:", this.$refs.youtube.player);
       if (this.isPlaying) {
         this.isPlaying = false;
         this.$refs.youtube.player.pauseVideo();

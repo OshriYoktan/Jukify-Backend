@@ -14,7 +14,6 @@ export const stationService = {
 }
 
 function askSearch(txt) {
-    console.log('api...');
     return axios.get(`https://www.googleapis.com/youtube/v3/search?maxResults=10&part=snippet&videoEmbeddable=true&type=video&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo&q=${txt}`)
         .then(res => {
             // console.log('res:', res)
