@@ -1,4 +1,8 @@
 // setup
+@import './setup/_helpers.scss';
 // basic
+@import './basic/_base.scss';
 // cmps
 // views
+@import './views/_app.scss';
+@import './views/_explore.scss';
