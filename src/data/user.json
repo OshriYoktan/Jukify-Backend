@@ -1,0 +1,8 @@
+[{
+    "_id": "u101",
+    "fullname": "Orly Amdadi",
+    "username": "orly@amdadi.com",
+    "password": "tinkerbell",
+    "isAdmin": true,
+    "imgUrl": "http://some-img"
+}]
