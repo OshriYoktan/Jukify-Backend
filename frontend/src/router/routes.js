@@ -29,7 +29,7 @@ const routes = [{
         component: explore
     },
     {
-        path: '/details/:stationId',
+        path: '/explore/:stationName',
         name: 'details',
         component: stationDetails
     },
