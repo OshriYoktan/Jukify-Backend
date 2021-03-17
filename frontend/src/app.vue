@@ -6,7 +6,7 @@
     </div>
       <router-link to="/">Home</router-link> |
       <router-link to="/explore">Explore</router-link> |
-      <router-link to="/edit">Create playlist</router-link> |
+      <router-link to="/edit">Create station</router-link> |
       <router-link to="/user">user</router-link>
     </div>
     <section>

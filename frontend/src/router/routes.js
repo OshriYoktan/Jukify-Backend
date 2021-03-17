@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import home from '../views/home.vue'
-import playlistEdit from '../views/playlist-edit.vue'
+import stationEdit from '../views/station-edit.vue'
 import userProfile from '../views/user-profile.vue'
 import explore from '../views/explore.vue'
-import playlistDetails from '../views/playlist-details.vue'
+import stationDetails from '../views/station-details.vue'
 
 Vue.use(VueRouter)
 
@@ -21,7 +21,7 @@ const routes = [{
     {
         path: '/edit',
         name: 'edit',
-        component: playlistEdit
+        component: stationEdit
     },
     {
         path: '/explore',
@@ -29,9 +29,9 @@ const routes = [{
         component: explore
     },
     {
-        path: '/details/:playlistId',
+        path: '/details/:stationId',
         name: 'details',
-        component: playlistDetails
+        component: stationDetails
     },
 ]
 

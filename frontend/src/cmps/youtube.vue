@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { playlistService } from "../services/playlist.service.js";
+import { stationService } from "../services/station.service.js";
 export default {
   props: ["videoId"],
   name: "youtube",
@@ -56,7 +56,7 @@ export default {
       console.log("o/ we are watching!!!");
     },
     getId() {
-      return playlistService.askSearch(this.name).then((id) => {
+      return stationService.askSearch(this.name).then((id) => {
         console.log("id:", id);
         this.videoId = id;
       });

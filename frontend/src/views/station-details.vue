@@ -1,9 +1,9 @@
 <template>
   <section>
     <h1>details</h1>
-    <!-- <div v-if="playlists.length">
+    <!-- <div v-if="stations.length">
         <ul>
-            <li v-for="(song, idx) in playlists" :key="idx">
+            <li v-for="(song, idx) in stations" :key="idx">
                 {{song.title}}
             </li>
         </ul>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "playlist-details",
+  name: "station-details",
   methods: {},
   created() {
     const id = this.$route.params.toyId;

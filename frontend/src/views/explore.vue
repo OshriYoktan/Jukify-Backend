@@ -3,14 +3,14 @@
     <h1>Explore</h1>
     <div>
     </div>
-    <div v-if="playlists.length">
+    <div v-if="stations.length">
       <ul>
         <li
-          v-for="(playlist, idx) in playlists"
+          v-for="(station, idx) in stations"
           :key="idx"
-          @click="loadPlaylists(playlist)"
+          @click="loadStations(station)"
         >
-          {{ playlist }}
+          {{ station }}
         </li>
       </ul>
     </div>
@@ -26,22 +26,22 @@
 
 <script>
 import youtube from "../cmps/youtube";
-import { playlistService } from "../services/playlist.service";
+import { stationService } from "../services/station.service";
 export default {
   name: "explore",
   data() {
     return {
-      playlists: ["Omer Adam", "noga erez", "eyal golan"],
+      stations: ["Omer Adam", "noga erez", "eyal golan"],
       songs: [],
     };
   },
   methods: {
-    loadPlaylists(song) {
+    loadStations(song) {
       this.songs = [];
-      playlistService.askSearch(song).then((res) => {
+      stationService.askSearch(song).then((res) => {
         console.log("res:", res);
         res.forEach((song) => {
-          const playlist = {
+          const station = {
             title: song.snippet.title,
             artist: song.snippet.channelTitle,
             desc: song.snippet.description,
@@ -49,9 +49,8 @@ export default {
             videoId: song.id.videoId,
             publishAt: song.snippet.publishedAt,
           };
-          this.songs.push(playlist);
+          this.songs.push(station);
         });
-        console.log("this.playlists:", this.playlists);
       });
     },
   },

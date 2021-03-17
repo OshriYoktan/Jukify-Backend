@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const KEY = 'playlist/'
-const playlist = `https://www.googleapis.com/youtube/v3/playlists&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo`
+const KEY = 'station/'
+const station = `https://www.googleapis.com/youtube/v3/stations&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo`
 
 
-export const playlistService = {
+export const stationService = {
     query,
     remove,
     save,
@@ -15,7 +15,7 @@ export const playlistService = {
 
 function askSearch(txt) {
     console.log('api...');
-    return axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&videoEmbeddable=true&type=video&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo&q=${txt}`)
+    return axios.get(`https://www.googleapis.com/youtube/v3/search?maxResults=10&part=snippet&videoEmbeddable=true&type=video&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo&q=${txt}`)
         .then(res => {
             // console.log('res:', res)
             return res.data.items;
