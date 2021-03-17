@@ -1,0 +1,19 @@
+.flex {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.sub-container {
+    display: flex;
+    width: 1300px;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}
