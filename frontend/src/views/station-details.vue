@@ -19,6 +19,7 @@
       <ul>
         <li v-for="(song, idx) in songs" :key="idx">
           {{ song.title }}
+          <button @click="removeSong(song.videoId)">x</button>
         </li>
       </ul>
     </div>
@@ -39,6 +40,15 @@ export default {
     };
   },
   methods: {
+    removeSong(id) {
+      const idx = this.songs.findIndex((song) => {
+       return song.videoId === id
+      });
+      this.songs.splice(idx, 1)
+    },
+
+
+    
     loadSongs() {
       const name = this.$route.params.stationName;
       stationService.askSearch(name).then((songs) => {
@@ -81,6 +91,7 @@ export default {
     },
   },
   created() {
+    // this.$store.dispatch({ type: "loadStations" });
     this.loadSongs();
   },
 };

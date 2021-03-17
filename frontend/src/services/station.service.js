@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {utilService} from './util.service.js'
+import { utilService } from './util.service.js'
+import { storageService } from './async-storage.service.js'
 
 const KEY = 'station/'
 const station = `https://www.googleapis.com/youtube/v3/stations&key=AIzaSyDvgXWR4K5cYJ_3NKgmwmI99V5W8_RUsEo`
@@ -10,7 +11,7 @@ export const stationService = {
     query,
     remove,
     save,
-    getToyById,
+    getSongById,
     getEmptyToy,
     askSearch
 }
@@ -22,32 +23,29 @@ function askSearch(txt) {
         return Promise.resolve(songs);
     }
     return axios.get(`https://www.googleapis.com/youtube/v3/search?maxResults=10&part=snippet&videoEmbeddable=true&type=video&key=${API}&q=${txt}`)
-    .then(res => {
-        console.log('search results NOT from storage')
-        utilService.saveToStorage(`${SONGS_KEY}_${txt}`, res.data.items);
+        .then(res => {
+            console.log('search results NOT from storage')
+            utilService.saveToStorage(`${SONGS_KEY}_${txt}`, res.data.items);
             return res.data.items;
-            // return res.data.items[0].id.videoId;
         })
         .catch(err => {
             console.log('Service got Error:', err);
         })
 }
 
-
-function query(filter = {}) {
-    var query = '?'
-    if (filter.searchWord) query += 'q=' + filter.searchWord + '&'
-    if (filter.sortBy) query += 's=' + filter.sortBy + '&'
-    if (filter.stockFilter) query += 'f=' + filter.stockFilter + '&'
-    return httpService.get(KEY + query, filter)
+function query() {
+    // return httpService.get(KEY + query, filter)
+    return storageService.query('station')
 }
 
-function getToyById(id) {
-    return httpService.get(KEY + id)
+function getSongById(id) {
+    // return httpService.get(KEY + id)
+    
 }
 
 function remove(id) {
-    return httpService.delete(KEY + id)
+    // return httpService.delete(KEY + id)
+    // return storageService.query('station')
 }
 
 function save(toy) {
