@@ -1,12 +1,16 @@
 <template>
-  <section v-if="currStation">
+  <section class="flex column-layout-container" v-if="currStation">
     <div v-if="!isNew">
       <h1>{{ currStation.name }}</h1>
       <h2>GENRES</h2>
     </div>
     <div v-if="isNew">
       <form @submit.prevent="addStation">
-        <input type="text" placeholder="station name" v-model="currStation.name" />
+        <input
+          type="text"
+          placeholder="station name"
+          v-model="currStation.name"
+        />
         <button>Save</button>
       </form>
     </div>
@@ -79,7 +83,7 @@ export default {
     },
     async addStation() {
       try {
-        const station = this.currStation
+        const station = this.currStation;
         await this.$store.dispatch({ type: "addStation", station });
       } catch {}
     },
@@ -98,7 +102,7 @@ export default {
       console.log("this.currStation:", this.currStation);
     } else
       stationService.getStationById(id).then((station) => {
-        console.log('station:', station)
+        console.log("station:", station);
         this.currStation = station;
       });
   },

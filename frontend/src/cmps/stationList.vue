@@ -1,10 +1,8 @@
 <template>
-  <section class="explore-container container">
-    <div class="explore-sub-container sub-container">
-      <h1>Explore world music</h1>
-      <h3>Start listening to the best new releases</h3>
-      <div>
-        <ul v-for="(station, idx) in stations" :key="idx">
+  <section class="container">
+    <div class="explore-sub-container column-layout-container sub-container">
+      <div class="flex column-layout-container ">
+        <ul class="stations-list" v-for="(station, idx) in stations" :key="idx">
           <station-preview :station="station" />
         </ul>
       </div>
@@ -13,7 +11,7 @@
 </template>
 
 <script>
-import stationPreview from "../cmps/stationPreview";
+import stationPreview from "../cmps/stationPreview.vue";
 export default {
   name: "explore",
   data() {
