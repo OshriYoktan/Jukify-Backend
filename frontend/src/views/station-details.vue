@@ -43,33 +43,33 @@
       </ul>
     </div>
     <div v-if="videoId" class="song-video">
-      <youtube :video-id="videoId" ref="youtube" autoplay="1"></youtube>
+      <youtube :video-id="videoId" ref="youtube" ></youtube>
     </div>
 
     <div v-if="videoId" class="song-player">
-      <div class="playing-now">Playing Now: {{ videoId }}</div>
+      <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
       <div class="playing-btns">
-        <button>Previous</button>
-        <button @click="pauseSong" v-if="!isPlaying">Stop</button>
-        <button @click="pauseSong" v-else>Start</button>
-        <button @click="nextSong">Next</button>
+        <button @click="nextSong(-1)">Previous</button>
+        <button @click="toggleSong" v-if="!songPlayer.isPlaying">Stop</button>
+        <button @click="toggleSong" v-else>Start</button>
+        <button @click="nextSong(1)">Next</button>
       </div>
       <div class="music-btns">
-        <button @click="muteSong" v-if="!isMuted">Mute</button>
-        <button @click="muteSong" v-if="isMuted">Un Mute</button>
+        <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
+        <button @click="muteSong" v-else>Un Mute</button>
         <input
           type="range"
           min="0"
           max="50"
-          @change="setSongVolume(volumeRange)"
-          v-model="volumeRange"
+          @change="setSongVolume(songPlayer.volumeRange)"
+          v-model="songPlayer.volumeRange"
           class="set-volume"
         />
-        <span>{{ volumeRange }}</span>
+        <span >{{ songPlayer.volumeRange }}</span>
       </div>
-      <div v-if="playingSongVideoId" class="player">
-        <youtube :playingVideoId="playingSongVideoId" ref="youtube"></youtube>
-      </div>
+      <!-- <div v-show="videoId" class="player"> -->
+        <youtube :video-id="videoId" ref="youtube"></youtube>
+      <!-- </div> -->
     </div>
   </section>
 </template>
@@ -87,44 +87,55 @@ export default {
       isNew: false,
       search: "",
       videoId: "",
-      // TODO: player object
-      isPlaying: false,
-      isMuted: false,
-      volumeRange: 50,
+      songPlayer:{
+        isPlaying: false,
+        isMuted: false,
+        volumeRange: 50,
+        songName: ''
+      },
+      // player: null
     };
   },
   methods: {
-    // TODO: ToggleVideo
     playVideo(videoId) {
       this.videoId = videoId;
-      this.player.playVideo();
+      this.$nextTick(() => {
+        this.player.playVideo();
+      })
     },
-    pauseSong() {
-      if (!this.isPlaying) {
-        this.isPlaying = true;
+    toggleSong() {
+      if (!this.songPlayer.isPlaying) {
+        this.songPlayer.isPlaying = true;
         this.player.pauseVideo();
       } else {
-        this.isPlaying = false;
+        this.songPlayer.isPlaying = false;
         this.player.playVideo();
       }
     },
-    // Till here
     setSongVolume(val) {
       this.player.setVolume(val);
     },
     muteSong() {
-      if (!this.isMuted) {
-        this.isMuted = true;
+      if (!this.songPlayer.isMuted) {
+        this.songPlayer.isMuted = true;
         this.player.mute();
       } else {
-        this.isMuted = false;
+        this.songPlayer.isMuted = false;
         this.player.unMute();
       }
     },
-    nextSong() {
-      // TODO: next video in currStation.songs (idx)
-      // this.$store.state.stationStore.stations[idx].videoId
-      this.player.nextVideo();
+    nextSong(num) {
+      var idx = this.currStation.songs.findIndex((song) => {
+        return song.videoId === this.videoId
+      })
+      console.log(idx);
+      const nextSong = this.currStation.songs[idx + num]
+      if(idx === this.currStation.songs.length - 1) idx = 0
+      this.videoId = nextSong.videoId
+      this.songPlayer.songName = nextSong.name
+      this.$nextTick(() => {
+        this.player.playVideo();
+      })
     },
     async removeSong(id) {
       try {
@@ -166,7 +177,6 @@ export default {
     },
     playSong(videoId) {
       this.videoId = videoId;
-      this.playingSongVideoId = videoId;
     },
     async addStation() {
       try {
@@ -197,6 +207,12 @@ export default {
       });
   },
   components: {},
+  // mounted() {
+  //   setTimeout(() => {
+  //     console.log(this.$refs);
+  //   this.player = this.$refs.youtube.player;
+  //   },1000)
+  // }
 };
 </script>
 
