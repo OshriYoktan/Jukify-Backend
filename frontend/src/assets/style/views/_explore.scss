@@ -1,16 +1,20 @@
 .explore-sub-container {
+    .explore-header {
+        margin-top: 1020px;
+    }
     .stations-list {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: repeat(auto, 1fr);
     }
 }
+
 .station-preview-currStation {
     border: 1px solid black;
     width: em(200px);
     height: em(200px);
     justify-content: space-between;
-    > * {
+    >* {
         text-align: center;
         width: 100%;
         height: 100%;

@@ -4,6 +4,7 @@ export const stationStore = {
     strict: true,
     state: {
         stations: [],
+        genres: ["Hip-Pop", "Band", "Israeli"],
     },
     mutations: {
         setStations(state, { stations }) {

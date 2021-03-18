@@ -87,7 +87,8 @@ function getEmptystation() {
         name: '',
         imgUrl: '',
         likes: 0,
-        songs: []
+        songs: [],
+        genres: 'hip-hop'
     }
 }
 

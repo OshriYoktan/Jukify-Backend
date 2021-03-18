@@ -13,18 +13,8 @@
           placeholder="Station name"
           v-model="currStation.name"
         />
-        <input
-          required
-          v-for="(n, idx) in genreCount"
-          :key="idx"
-          type="text"
-          placeholder="Station genre"
-          v-model="currStation.genre"
-        />
-        <button @click="addGenreInput(0)">- genre</button>
-        <button @click="addGenreInput(1)">+ genre</button>
+        <genre-select @genre-selected="setGenre" />
         <input type="file" @change="imgLoad" />
-
         <button>Save</button>
       </form>
     </div>
@@ -59,14 +49,14 @@
     <div v-if="videoId" class="song-player">
       <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
       <div class="playing-btns">
-        <button @click="nextSong(-1)">Previous</button>
+        <button @click="changeSong(-1)">Previous</button>
         <button @click="toggleSong" v-if="!songPlayer.isPlaying">Stop</button>
         <button @click="toggleSong" v-else>Start</button>
-        <button @click="nextSong(1)">Next</button>
+        <button @click="changeSong(1)">Next</button>
       </div>
       <div class="music-btns">
         <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
-        <button @click="muteSong" v-else>Un Mute</button>
+        <button @click="muteSong" v-else>Unmute</button>
         <input
           type="range"
           min="0"
@@ -85,8 +75,8 @@
 </template>
 
 <script>
+import genreSelect from "../cmps/genre-select";
 import { stationService } from "../services/station.service";
-
 export default {
   name: "station-details",
   data() {
@@ -109,6 +99,10 @@ export default {
   },
   methods: {
     playVideo(videoId) {
+      const currSong = this.currStation.songs.find((song) => {
+        return song.videoId === videoId;
+      });
+      this.songPlayer.songName = currSong.name;
       this.videoId = videoId;
       this.$nextTick(() => {
         this.player.playVideo();
@@ -135,13 +129,14 @@ export default {
         this.player.unMute();
       }
     },
-    nextSong(num) {
+    changeSong(num) {
       var idx = this.currStation.songs.findIndex((song) => {
         return song.videoId === this.videoId;
       });
-      console.log(idx);
-      const nextSong = this.currStation.songs[idx + num];
-      if (idx === this.currStation.songs.length - 1) idx = 0;
+      var songIdx = idx + num;
+      if (songIdx === this.currStation.songs.length) songIdx = 0;
+      if (songIdx === -1) songIdx = this.currStation.songs.length - 1;
+      const nextSong = this.currStation.songs[songIdx];
       this.videoId = nextSong.videoId;
       this.songPlayer.songName = nextSong.name;
       this.$nextTick(() => {
@@ -190,12 +185,12 @@ export default {
     async addStation() {
       try {
         const station = this.currStation;
+        console.log('station:', station)
         await this.$store.dispatch({ type: "addStation", station });
       } catch {}
     },
-    addGenreInput(num) {
-      if (this.genreCount === 1 && !num) return;
-      return num ? this.genreCount++ : this.genreCount--;
+    setGenre(genres) {
+      this.currStation.genres = genres
     },
   },
   computed: {
@@ -205,6 +200,12 @@ export default {
     songs() {
       return this.$store.state.stationState.songs;
     },
+    genres() {
+      return this.$store.state.stationStore.genres;
+    },
+  },
+  components: {
+    genreSelect
   },
   created() {
     this.currStation = null;
@@ -218,13 +219,6 @@ export default {
         this.currStation = station;
       });
   },
-  components: {},
-  // mounted() {
-  //   setTimeout(() => {
-  //     console.log(this.$refs);
-  //   this.player = this.$refs.youtube.player;
-  //   },1000)
-  // }
 };
 </script>
 
