@@ -10,8 +10,13 @@ export const stationStore = {
             state.stations = stations
         },
         addToStation(state, { payload }) {
-            const station = state.stations.find((s) => s._id === payload.stationId)
+            const station = state.stations[0].find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
+        },
+        removeSong(state, { payload }) {
+            const station = state.stations[0].find((s) => s._id === payload.stationId)
+            const songIdx = station.songs.findIndex((s) => s._id === payload.id)
+            station.songs.splice(songIdx, 1)
         }
     },
     actions: {
@@ -21,36 +26,13 @@ export const stationStore = {
                 context.commit({ type: 'setStations', stations })
             } catch {}
         },
-        async removeSong(state, { id }) {
+        async removeSong({ commit }, { payload }) {
             try {
-                const idx = this.songs.findIndex((song) => {
-                    return song.videoId === id
-                });
-                state.songs.splice(idx, 1)
-            } catch {}
-        },
-        async loadSongs(state) {
-            try {
-                const name = this.$route.params.stationName;
-                stationService.askSearch(name).then((songs) => {
-                    console.log('songs:', songs)
-                    this.stationImg = songs[0].snippet.thumbnails.default.url;
-                    songs.forEach((song) => {
-                        const songToStation = {
-                            title: song.snippet.title,
-                            artist: song.snippet.channelTitle,
-                            desc: song.snippet.description,
-                            img: song.snippet.thumbnails.default.url,
-                            videoId: song.id.videoId,
-                            publishAt: song.snippet.publishedAt,
-                        };
-                        state.songs.push(songToStation);
-                    });
-                });
+                await stationService.removeSong(payload)
+                commit({ type: 'removeSong', payload })
             } catch {}
         },
         async addToStation({ commit }, payload) {
-            console.log('payload:', payload)
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
                 commit({ type: 'addToStation', payload: { stationId: payload.payload.stationId, song: songToAdd } })

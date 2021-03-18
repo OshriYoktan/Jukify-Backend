@@ -7,7 +7,7 @@ const API = 'AIzaSyAw9w3LHiai8ET2O2DIWA34fVjkrQBIanQ'
 const SONGS_KEY = 'songs-results'
 const KEY = 'stations'
 
-var ggStations = utilService.loadFromStorage(KEY)
+var ggStations;
 
 export const stationService = {
     query,
@@ -16,6 +16,7 @@ export const stationService = {
     addSongToStation,
     getStationById,
     getEmptystation,
+    removeSong,
     askSearch,
 }
 
@@ -62,16 +63,20 @@ function getStationById(id) {
 }
 
 function getEmptystation() {
-    // return { _id: '', title: '', description: '' }
+    return {
+        name: '',
+        songs: []
+    }
 }
 
 function addSongToStation({ payload }) {
+    console.log('payload:', payload)
     const song = payload.selectedSong
     ggStations = utilService.loadFromStorage(KEY)
-    const station = stations[0].find((s) => s._id === payload.stationId)
+    const station = ggStations[0].find((s) => s._id === payload.stationId)
     const songToAdd = {
-        _id: song._id,
-        title: song.snippet.title,
+        _id: utilService.makeId(),
+        name: song.snippet.title,
         artist: song.snippet.channelTitle,
         desc: song.snippet.description,
         img: song.snippet.thumbnails.default.url,
@@ -79,11 +84,24 @@ function addSongToStation({ payload }) {
         publishAt: song.snippet.publishedAt,
     };
     station.songs.push(songToAdd)
-    utilService.saveToStorage(KEY, stations)
+    saveToStorage()
     return Promise.resolve(songToAdd)
 }
 
-// _createstations()
+function removeSong(payload) {
+    ggStations = utilService.loadFromStorage(KEY)
+    const station = ggStations[0].find((s) => s._id === payload.stationId)
+    const songIdx = station.songs.findIndex((s) => s._id === payload.id)
+    station.songs.splice(songIdx, 1)
+    saveToStorage()
+    return Promise.resolve
+}
+
+function saveToStorage() {
+    utilService.saveToStorage(KEY, ggStations)
+}
+
+_createstations()
 
 function _createstations() {
     var stations = JSON.parse(localStorage.getItem(KEY))
