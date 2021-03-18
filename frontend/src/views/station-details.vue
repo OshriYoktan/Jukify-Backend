@@ -43,20 +43,20 @@
       </ul>
     </div>
     <div v-if="videoId" class="song-video">
-      <youtube :video-id="videoId" ref="youtube" ></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
     </div>
 
     <div v-if="videoId" class="song-player">
       <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
       <div class="playing-btns">
-        <button @click="nextSong(-1)">Previous</button>
+        <button @click="changeSong(-1)">Previous</button>
         <button @click="toggleSong" v-if="!songPlayer.isPlaying">Stop</button>
         <button @click="toggleSong" v-else>Start</button>
-        <button @click="nextSong(1)">Next</button>
+        <button @click="changeSong(1)">Next</button>
       </div>
       <div class="music-btns">
         <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
-        <button @click="muteSong" v-else>Un Mute</button>
+        <button @click="muteSong" v-else>Unmute</button>
         <input
           type="range"
           min="0"
@@ -65,10 +65,10 @@
           v-model="songPlayer.volumeRange"
           class="set-volume"
         />
-        <span >{{ songPlayer.volumeRange }}</span>
+        <span>{{ songPlayer.volumeRange }}</span>
       </div>
       <!-- <div v-show="videoId" class="player"> -->
-        <youtube :video-id="videoId" ref="youtube"></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
       <!-- </div> -->
     </div>
   </section>
@@ -87,21 +87,25 @@ export default {
       isNew: false,
       search: "",
       videoId: "",
-      songPlayer:{
+      songPlayer: {
         isPlaying: false,
         isMuted: false,
         volumeRange: 50,
-        songName: ''
+        songName: "",
       },
       // player: null
     };
   },
   methods: {
     playVideo(videoId) {
+      const currSong = this.currStation.songs.find((song) => {
+        return song.videoId === videoId;
+      });
+      this.songPlayer.songName = currSong.name;
       this.videoId = videoId;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     toggleSong() {
       if (!this.songPlayer.isPlaying) {
@@ -124,18 +128,19 @@ export default {
         this.player.unMute();
       }
     },
-    nextSong(num) {
+    changeSong(num) {
       var idx = this.currStation.songs.findIndex((song) => {
-        return song.videoId === this.videoId
-      })
-      console.log(idx);
-      const nextSong = this.currStation.songs[idx + num]
-      if(idx === this.currStation.songs.length - 1) idx = 0
-      this.videoId = nextSong.videoId
-      this.songPlayer.songName = nextSong.name
+        return song.videoId === this.videoId;
+      });
+      var songIdx = idx + num;
+      if (songIdx === this.currStation.songs.length) songIdx = 0;
+      if (songIdx === -1) songIdx = this.currStation.songs.length - 1;
+      const nextSong = this.currStation.songs[songIdx];
+      this.videoId = nextSong.videoId;
+      this.songPlayer.songName = nextSong.name;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     async removeSong(id) {
       try {
@@ -206,13 +211,6 @@ export default {
         this.currStation = station;
       });
   },
-  components: {},
-  // mounted() {
-  //   setTimeout(() => {
-  //     console.log(this.$refs);
-  //   this.player = this.$refs.youtube.player;
-  //   },1000)
-  // }
 };
 </script>
 
