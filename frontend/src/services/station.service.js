@@ -21,7 +21,6 @@ export const stationService = {
 async function askSearch(txt) {
     try {
         const songs = await storageService.query(`${SONGS_KEY}_${txt}`);
-        console.log('songs:', songs)
         if (songs.length) {
             console.log('search results from storage')
             return Promise.resolve(songs);
@@ -76,6 +75,8 @@ async function getStationById(id) {
 function getEmptystation() {
     return {
         name: '',
+        imgUrl:'',
+        likes: 0,
         songs: []
     }
 }
@@ -114,7 +115,7 @@ async function removeSong(payload) {
     }
 }
 
-// _createstations()
+_createstations()
 
 function _createstations() {
     var stations = JSON.parse(localStorage.getItem(KEY))

@@ -4,6 +4,7 @@
       <h1>{{ currStation.name }}</h1>
       <h2>GENRES</h2>
     </div>
+    <!-- TODO : mew component called CREATE STATION -->
     <div v-if="isNew">
       <form @submit.prevent="addStation">
         <input
@@ -11,11 +12,19 @@
           placeholder="station name"
           v-model="currStation.name"
         />
+        <input type="file" @change="imgLoad" />
+        <!-- <input type="text" v-model="currStation.genre" /> -->
+
         <button>Save</button>
       </form>
     </div>
+    <!-- utill here -->
     <ul v-if="currStation">
-      <li v-for="song in currStation.songs" @click="playSong(song.videoId)" :key="song._id">
+      <li
+        v-for="song in currStation.songs"
+        @click="playSong(song.videoId)"
+        :key="song._id"
+      >
         {{ song.name }}
         <button @click="removeSong(song._id)">x</button>
       </li>
@@ -34,13 +43,13 @@
       </ul>
     </div>
     <div v-if="playingSongVideoId" class="player">
-      <youtube :playingVideoId="playingSongVideoId" ref="youtube" ></youtube>
+      <youtube :playingVideoId="playingSongVideoId" ref="youtube"></youtube>
     </div>
   </section>
 </template>
 
 <script>
-import youtube from '../cmps/youtube'
+import youtube from "../cmps/youtube";
 import { stationService } from "../services/station.service";
 
 export default {
@@ -66,6 +75,14 @@ export default {
         console.log("song deleted");
       } catch {}
     },
+    imgLoad(ev) {
+      const image = ev.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = (ev) => {
+        this.currStation.imgUrl = ev.target.result;
+      };
+    },
     async searchSongs() {
       try {
         const songs = await stationService.askSearch(this.search);
@@ -87,7 +104,7 @@ export default {
       return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
     },
     playSong(videoId) {
-      this.playingSongVideoId = videoId
+      this.playingSongVideoId = videoId;
     },
     async addStation() {
       try {
@@ -115,7 +132,7 @@ export default {
       });
   },
   components: {
-    youtube
-  }
+    youtube,
+  },
 };
 </script>
