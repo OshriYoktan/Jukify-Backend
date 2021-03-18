@@ -1,9 +1,8 @@
-
 .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    border-bottom: 1px solid black;
     .main-logo {
         color: #2c3e50;
         text-decoration: none;
@@ -11,10 +10,10 @@
             color: #2c3e50;
         }
     }
-
     a {
         font-weight: bold;
         color: #2c3e50;
+        font-size: 20px;
         &.router-link-exact-active {
             color: #42b983;
         }
@@ -22,4 +21,9 @@
     h1 {
         font-size: 30px;
     }
+}
+
+.view-router {
+    overflow: auto;
+    border: 1px solid black;
 }

@@ -4,6 +4,7 @@ export const stationStore = {
     strict: true,
     state: {
         stations: [],
+        genres: ["Hip-Pop", "Band", "Israeli"],
     },
     mutations: {
         setStations(state, { stations }) {
@@ -19,7 +20,6 @@ export const stationStore = {
             station.songs.splice(songIdx, 1)
         },
         addStation(state, { stationToAdd }) {
-            console.log('stationToAdd:', stationToAdd)
             state.stations.push(stationToAdd)
         },
     },

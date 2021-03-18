@@ -23,7 +23,7 @@ async function askSearch(txt) {
     try {
         const songs = await storageService.query(`${SONGS_KEY}_${txt}`);
         if (songs.length) {
-            console.log('search results from storage')
+            console.log('Res from storage')
             return Promise.resolve(songs);
         }
         console.log('api...');
@@ -85,9 +85,10 @@ async function getStationIdxById(id) {
 function getEmptystation() {
     return {
         name: '',
-        imgUrl:'',
+        imgUrl: '',
         likes: 0,
-        songs: []
+        songs: [],
+        genres: 'hip-hop'
     }
 }
 

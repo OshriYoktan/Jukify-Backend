@@ -17,3 +17,14 @@
     text-decoration: none;
     color: inherit;
 }
+
+.video-pic-in-list {
+    @include aspect-ratio(100, 80);
+}
+
+.column-layout-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,5 +1,5 @@
 <template>
-  <li class="station-preview-currStation column-layout-container">
+  <li v-if="isSameGenre" class="station-preview-currStation column-layout-container">
     <router-link class="link" :to="'/details/' + station._id">
       <div>{{ station.name }}</div>
       <div>♥{{ this.likesToShow }}</div>
@@ -11,10 +11,11 @@
 
 <script>
 export default {
-  props: ["station"],
-  dat() {
+  props: ["station", "genre"],
+  data() {
     return {
       likesToShow: null,
+      isSameGenre: false,
     };
   },
   methods: {
@@ -24,10 +25,14 @@ export default {
     likes(likes) {
       likes.toLocaleString();
     },
+    checkGenre() {
+      if (this.station.genres.includes(this.genre.toLowerCase())) this.isSameGenre = true
+      else this.isSameGenre = false
+    },
   },
   created() {
     this.likesToShow = this.station.likes.toLocaleString();
-    // station.likes
+    this.checkGenre()
   },
 };
 </script>

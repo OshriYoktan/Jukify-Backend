@@ -8,13 +8,13 @@
     <div v-if="isNew">
       <form @submit.prevent="addStation">
         <input
+          required
           type="text"
-          placeholder="station name"
+          placeholder="Station name"
           v-model="currStation.name"
         />
+        <genre-select @genre-selected="setGenre" />
         <input type="file" @change="imgLoad" />
-        <!-- <input type="text" v-model="currStation.genre" /> -->
-
         <button>Save</button>
       </form>
     </div>
@@ -43,20 +43,20 @@
       </ul>
     </div>
     <div v-if="videoId" class="song-video">
-      <youtube :video-id="videoId" ref="youtube" ></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
     </div>
 
     <div v-if="videoId" class="song-player">
       <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
       <div class="playing-btns">
-        <button @click="nextSong(-1)">Previous</button>
+        <button @click="changeSong(-1)">Previous</button>
         <button @click="toggleSong" v-if="!songPlayer.isPlaying">Stop</button>
         <button @click="toggleSong" v-else>Start</button>
-        <button @click="nextSong(1)">Next</button>
+        <button @click="changeSong(1)">Next</button>
       </div>
       <div class="music-btns">
         <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
-        <button @click="muteSong" v-else>Un Mute</button>
+        <button @click="muteSong" v-else>Unmute</button>
         <input
           type="range"
           min="0"
@@ -65,18 +65,18 @@
           v-model="songPlayer.volumeRange"
           class="set-volume"
         />
-        <span >{{ songPlayer.volumeRange }}</span>
+        <span>{{ songPlayer.volumeRange }}</span>
       </div>
       <!-- <div v-show="videoId" class="player"> -->
-        <youtube :video-id="videoId" ref="youtube"></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
       <!-- </div> -->
     </div>
   </section>
 </template>
 
 <script>
+import genreSelect from "../cmps/genre-select";
 import { stationService } from "../services/station.service";
-
 export default {
   name: "station-details",
   data() {
@@ -87,21 +87,26 @@ export default {
       isNew: false,
       search: "",
       videoId: "",
-      songPlayer:{
+      songPlayer: {
         isPlaying: false,
         isMuted: false,
         volumeRange: 50,
-        songName: ''
+        songName: "",
       },
       // player: null
+      genreCount: 1,
     };
   },
   methods: {
     playVideo(videoId) {
+      const currSong = this.currStation.songs.find((song) => {
+        return song.videoId === videoId;
+      });
+      this.songPlayer.songName = currSong.name;
       this.videoId = videoId;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     toggleSong() {
       if (!this.songPlayer.isPlaying) {
@@ -124,18 +129,19 @@ export default {
         this.player.unMute();
       }
     },
-    nextSong(num) {
+    changeSong(num) {
       var idx = this.currStation.songs.findIndex((song) => {
-        return song.videoId === this.videoId
-      })
-      console.log(idx);
-      const nextSong = this.currStation.songs[idx + num]
-      if(idx === this.currStation.songs.length - 1) idx = 0
-      this.videoId = nextSong.videoId
-      this.songPlayer.songName = nextSong.name
+        return song.videoId === this.videoId;
+      });
+      var songIdx = idx + num;
+      if (songIdx === this.currStation.songs.length) songIdx = 0;
+      if (songIdx === -1) songIdx = this.currStation.songs.length - 1;
+      const nextSong = this.currStation.songs[songIdx];
+      this.videoId = nextSong.videoId;
+      this.songPlayer.songName = nextSong.name;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     async removeSong(id) {
       try {
@@ -144,7 +150,6 @@ export default {
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "removeSong", payload });
-        console.log("song deleted");
       } catch {}
     },
     imgLoad(ev) {
@@ -169,7 +174,6 @@ export default {
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "addToStation", payload });
-        console.log("song added");
       } catch {}
     },
     searchStatus() {
@@ -181,8 +185,12 @@ export default {
     async addStation() {
       try {
         const station = this.currStation;
+        console.log('station:', station)
         await this.$store.dispatch({ type: "addStation", station });
       } catch {}
+    },
+    setGenre(genres) {
+      this.currStation.genres = genres
     },
   },
   computed: {
@@ -192,6 +200,12 @@ export default {
     songs() {
       return this.$store.state.stationState.songs;
     },
+    genres() {
+      return this.$store.state.stationStore.genres;
+    },
+  },
+  components: {
+    genreSelect
   },
   created() {
     this.currStation = null;
@@ -199,20 +213,12 @@ export default {
     if (!id) {
       this.currStation = stationService.getEmptystation();
       this.isNew = true;
-      console.log("this.currStation:", this.currStation);
     } else
       stationService.getStationIdxById(id).then((idx) => {
         const station = this.$store.state.stationStore.stations[idx];
         this.currStation = station;
       });
   },
-  components: {},
-  // mounted() {
-  //   setTimeout(() => {
-  //     console.log(this.$refs);
-  //   this.player = this.$refs.youtube.player;
-  //   },1000)
-  // }
 };
 </script>
 

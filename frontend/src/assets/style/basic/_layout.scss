@@ -1,23 +1,15 @@
-.column-layout-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 .main-layout {
     font-family: Avenir, Helvetica, Arial, sans-serif;
-    text-align: center;
     display: grid;
-    grid-template-columns: 2rem 1fr 2rem;
-
-    > * {
+    height: 100vh;
+    grid-template-columns: 1fr 75rem 1fr;
+    grid-template-rows: 75px 1fr 100px;
+    >* {
         grid-column: 2;
     }
-
-    > .full {
+    >.full {
         grid-column: 1 / -1;
     }
-
     // @include for-narrow-layout {
     //     grid-template-columns: 
     //     minmax(2rem, 1fr)
@@ -25,7 +17,6 @@
     //     minmax(2rem, 1fr)
     //     ;     
     // }
-
     // @include for-normal-layout {
     //     grid-template-columns: 
     //     minmax(2rem, 1fr)
@@ -33,7 +24,6 @@
     //     minmax(2rem, 1fr)
     //     ;     
     // }
-
     // @include for-wide-layout {
     //     grid-template-columns: 
     //     minmax(2rem, 1fr)
@@ -41,6 +31,4 @@
     //     minmax(2rem, 1fr)
     //     ;     
     // }
-
 }
-
