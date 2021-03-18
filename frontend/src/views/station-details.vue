@@ -15,7 +15,11 @@
       </form>
     </div>
     <ul v-if="currStation">
-      <li v-for="song in currStation.songs" @click="playSong(song.videoId)" :key="song._id">
+      <li
+        v-for="song in currStation.songs"
+        @click="playSong(song.videoId)"
+        :key="song._id"
+      >
         {{ song.name }}
         <button @click="removeSong(song._id)">x</button>
       </li>
@@ -34,13 +38,13 @@
       </ul>
     </div>
     <div v-if="playingSongVideoId" class="player">
-      <youtube :playingVideoId="playingSongVideoId" ref="youtube" ></youtube>
+      <youtube :playingVideoId="playingSongVideoId" ref="youtube"></youtube>
     </div>
   </section>
 </template>
 
 <script>
-import youtube from '../cmps/youtube'
+import youtube from "../cmps/youtube";
 import { stationService } from "../services/station.service";
 
 export default {
@@ -87,18 +91,13 @@ export default {
       return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
     },
     playSong(videoId) {
-      this.playingSongVideoId = videoId
+      this.playingSongVideoId = videoId;
     },
     async addStation() {
       try {
         const station = this.currStation;
         await this.$store.dispatch({ type: "addStation", station });
       } catch {}
-    },
-  },
-  computed: {
-    songs() {
-      return this.$store.state.stationState.songs;
     },
   },
   created() {
@@ -109,13 +108,13 @@ export default {
       this.isNew = true;
       console.log("this.currStation:", this.currStation);
     } else
-      stationService.getStationById(id).then((station) => {
-        console.log("station:", station);
+      stationService.getStationIdxById(id).then((idx) => {
+        const station = this.$store.state.stationStore.stations[idx];
         this.currStation = station;
       });
   },
   components: {
-    youtube
-  }
+    youtube,
+  },
 };
 </script>
