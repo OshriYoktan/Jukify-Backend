@@ -67,7 +67,7 @@ export const gStations = [{
             },
             {
                 _id: 's106',
-                name: 'mami ze nigmar',
+                name: 'Rap God',
                 artist: 'Eminem',
                 desc: 'Credits below Video Director: Rich Lee Video Producer: Justin Diener Video Producer: Kathy Angstadt.',
                 img: 'https://i.ytimg.com/vi/XbGs_qK2PQA/default.jpg',

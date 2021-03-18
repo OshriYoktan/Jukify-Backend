@@ -8,12 +8,22 @@
     <div v-if="isNew">
       <form @submit.prevent="addStation">
         <input
+          required
           type="text"
-          placeholder="station name"
+          placeholder="Station name"
           v-model="currStation.name"
         />
+        <input
+          required
+          v-for="(n, idx) in genreCount"
+          :key="idx"
+          type="text"
+          placeholder="Station genre"
+          v-model="currStation.genre"
+        />
+        <button @click="addGenreInput(0)">- genre</button>
+        <button @click="addGenreInput(1)">+ genre</button>
         <input type="file" @change="imgLoad" />
-        <!-- <input type="text" v-model="currStation.genre" /> -->
 
         <button>Save</button>
       </form>
@@ -43,7 +53,7 @@
       </ul>
     </div>
     <div v-if="videoId" class="song-video">
-      <youtube :video-id="videoId" ref="youtube" ></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
     </div>
 
     <div v-if="videoId" class="song-player">
@@ -65,10 +75,10 @@
           v-model="songPlayer.volumeRange"
           class="set-volume"
         />
-        <span >{{ songPlayer.volumeRange }}</span>
+        <span>{{ songPlayer.volumeRange }}</span>
       </div>
       <!-- <div v-show="videoId" class="player"> -->
-        <youtube :video-id="videoId" ref="youtube"></youtube>
+      <youtube :video-id="videoId" ref="youtube"></youtube>
       <!-- </div> -->
     </div>
   </section>
@@ -87,13 +97,14 @@ export default {
       isNew: false,
       search: "",
       videoId: "",
-      songPlayer:{
+      songPlayer: {
         isPlaying: false,
         isMuted: false,
         volumeRange: 50,
-        songName: ''
+        songName: "",
       },
       // player: null
+      genreCount: 1,
     };
   },
   methods: {
@@ -101,7 +112,7 @@ export default {
       this.videoId = videoId;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     toggleSong() {
       if (!this.songPlayer.isPlaying) {
@@ -126,16 +137,16 @@ export default {
     },
     nextSong(num) {
       var idx = this.currStation.songs.findIndex((song) => {
-        return song.videoId === this.videoId
-      })
+        return song.videoId === this.videoId;
+      });
       console.log(idx);
-      const nextSong = this.currStation.songs[idx + num]
-      if(idx === this.currStation.songs.length - 1) idx = 0
-      this.videoId = nextSong.videoId
-      this.songPlayer.songName = nextSong.name
+      const nextSong = this.currStation.songs[idx + num];
+      if (idx === this.currStation.songs.length - 1) idx = 0;
+      this.videoId = nextSong.videoId;
+      this.songPlayer.songName = nextSong.name;
       this.$nextTick(() => {
         this.player.playVideo();
-      })
+      });
     },
     async removeSong(id) {
       try {
@@ -144,7 +155,6 @@ export default {
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "removeSong", payload });
-        console.log("song deleted");
       } catch {}
     },
     imgLoad(ev) {
@@ -169,7 +179,6 @@ export default {
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "addToStation", payload });
-        console.log("song added");
       } catch {}
     },
     searchStatus() {
@@ -183,6 +192,10 @@ export default {
         const station = this.currStation;
         await this.$store.dispatch({ type: "addStation", station });
       } catch {}
+    },
+    addGenreInput(num) {
+      if (this.genreCount === 1 && !num) return;
+      return num ? this.genreCount++ : this.genreCount--;
     },
   },
   computed: {
@@ -199,7 +212,6 @@ export default {
     if (!id) {
       this.currStation = stationService.getEmptystation();
       this.isNew = true;
-      console.log("this.currStation:", this.currStation);
     } else
       stationService.getStationIdxById(id).then((idx) => {
         const station = this.$store.state.stationStore.stations[idx];

@@ -19,7 +19,6 @@ export const stationStore = {
             station.songs.splice(songIdx, 1)
         },
         addStation(state, { stationToAdd }) {
-            console.log('stationToAdd:', stationToAdd)
             state.stations.push(stationToAdd)
         },
     },

@@ -23,14 +23,13 @@ async function askSearch(txt) {
     try {
         const songs = await storageService.query(`${SONGS_KEY}_${txt}`);
         if (songs.length) {
-            console.log('search results from storage')
+            console.log('Res from storage')
             return Promise.resolve(songs);
         }
         console.log('api...');
         return axios.get(`https://www.googleapis.com/youtube/v3/search?maxResults=10&part=snippet&videoEmbeddable=true&type=video&key=${API}&q=${txt}`)
             .then(res => {
                 storageService.postMany(`${SONGS_KEY}_${txt}`, res.data.items);
-                console.log('res.data.items:', res.data.items)
                 return res.data.items;
             })
             .catch(err => {
