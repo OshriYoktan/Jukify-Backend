@@ -101,7 +101,7 @@ function saveToStorage() {
     utilService.saveToStorage(KEY, ggStations)
 }
 
-_createstations()
+// _createstations()
 
 function _createstations() {
     var stations = JSON.parse(localStorage.getItem(KEY))

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currStation">
+  <section class="flex column-layout-container" v-if="currStation">
     <h1>{{ currStation.name }}</h1>
     <h2>GENRES</h2>
     <ul v-if="currStation">
