@@ -1,9 +1,9 @@
 <template>
   <li v-if="isSameGenre" class="station-preview-currStation column-layout-container">
     <router-link class="link" :to="'/details/' + station._id">
+      <img :src="station.imgUrl" :alt="station.name + ' image'" />
       <div>{{ station.name }}</div>
       <div>♥{{ this.likesToShow }}</div>
-      <img :src="station.imgUrl" :alt="station.name + ' image'" />
       <div @click="clicked(station)">songs: {{ station.songs.length }}</div>
     </router-link>
   </li>
