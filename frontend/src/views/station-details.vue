@@ -15,7 +15,11 @@
       </form>
     </div>
     <ul v-if="currStation">
-      <li v-for="song in currStation.songs" @click="playSong(song.videoId)" :key="song._id">
+      <li
+        v-for="(song) in currStation.songs"
+        @click="playVideo(song.videoId)"
+        :key="song._id"
+      >
         {{ song.name }}
         <button @click="removeSong(song._id)">x</button>
       </li>
@@ -33,14 +37,37 @@
         </li>
       </ul>
     </div>
-    <div v-if="playingSongVideoId" class="player">
-      <youtube :playingVideoId="playingSongVideoId" ref="youtube" ></youtube>
+    <div v-if="videoId" class="song-video">
+      <youtube :video-id="videoId" ref="youtube" autoplay="1"></youtube>
+    </div>
+
+    <div v-if="videoId" class="song-player">
+      <div class="playing-now">Playing Now: {{videoId}} </div>
+      <div class="playing-btns">
+        <button>Previous</button>
+        <button @click="pauseSong" v-if="!isPlaying">Stop</button>
+        <button @click="pauseSong" v-else>Start</button>
+        <button @click="nextSong">Next</button>
+      </div>
+      <div class="music-btns">
+        <button @click="muteSong" v-if="!isMuted">Mute</button>
+        <button @click="muteSong" v-if="isMuted">Un Mute</button>
+        <input
+          type="range"
+          min="0"
+          max="50"
+          @change="setSongVolume(volumeRange)"
+          v-model="volumeRange"
+          class="set-volume"
+        />
+        <span>{{ volumeRange }}</span>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import youtube from '../cmps/youtube'
+// import youtube from '../cmps/youtube'
 import { stationService } from "../services/station.service";
 
 export default {
@@ -52,10 +79,44 @@ export default {
       isSearch: false,
       isNew: false,
       search: "",
-      playingSongVideoId: null,
+      videoId: '',
+      isPlaying: false,
+      isMuted: false,
+      volumeRange: 50,
     };
   },
   methods: {
+    playVideo(videoId) {
+      console.log(this.currStation);
+      this.videoId = videoId
+      console.log(this.player);
+      this.player.playVideo()
+    },
+    pauseSong() {
+      if(!this.isPlaying){
+        this.isPlaying = true
+      this.player.pauseVideo()
+      }else {
+        this.isPlaying = false
+        this.player.playVideo()
+      }
+    },
+    setSongVolume(val) {
+      console.log('val',val);
+      this.player.setVolume(val)
+    },
+    muteSong() {
+       if(!this.isMuted){
+        this.isMuted = true
+      this.player.mute()
+       }else {
+         this.isMuted = false
+        this.player.unMute()
+       }
+    },
+    nextSong() {
+      this.player.nextVideo()
+    },
     async removeSong(id) {
       try {
         const payload = {
@@ -87,7 +148,7 @@ export default {
       return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
     },
     playSong(videoId) {
-      this.playingSongVideoId = videoId
+      this.videoId = videoId
     },
     async addStation() {
       try {
@@ -97,6 +158,9 @@ export default {
     },
   },
   computed: {
+    player() {
+      return this.$refs.youtube.player
+    },
     songs() {
       return this.$store.state.stationState.songs;
     },
@@ -115,7 +179,24 @@ export default {
       });
   },
   components: {
-    youtube
+    // youtube
   }
 };
 </script>
+
+<style >
+iframe {
+  width: 100%;
+  max-width: 0px;
+  height: 0;
+}
+
+.song-player{
+  display: flex;
+  justify-content: space-between;
+  background-color: grey;
+  width: 100%;
+  height: 75px;
+  margin-top: 238px;
+}
+</style>
