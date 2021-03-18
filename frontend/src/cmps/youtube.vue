@@ -1,25 +1,14 @@
 <template>
-  <div>
-    <form @submit.prevent="getId">
-      <input type="text" placeholder="search" v-model="name" />
-      <button>Search</button>
-    </form>
-    <youtube
-      class="youtube"
-      v-if="videoId"
-      :video-id="videoId"
-      ref="youtube"
-      @playing="playing"
-    ></youtube>
-    <span>{{ nowTime }}</span>
-    <button @click.prevent="playVideo">play</button>
+  <div >
+    <button @click="playVideo">play</button>
+    <!-- <span>{{ nowTime }}</span> -->
   </div>
 </template>
 
 <script>
 import { stationService } from "../services/station.service.js";
 export default {
-  props: ["videoId"],
+  props: ["playingVideoId"],
   name: "youtube",
   data() {
     return {
@@ -31,39 +20,42 @@ export default {
     };
   },
   methods: {
-    updateTime() {
-      setInterval(() => {
-        this.$refs.youtube.player.getCurrentTime().then((time) => {
-          this.currTime = time;
-        });
-      }, 1000);
-    },
+    // updateTime() {
+    //   setInterval(() => {
+    //     this.$refs.youtube.player.getCurrentTime().then((time) => {
+    //       this.currTime = time;
+    //     });
+    //   }, 1000);
+    // },
     playVideo() {
-      this.currTime2 = true;
-      this.updateTime();
-      if (this.isPlaying) {
-        this.isPlaying = false;
-        this.$refs.youtube.player.pauseVideo();
-      } else {
-        this.isPlaying = true;
-        this.$refs.youtube.player.playVideo();
-      }
+      // this.player.playVideo()
+      console.log(this.player);
+      // console.log(this.$parent.$refs.youtube)
+    // this.player.playVideo()
+      // this.updateTime();
+      // if (this.isPlaying) {
+      //   this.isPlaying = false;
+      //   this.$refs.youtube.player.pauseVideo();
+      // } else {
+      //   this.isPlaying = true;
+      //   this.$refs.youtube.player.playVideo();
+      // }
     },
     playing() {
       console.log("o/ we are watching!!!");
     },
-    getId() {
-      return stationService.askSearch(this.name).then((id) => {
-        console.log("id:", id);
-        this.videoId = id;
-      });
-    },
   },
   computed: {
+    player() {
+      return this.$parent.$refs.youtube
+    },
     nowTime() {
       return this.currTime;
     },
   },
+  created() {
+    this.videoId = this.playingVideoId
+  }
 };
 </script>
 

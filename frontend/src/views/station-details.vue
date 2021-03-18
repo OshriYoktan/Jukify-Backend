@@ -3,7 +3,7 @@
     <h1>{{ currStation.name }}</h1>
     <h2>GENRES</h2>
     <ul v-if="currStation">
-      <li v-for="song in currStation.songs" :key="song._id">
+      <li v-for="song in currStation.songs" @click="playSong(song.videoId)" :key="song._id">
         {{ song.name }}
         <button @click="removeSong(song._id)">x</button>
       </li>
@@ -21,10 +21,14 @@
         </li>
       </ul>
     </div>
+    <div v-if="playingSongVideoId" class="player">
+      <youtube :playingVideoId="playingSongVideoId" ref="youtube" ></youtube>
+    </div>
   </section>
 </template>
 
 <script>
+import youtube from '../cmps/youtube'
 import { stationService } from "../services/station.service";
 
 export default {
@@ -35,6 +39,7 @@ export default {
       foundSongs: null,
       isSearch: false,
       search: "",
+      playingSongVideoId: null,
     };
   },
   methods: {
@@ -68,6 +73,9 @@ export default {
     searchStatus() {
       return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
     },
+    playSong(videoId) {
+      this.playingSongVideoId = videoId
+    }
   },
   computed: {
     songs() {
@@ -80,7 +88,12 @@ export default {
     else stationService.getStationById(id).then((station) => {
       this.currStation = station;
     });
-      console.log('this.currStation:', this.currStation)
+      // console.log('this.currStation:', this.currStation)
   },
+  mounted() {
+  },
+  components: {
+    youtube
+  }
 };
 </script>
