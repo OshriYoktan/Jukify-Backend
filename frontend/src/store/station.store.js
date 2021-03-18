@@ -10,7 +10,6 @@ export const stationStore = {
             state.stations = stations
         },
         addToStation(state, { payload }) {
-            console.log('payload:', payload)
             const station = state.stations.find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
         },
@@ -48,6 +47,6 @@ export const stationStore = {
                 const stationToAdd = await stationService.save(station)
                 commit({ type: 'addStation', stationToAdd })
             } catch {}
-        }
+        },
     }
 }

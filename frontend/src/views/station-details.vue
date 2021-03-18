@@ -113,11 +113,6 @@ export default {
       } catch {}
     },
   },
-  computed: {
-    songs() {
-      return this.$store.state.stationState.songs;
-    },
-  },
   created() {
     this.currStation = null;
     const id = this.$route.params.stationName;
@@ -126,8 +121,8 @@ export default {
       this.isNew = true;
       console.log("this.currStation:", this.currStation);
     } else
-      stationService.getStationById(id).then((station) => {
-        console.log("station:", station);
+      stationService.getStationIdxById(id).then((idx) => {
+        const station = this.$store.state.stationStore.stations[idx];
         this.currStation = station;
       });
   },

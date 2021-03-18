@@ -13,6 +13,7 @@ export const stationService = {
     save,
     addSongToStation,
     getStationById,
+    getStationIdxById,
     getEmptystation,
     removeSong,
     askSearch,
@@ -72,6 +73,15 @@ async function getStationById(id) {
     }
 }
 
+async function getStationIdxById(id) {
+    try {
+        const stations = await storageService.query(KEY)
+        return stations.findIndex((s) => s._id === id)
+    } catch (err) {
+        console.log('Error from stationService - ', err);
+    }
+}
+
 function getEmptystation() {
     return {
         name: '',
@@ -84,8 +94,7 @@ function getEmptystation() {
 async function addSongToStation(payload) {
     try {
         const song = payload.selectedSong
-        var stations = await storageService.query(KEY)
-        const station = stations.find((s) => s._id === payload.stationId)
+        const station = await getStationById(payload.stationId)
         const songToAdd = {
             _id: utilService.makeId(),
             name: song.snippet.title,
