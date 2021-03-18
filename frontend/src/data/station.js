@@ -1,6 +1,8 @@
 export const gStations = [{
         _id: 'A8f56',
         name: 'Noga erez',
+        imgUrl:'https://yt3.ggpht.com/ytc/AAUvwnjq4Nkhqq-eTG2zQTvwj8hlwIXIFSZmTh_im-Xd_g=s176-c-k-c0x00ffffff-no-rj',
+        likes: 11,
         songs: [{
                 _id: 's101',
                 name: 'views',
@@ -24,6 +26,8 @@ export const gStations = [{
     {
         _id: '5pR74',
         name: 'omer adam',
+        imgUrl:'https://yt3.ggpht.com/ytc/AAUvwnhL1dgkSNJKfaxkujXDx99GugpWSCtK6WvQ5rjcYQ=s176-c-k-c0x00ffffff-no-rj',
+        likes: 11222,
         songs: [{
                 _id: 's103',
                 name: 'sheket',
