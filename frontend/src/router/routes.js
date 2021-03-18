@@ -23,7 +23,12 @@ const routes = [{
         component: explore
     },
     {
-        path: '/explore/:stationName',
+        path: '/details/',
+        name: 'newStation',
+        component: stationDetails
+    },
+    {
+        path: '/details/:stationName',
         name: 'details',
         component: stationDetails
     },

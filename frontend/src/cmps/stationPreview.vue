@@ -1,6 +1,6 @@
 <template>
       <li>
-        <router-link class="link" :to="'/explore/' + station._id">{{station.name}}</router-link>
+        <router-link class="link" :to="'/details/' + station._id">{{station.name}}</router-link>
       </li>
 </template>
 
