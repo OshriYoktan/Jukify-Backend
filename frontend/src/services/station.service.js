@@ -30,6 +30,7 @@ async function askSearch(txt) {
         return axios.get(`https://www.googleapis.com/youtube/v3/search?maxResults=10&part=snippet&videoEmbeddable=true&type=video&key=${API}&q=${txt}`)
             .then(res => {
                 storageService.postMany(`${SONGS_KEY}_${txt}`, res.data.items);
+                console.log('res.data.items:', res.data.items)
                 return res.data.items;
             })
             .catch(err => {
@@ -85,7 +86,7 @@ async function getStationIdxById(id) {
 function getEmptystation() {
     return {
         name: '',
-        imgUrl:'',
+        imgUrl: '',
         likes: 0,
         songs: []
     }

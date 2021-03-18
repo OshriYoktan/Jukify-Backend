@@ -1,13 +1,12 @@
 // SETUP // 
-@import './setup/helpers';
-@import './setup/typograghy';
-@import './setup/mixins';
 @import './setup/functions';
+@import './setup/mixins';
+@import './setup/typograghy';
+@import './setup/helpers';
 // BASICS // 
 @import './basic/base';
-@import './basic/helpers';
 @import './basic/layout';
-
+// CMPS //
 // VIEWS
 @import './views/app';
 @import './views/explore';

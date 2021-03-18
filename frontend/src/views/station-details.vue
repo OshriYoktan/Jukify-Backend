@@ -123,6 +123,7 @@ export default {
     },
     nextSong() {
       // TODO: next video in currStation.songs (idx)
+      // this.$store.state.stationStore.stations[idx].videoId
       this.player.nextVideo();
     },
     async removeSong(id) {
