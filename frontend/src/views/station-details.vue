@@ -1,7 +1,15 @@
 <template>
   <section v-if="currStation">
-    <h1>{{ currStation.name }}</h1>
-    <h2>GENRES</h2>
+    <div v-if="!isNew">
+      <h1>{{ currStation.name }}</h1>
+      <h2>GENRES</h2>
+    </div>
+    <div v-if="isNew">
+      <form @submit.prevent="addStation">
+        <input type="text" placeholder="station name" v-model="currStation.name" />
+        <button>Save</button>
+      </form>
+    </div>
     <ul v-if="currStation">
       <li v-for="song in currStation.songs" :key="song._id">
         {{ song.name }}
@@ -34,6 +42,7 @@ export default {
       currStation: null,
       foundSongs: null,
       isSearch: false,
+      isNew: false,
       search: "",
     };
   },
@@ -68,6 +77,12 @@ export default {
     searchStatus() {
       return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
     },
+    async addStation() {
+      try {
+        const station = this.currStation
+        await this.$store.dispatch({ type: "addStation", station });
+      } catch {}
+    },
   },
   computed: {
     songs() {
@@ -75,12 +90,17 @@ export default {
     },
   },
   created() {
+    this.currStation = null;
     const id = this.$route.params.stationName;
-    if (!id) this.currStation = stationService.getEmptystation()
-    else stationService.getStationById(id).then((station) => {
-      this.currStation = station;
-    });
-      console.log('this.currStation:', this.currStation)
+    if (!id) {
+      this.currStation = stationService.getEmptystation();
+      this.isNew = true;
+      console.log("this.currStation:", this.currStation);
+    } else
+      stationService.getStationById(id).then((station) => {
+        console.log('station:', station)
+        this.currStation = station;
+      });
   },
 };
 </script>

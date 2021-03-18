@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     stations() {
-      return this.$store.state.stationStore.stations[0];
+      return this.$store.state.stationStore.stations;
     },
   },
   components: {
