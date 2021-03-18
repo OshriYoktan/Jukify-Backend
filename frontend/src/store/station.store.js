@@ -10,14 +10,19 @@ export const stationStore = {
             state.stations = stations
         },
         addToStation(state, { payload }) {
-            const station = state.stations[0].find((s) => s._id === payload.stationId)
+            console.log('payload:', payload)
+            const station = state.stations.find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
         },
         removeSong(state, { payload }) {
-            const station = state.stations[0].find((s) => s._id === payload.stationId)
+            const station = state.stations.find((s) => s._id === payload.stationId)
             const songIdx = station.songs.findIndex((s) => s._id === payload.id)
             station.songs.splice(songIdx, 1)
-        }
+        },
+        addStation(state, { stationToAdd }) {
+            console.log('stationToAdd:', stationToAdd)
+            state.stations.push(stationToAdd)
+        },
     },
     actions: {
         async loadStations(context) {
@@ -32,11 +37,17 @@ export const stationStore = {
                 commit({ type: 'removeSong', payload })
             } catch {}
         },
-        async addToStation({ commit }, payload) {
+        async addToStation({ commit }, { payload }) {
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
-                commit({ type: 'addToStation', payload: { stationId: payload.payload.stationId, song: songToAdd } })
+                commit({ type: 'addToStation', payload: { stationId: payload.stationId, song: songToAdd } })
             } catch {}
         },
+        async addStation({ commit }, { station }) {
+            try {
+                const stationToAdd = await stationService.save(station)
+                commit({ type: 'addStation', stationToAdd })
+            } catch {}
+        }
     }
 }

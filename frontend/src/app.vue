@@ -11,10 +11,8 @@
           <router-link to="/user">user</router-link>
         </div>
       </div>
-    </section>
-    <section>
-      <router-view />
-    </section>
+    </section >
+    <router-view class="container"/>
   </div>
 </template>
 
