@@ -1,8 +1,16 @@
-// setup
-@import './setup/_helpers.scss';
-// basic
-@import './basic/_base.scss';
-// cmps
-// views
-@import './views/_app.scss';
-@import './views/_explore.scss';
+// SETUP // 
+@import './setup/helpers';
+@import './setup/typograghy';
+@import './setup/mixins';
+@import './setup/functions';
+// BASICS // 
+@import './basic/base';
+@import './basic/helpers';
+@import './basic/layout';
+// COMPONENTS //
+
+
+
+// VUEWS
+@import './views/app';
+@import './views/explore';

@@ -3,10 +3,9 @@
     <section class="container">
       <div class="nav sub-container">
         <div>
-          <h1>Jukify</h1>
+          <router-link class="main-logo" to="/">Jukify</router-link>
         </div>
         <div>
-          <router-link to="/">Home</router-link> |
           <router-link to="/explore">Explore</router-link> |
           <router-link to="/details">Create station</router-link> |
           <router-link to="/user">user</router-link>
@@ -22,7 +21,7 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch({type: 'loadStations'})
-  }
-}
+    this.$store.dispatch({ type: "loadStations" });
+  },
+};
 </script>

@@ -83,7 +83,7 @@ function addSongToStation({ payload }) {
     return Promise.resolve(songToAdd)
 }
 
-// _createstations()
+_createstations()
 
 function _createstations() {
     var stations = JSON.parse(localStorage.getItem(KEY))
