@@ -87,16 +87,16 @@ export default {
       isNew: false,
       search: "",
       videoId: "",
+      // TODO: player object
       isPlaying: false,
       isMuted: false,
       volumeRange: 50,
     };
   },
   methods: {
+    // TODO: ToggleVideo
     playVideo(videoId) {
-      console.log(this.currStation);
       this.videoId = videoId;
-      console.log(this.player);
       this.player.playVideo();
     },
     pauseSong() {
@@ -108,8 +108,8 @@ export default {
         this.player.playVideo();
       }
     },
+    // Till here
     setSongVolume(val) {
-      console.log("val", val);
       this.player.setVolume(val);
     },
     muteSong() {
@@ -122,6 +122,7 @@ export default {
       }
     },
     nextSong() {
+      // TODO: next video in currStation.songs (idx)
       this.player.nextVideo();
     },
     async removeSong(id) {
