@@ -2,12 +2,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
     .main-logo {
-        color: #2c3e50;
-        text-decoration: none;
+        color: #1db954;
+        font-size: 25px;
         &.router-link-exact-active {
-            color: #2c3e50;
+            color: #1db954;
+        }
+        &:hover {
+            filter: brightness(85%);
         }
     }
     a {
@@ -15,7 +18,10 @@
         color: #2c3e50;
         font-size: 20px;
         &.router-link-exact-active {
-            color: #42b983;
+            color: #1db954;
+        }
+        &:hover {
+            color: #1db954;
         }
     }
     h1 {

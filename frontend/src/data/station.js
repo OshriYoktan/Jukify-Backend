@@ -6,7 +6,7 @@ export const gStations = [{
         genres: ['band', 'blues'],
         songs: [{
                 _id: 's101',
-                name: 'Hey Jude',
+                name: 'The Beatles - Hey Jude',
                 artist: 'The Beatles',
                 desc: 'Hey Jude topped the charts in Britain for two weeks and for 9 weeks in America, where it became The Beatles longest-running No.1 in the US singles chart as ...',
                 img: 'https://i.ytimg.com/vi/A_MjCqQoLLA/default.jpg',
@@ -15,7 +15,7 @@ export const gStations = [{
             },
             {
                 _id: 's102',
-                name: 'Help!',
+                name: 'The Beatles - Help!',
                 artist: 'The Beatles',
                 desc: 'Music video by The Beatles performing Help!. © 2015 Calderstone Productions Limited (a division of Universal Music Group) / Subafilms Ltd ...',
                 img: 'https://i.ytimg.com/vi/2Q_ZzBGPdqE/default.jpg',
@@ -32,7 +32,7 @@ export const gStations = [{
         genres: ['mizrahit', 'yam tichoni', 'israeli'],
         songs: [{
                 _id: 's103',
-                name: 'Haverot Shelah',
+                name: 'Omer Adam - Your friends - Haverot Shelah',
                 artist: 'Omer Adam',
                 desc: 'Song about your haverot',
                 img: 'https://i.ytimg.com/vi/XE3hTnD5Kwo/default.jpg',
@@ -41,7 +41,7 @@ export const gStations = [{
             },
             {
                 _id: 's104',
-                name: 'Kuku Riku',
+                name: 'Omer Adam &amp; Eden Ben Zaken - Kuku Riku',
                 artist: 'Omer Adam & Eden Ben Zaken',
                 desc: 'Music and lyrics: Eden Ben Zaken, Omer Adam, Moshe Ben Avraham, Elad Trabelsi, Ofek Yekutiel, Maor Titon Musical arrangement and production: Moshe Ben ...',
                 img: 'https://i.ytimg.com/vi/d60H5D9GefE/default.jpg',
@@ -58,7 +58,7 @@ export const gStations = [{
         genres: ['hip-pop', 'rap'],
         songs: [{
                 _id: 's105',
-                name: 'Without Me',
+                name: 'Eminem - Without Me',
                 artist: 'Eminem',
                 desc: 'Eminem performing Without Me. (C) 2002 Aftermath Records #Eminem #WithoutMe #Remastered.',
                 img: 'https://i.ytimg.com/vi/YVkUvmDQ3HY/default.jpg',
@@ -67,7 +67,7 @@ export const gStations = [{
             },
             {
                 _id: 's106',
-                name: 'Rap God',
+                name: 'Eminem - Rap God',
                 artist: 'Eminem',
                 desc: 'Credits below Video Director: Rich Lee Video Producer: Justin Diener Video Producer: Kathy Angstadt.',
                 img: 'https://i.ytimg.com/vi/XbGs_qK2PQA/default.jpg',

@@ -1,0 +1,21 @@
+.explore-sub-container {
+    .explore-header {
+        margin-top: 1em;
+        h1 {
+            font-size: 30px;
+        }
+    }
+}
+
+.genre-container {
+    .station-card-container {
+        >* {
+            margin: 5px;
+        }
+        ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

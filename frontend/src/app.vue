@@ -3,16 +3,18 @@
     <section class="container">
       <div class="nav sub-container">
         <div>
-          <router-link class="main-logo" to="/">Jukify</router-link>
+          <router-link class="main-logo link" to="/">Jukify</router-link>
         </div>
         <div>
-          <router-link to="/explore">Explore</router-link> |
-          <router-link to="/details">Create station</router-link> |
-          <router-link to="/user">user</router-link>
+          <router-link class="link" to="/explore">Explore</router-link> |
+          <router-link class="link" to="/create">Create station</router-link> |
+          <router-link class="link" to="/user">user</router-link>
         </div>
       </div>
-    </section >
-    <router-view class="view-router container"/>
+    </section>
+    <section class="view-router">
+      <router-view />
+    </section>
   </div>
 </template>
 
