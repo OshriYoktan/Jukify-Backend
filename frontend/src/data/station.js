@@ -1,6 +1,7 @@
 export const gStations = [{
         _id: 'A8f56',
         name: 'The Beatles',
+        desc: 'The Beatles were an English rock band, they are often publicised as leaders of the era\'s youth and sociocultural movements.',
         imgUrl: 'https://upload.wikimedia.org/wikipedia/he/8/86/WiththeBeatles.jpg',
         likes: 55369,
         genres: ['band', 'blues'],
@@ -27,6 +28,7 @@ export const gStations = [{
     {
         _id: '5pR74',
         name: 'Omer Adam',
+        desc: 'an American-Israeli singer whose music fuses elements of eastern "Mizrahi" and Western pop instrumentation.',
         imgUrl: 'https://yt3.ggpht.com/ytc/AAUvwnhL1dgkSNJKfaxkujXDx99GugpWSCtK6WvQ5rjcYQ=s176-c-k-c0x00ffffff-no-rj',
         likes: 11222,
         genres: ['mizrahit', 'yam tichoni', 'israeli'],
