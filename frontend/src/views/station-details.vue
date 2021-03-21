@@ -62,13 +62,13 @@
         </ul>
       </div>
     </div>
-    <playerControll :station="currStation" v-if="videoId" :videoId="videoId" />
+    <playerControl :station="currStation" v-if="videoId" :videoId="videoId" />
   </section>
 </template>
 
 <script>
 import { stationService } from "../services/station.service";
-import playerControll from "../cmps/playerControll.vue";
+import playerControl from "../cmps/playerControl.vue";
 export default {
   name: "station-details",
   data() {
@@ -83,22 +83,26 @@ export default {
   },
   methods: {
     playVideo(id) {
+      this.$store.dispatch({ type: "setStation", currStation:this.currStation })
       this.videoId = id;
     },
     likes(likes) {
       return likes.toLocaleString();
     },
-    // searchSongs(){
-    //   console.log('in');
-    // },
     async searchSongs() {
       try {
-        console.log("im in");
         const songs = await stationService.askSearch(this.search);
         this.foundSongs = songs;
-      } catch {
-        console.log("im catch");
-      }
+      } catch {}
+    },
+    async removeSong(id) {
+      try {
+        const payload = {
+          id,
+          stationId: this.station._id,
+        };
+        await this.$store.dispatch({ type: "removeSong", payload });
+      } catch {}
     },
     async addToStation(idx) {
       try {
@@ -124,7 +128,7 @@ export default {
     });
   },
   components: {
-    playerControll,
+    playerControl,
   },
 };
 </script>
