@@ -27,5 +27,6 @@ export default {
   components: {
     stationList
   },
+
 };
 </script>
