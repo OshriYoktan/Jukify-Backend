@@ -75,12 +75,22 @@
     .songs-container {
         justify-content: space-between;
         overflow: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         >* {
             width: 48%;
             height: 100%;
         }
         .station-songs-container {
             overflow: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
             grid-column: 1;
             grid-row: 2;
             justify-content: flex-start;
@@ -114,13 +124,14 @@
                     button {
                         display: none;
                         margin: 0;
-                        transition: 0;
+                        background-color: inherit;
+                        border: none;
+                        font-size: 20px;
                     }
                     &:hover {
                         border: 1px solid rgba(255, 255, 255, 1);
                         filter: brightness(85%);
                         button {
-                            transition: 0;
                             display: block;
                         }
                     }
@@ -129,6 +140,11 @@
         }
         .songs-result-container {
             overflow: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
             button {
                 padding: 10px;
                 margin: 0;

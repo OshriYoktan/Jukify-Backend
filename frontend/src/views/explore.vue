@@ -1,8 +1,8 @@
 <template>
     <div class="explore-sub-container column-layout-container">
-      <div class="explore-header column-layout-container">
         <h1>Explore world music</h1>
-        <h3>Start listening to the best stations</h3>
+        <filter-songs></filter-songs>
+      <div class="explore-header column-layout-container">
       </div>
       <div class="cards-container column-layout-container">
         <ul class="genre-container column-layout-container" v-for="(genre, idx) in genres" :key="idx">
@@ -17,6 +17,7 @@
  
 <script>
 import stationList from '../cmps/stationList'
+import filterSongs from '../cmps/filter-songs'
 export default {
   name: "explore",
   computed: {
@@ -25,7 +26,8 @@ export default {
     },
   },
   components: {
-    stationList
+    stationList,
+    filterSongs
   },
 
 };

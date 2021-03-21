@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     font-family: cursive;
     width: 100%;
     .main-logo {
@@ -34,5 +33,12 @@
 
 .view-router {
     overflow: auto;
+    background-color: $clr4;
+    box-shadow: inset 0px 0px 20px 5px black;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     border: 1px solid black;
 }

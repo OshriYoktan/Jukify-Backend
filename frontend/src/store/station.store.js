@@ -4,11 +4,15 @@ export const stationStore = {
     strict: true,
     state: {
         stations: [],
-        genres: ["Hip-Pop", "Band", "Israeli"],
+        genres: ["Hip-Hop", "Band", "Israeli"],
+        filterBy: ''
     },
     mutations: {
         setStations(state, { stations }) {
-            state.stations = stations
+            const filteredStations = stations.filter(station => {
+                return station.name.toLowerCase().includes(state.filterBy)
+            })
+            state.stations = filteredStations
         },
         addToStation(state, { payload }) {
             const station = state.stations.find((s) => s._id === payload.stationId)
@@ -21,6 +25,9 @@ export const stationStore = {
         },
         addStation(state, { stationToAdd }) {
             state.stations.push(stationToAdd)
+        },
+        setFilter(state, { payload }) {
+            state.filterBy = payload;
         },
     },
     actions: {
