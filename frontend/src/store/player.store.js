@@ -32,21 +32,24 @@ export const playerStore = {
         setStation(state, payload) {
             state.currStation = payload.currStation;
         },
-        playVideo(state, { payload }) {
-            state.songId = payload.payload.videoId
-            const currSong = payload.payload.station.songs.find((song) => {
+        setVideoId(state, payload) {
+            state.songId = payload.videoId;
+        },
+        playVideo(state) {
+            state.songId = state.songId
+            const currSong =state.currStation.songs.find((song) => {
                 return song.videoId === state.songId;
             });
             state.songPlayer.songName = currSong.name;
         },
         changeSong(state, { payload }) {
-            const idx = payload.payload.station.songs.findIndex((song) => {
+            const idx = state.currStation.songs.findIndex((song) => {
                 return song.videoId === state.songId;
             });
             var songIdx = idx + payload.payload.dif;
-            if (songIdx === payload.payload.station.songs.length) songIdx = 0;
-            if (songIdx === -1) songIdx = payload.payload.station.songs.length - 1;
-            const nextSong = payload.payload.station.songs[songIdx];
+            if (songIdx === state.currStation.songs.length) songIdx = 0;
+            if (songIdx === -1) songIdx = state.currStation.songs.length - 1;
+            const nextSong = state.currStation.songs[songIdx];
             state.songId = nextSong.videoId;
             state.songPlayer.songName = nextSong.name;
             console.log('state.songPlayer.songName:', state.songPlayer.songName)
@@ -73,9 +76,9 @@ export const playerStore = {
                 return state.state.songPlayer.volumeRange
             } catch { }
         },
-        playVideo(state, payload) {
+        playVideo(state) {
             try {
-                state.commit({ type: 'playVideo', payload })
+                state.commit({ type: 'playVideo' })
                 return state.songPlayer.songName
             } catch { }
         },
@@ -93,7 +96,11 @@ export const playerStore = {
         setStation(state, { currStation }) {
             try {
                 state.commit({ type: 'setStation', currStation })
-                // return state.state.songPlayer.isMuted
+            } catch { }
+        },
+        setVideoId(state, { videoId }) {
+            try {
+                state.commit({ type: 'setVideoId', videoId })
             } catch { }
         },
     }
