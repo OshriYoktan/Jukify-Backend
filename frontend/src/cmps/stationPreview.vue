@@ -33,6 +33,8 @@ export default {
   created() {
     this.likesToShow = this.station.likes.toLocaleString();
     this.checkGenre()
+    // console.log('this.isSameGenre:', this.isSameGenre)
+    this.$emit('isGender',this.isSameGenre)
   },
 };
 </script>
