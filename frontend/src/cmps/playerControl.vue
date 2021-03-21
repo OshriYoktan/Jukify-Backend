@@ -5,10 +5,10 @@
     </div>
     <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
     <div class="playing-btns">
-      <button @click="changeSong(-1, station)">Previous</button>
+      <button @click="changeSong(-1)">Previous</button>
       <button @click="togglePlay" v-if="!songPlayer.isPlaying">Stop</button>
       <button @click="togglePlay" v-else>Start</button>
-      <button @click="changeSong(1, station)">Next</button>
+      <button @click="changeSong(1)">Next</button>
     </div>
     <div class="music-btns">
       <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
@@ -28,10 +28,9 @@
 
 <script>
 export default {
-  props: ["videoId", "station"],
   data() {
     return {
-      songId: this.videoId,
+      songId: null,
       songPlayer: {
         isPlaying: false,
         isMuted: false,
@@ -49,21 +48,16 @@ export default {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
       return this.player.setVolume(volume);
     },
-    async playVideo(videoId, station) {
-      const payload = {
-        videoId,
-        station,
-      };
+    async playVideo() {
       await this.$store.dispatch({
         type: "playVideo",
-        payload,
       });
       this.$nextTick(() => {
         this.player.playVideo();
       });
     },
-    async changeSong(dif, station) {
-      const payload = { dif, station };
+    async changeSong(dif) {
+      const payload = { dif };
       await this.$store.dispatch({ type: "changeSong", payload });
       this.songId = this.$store.getters.getSongId;
       this.$nextTick(() => {
@@ -88,7 +82,7 @@ export default {
     this.$nextTick(() => {
       this.player.playVideo();
     });
-    this.playVideo(this.songId, this.station);
+    this.playVideo(this.songId);
     this.songPlayer.songName = this.$store.getters.getSongName;
   },
 };
