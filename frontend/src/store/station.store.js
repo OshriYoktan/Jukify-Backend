@@ -5,10 +5,14 @@ export const stationStore = {
     state: {
         stations: [],
         genres: ["Hip-Hop", "Band", "Israeli"],
+        filterBy: ''
     },
     mutations: {
         setStations(state, { stations }) {
-            state.stations = stations
+            const filteredStations = stations.filter(station => {
+                return station.name.toLowerCase().includes(state.filterBy)
+            })
+            state.stations = filteredStations
         },
         addToStation(state, { payload }) {
             const station = state.stations.find((s) => s._id === payload.stationId)
@@ -26,32 +30,35 @@ export const stationStore = {
             const station = state.stations.find((s) => s._id === addLike.station)
             station.likes += addLike.num
         },
+        setFilter(state, { payload }) {
+            state.filterBy = payload;
+        },
     },
     actions: {
         async loadStations(context) {
             try {
                 const stations = await stationService.query()
                 context.commit({ type: 'setStations', stations })
-            } catch { }
+            } catch {}
         },
         async removeSong({ commit }, { payload }) {
             try {
                 await stationService.removeSong(payload)
                 commit({ type: 'removeSong', payload })
-            } catch { }
+            } catch {}
         },
         async addToStation({ commit }, { payload }) {
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
                 commit({ type: 'addToStation', payload: { stationId: payload.stationId, song: songToAdd } })
-            } catch { }
+            } catch {}
         },
         async addStation({ commit }, { station }) {
             try {
                 const stationToAdd = await stationService.save(station)
                 commit({ type: 'addStation', stationToAdd })
                 return station._id;
-            } catch { }
+            } catch {}
         },
         async removeStation({ commit }, { payload }) {
             console.log('payload:', payload)

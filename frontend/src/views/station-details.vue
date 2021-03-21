@@ -25,7 +25,9 @@
         <button @click="addStationLike">Like</button>
       </div>
       <div class="search-songs-container row-layout-container">
-        <button @click="isSearch = !isSearch">Find songs</button>
+        <button v-if="!isSearch" @click="isSearch = !isSearch">Find songs</button>
+        <button v-else @click="isSearch = !isSearch">Close</button>
+        
         <div class="search-songs row-layout-container">
           <form @submit.prevent="searchSongs" v-if="isSearch">
             <input

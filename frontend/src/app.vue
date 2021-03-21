@@ -13,15 +13,24 @@
       </div>
     </section>
     <section class="view-router">
-      <router-view />
+      <router-view  />
     </section>
+    <!-- <div class="footer-player">
+      <player-controll>
+        <youtube :video-id="songId" ref="youtube"></youtube>
+      </player-controll>
+    </div> -->
   </div>
 </template>
 
 <script>
+// import playerControll from './cmps/playerControll'
 export default {
   created() {
     this.$store.dispatch({ type: "loadStations" });
+  },
+  components:{
+    // playerControll
   },
 };
 </script>
