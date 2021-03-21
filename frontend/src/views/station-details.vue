@@ -5,21 +5,21 @@
         <img :src="currStation.imgUrl" />
       </div>
 
-      <div class="station-desc column-layout-container">
+      <div class="station-desc row-layout-container">
         <div>
-          <h1>{{ currStation.name }}</h1>
-          <p>{{ currStation.desc }}</p>
-        </div>
-        <div>
-          <h4>
+          <div>
+            <h1>{{ currStation.name }}</h1>
+            <p>{{ currStation.desc }}</p>
+          </div>
+          <div>
             <span style="color: red">♥</span> {{ likes(currStation.likes) }}
-          </h4>
+          </div>
         </div>
+        <span class="station-menu" @click="removeStation">⋮</span>
       </div>
-
       <div class="station-play-like row-layout-container">
         <button>Play</button>
-        <button>Like</button>
+        <button @click="addStationLike">Like</button>
       </div>
       <div class="search-songs-container row-layout-container">
         <button @click="isSearch = !isSearch">Find songs</button>
@@ -47,7 +47,7 @@
             :key="song._id"
           >
             {{ song.name }}
-            <button @click="removeSong(song._id)" style="color:red">🗑</button>
+            <button @click="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>
       </div>
@@ -81,6 +81,7 @@ export default {
       search: "",
       videoId: null,
       genreCount: 1,
+      isLiked: false,
     };
   },
   methods: {
@@ -92,12 +93,9 @@ export default {
     },
     async searchSongs() {
       try {
-        console.log("im in");
         const songs = await stationService.askSearch(this.search);
         this.foundSongs = songs;
-      } catch {
-        console.log("im catch");
-      }
+      } catch {}
     },
     async addToStation(idx) {
       try {
@@ -108,6 +106,23 @@ export default {
         };
         await this.$store.dispatch({ type: "addToStation", payload });
       } catch {}
+    },
+    async removeStation() {
+      try {
+        // await this.$store.dispatch({
+        //   type: "removeStation",
+        //   payload: this.currStation._id,
+        // });
+      } catch {}
+    },
+    addStationLike() {
+      this.isLiked = !this.isLiked;
+      const num = this.isLiked ? 1 : -1;
+      const addLike = {
+        station: this.currStation._id,
+        num,
+      };
+      this.$store.dispatch({ type: "addStationLike", addLike });
     },
   },
   computed: {
@@ -127,20 +142,3 @@ export default {
   },
 };
 </script>
-
-<style >
-iframe {
-  width: 100%;
-  max-width: 0px;
-  height: 0;
-}
-
-.song-player {
-  display: flex;
-  justify-content: space-between;
-  background-color: grey;
-  width: 100%;
-  height: 75px;
-  margin-top: 238px;
-}
-</style>

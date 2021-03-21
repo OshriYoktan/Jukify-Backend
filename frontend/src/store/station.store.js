@@ -22,6 +22,10 @@ export const stationStore = {
         addStation(state, { stationToAdd }) {
             state.stations.push(stationToAdd)
         },
+        addStationLike(state, { addLike }) {
+            const station = state.stations.find((s) => s._id === addLike.station)
+            station.likes += addLike.num
+        },
     },
     actions: {
         async loadStations(context) {
@@ -47,6 +51,20 @@ export const stationStore = {
                 const stationToAdd = await stationService.save(station)
                 commit({ type: 'addStation', stationToAdd })
                 return station._id;
+            } catch {}
+        },
+        async removeStation({ commit }, { payload }) {
+            console.log('payload:', payload)
+            try {
+                // const stationToRemove = await stationService.save(payload._id)
+                // commit({ type: 'addStation', stationToAdd })
+                // return station._id;
+            } catch {}
+        },
+        async addStationLike({ commit }, { addLike }) {
+            try {
+                const likeAdded = await stationService.addStationLike(addLike)
+                commit({ type: 'addStationLike', addLike })
             } catch {}
         },
     }

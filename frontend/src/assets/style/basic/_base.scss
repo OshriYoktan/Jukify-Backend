@@ -58,3 +58,18 @@ input {
         border: 1px solid #C0C4CC;
     }
 }
+
+iframe {
+    width: 100%;
+    max-width: 0px;
+    height: 0;
+}
+
+.song-player {
+    display: flex;
+    justify-content: space-between;
+    background-color: grey;
+    width: 100%;
+    height: 75px;
+    margin-top: 238px;
+}
