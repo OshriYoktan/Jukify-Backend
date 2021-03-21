@@ -1,9 +1,8 @@
 <template>
-  <div v-if="genre" class="station-card-container row-layout-container">
+  <div class="station-card-container row-layout-container">
     <li v-for="station in stationsFiltered" :key="station._id">
       <station-preview :station="station" />
     </li>
-    <!-- <ul v-else class="display-none"></ul> -->
   </div>
 </template>
  
@@ -21,20 +20,17 @@ export default {
     };
   },
   methods: {
-    setStations() {
-      this.stations = this.$store.state.stationStore.stations;
-      this.checkGenre()
-    },
     checkGenre() {
       const stationsAfterFilter = this.stations.filter((s) => {
         return s.genres.includes(this.genre.toLowerCase())
       });
       this.stationsFiltered = stationsAfterFilter;
-      console.log("this.stationsFiltered:", this.stationsFiltered);
     },
   },
-  created() {
-    this.setStations();
+  async created() {
+    await this.$store.dispatch({ type: "loadStations" });
+    this.stations = this.$store.state.stationStore.stations;
+    this.checkGenre()
   },
   components: {
     stationPreview,
