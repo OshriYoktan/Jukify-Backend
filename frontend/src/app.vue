@@ -13,7 +13,7 @@
       </div>
     </section>
     <section class="view-router">
-      <router-view />
+      <router-view  />
     </section>
     <section>
       <playerControl v-if="isFirstSong" />
