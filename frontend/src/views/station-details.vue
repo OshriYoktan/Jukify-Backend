@@ -52,7 +52,11 @@
       <div v-if="foundSongs && isSearch" class="songs-result-container">
         <ul>
           <h3>Songs:</h3>
-          <li @click="addToStation(idx)" v-for="(song, idx) in foundSongs" :key="idx">
+          <li
+            @click="addToStation(idx)"
+            v-for="(song, idx) in foundSongs"
+            :key="idx"
+          >
             {{ song.snippet.title }}
           </li>
         </ul>
@@ -84,31 +88,29 @@ export default {
     likes(likes) {
       return likes.toLocaleString();
     },
+    // searchSongs(){
+    //   console.log('in');
+    // },
+    async searchSongs() {
+      try {
+        console.log("im in");
+        const songs = await stationService.askSearch(this.search);
+        this.foundSongs = songs;
+      } catch {
+        console.log("im catch");
+      }
+    },
+    async addToStation(idx) {
+      try {
+        const selectedSong = this.foundSongs[idx];
+        const payload = {
+          selectedSong,
+          stationId: this.currStation._id,
+        };
+        await this.$store.dispatch({ type: "addToStation", payload });
+      } catch {}
+    },
   },
-  // searchSongs(){
-  //   console.log('in');
-  // },
-  async searchSongs() {
-    try {
-      console.log('im in');
-      const songs = await stationService.askSearch(this.search);
-      this.foundSongs = songs;
-    } catch {
-      console.log('im catch');
-
-    }
-  },
-  async addToStation(idx) {
-    try {
-      const selectedSong = this.foundSongs[idx];
-      const payload = {
-        selectedSong,
-        stationId: this.currStation._id,
-      };
-      await this.$store.dispatch({ type: "addToStation", payload });
-    } catch {}
-  },
-
   computed: {
     genres() {
       return this.$store.state.stationStore.genres;
