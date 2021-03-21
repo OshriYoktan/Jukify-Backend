@@ -35,26 +35,26 @@ export const stationStore = {
             try {
                 const stations = await stationService.query()
                 context.commit({ type: 'setStations', stations })
-            } catch {}
+            } catch { }
         },
         async removeSong({ commit }, { payload }) {
             try {
                 await stationService.removeSong(payload)
                 commit({ type: 'removeSong', payload })
-            } catch {}
+            } catch { }
         },
         async addToStation({ commit }, { payload }) {
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
                 commit({ type: 'addToStation', payload: { stationId: payload.stationId, song: songToAdd } })
-            } catch {}
+            } catch { }
         },
         async addStation({ commit }, { station }) {
             try {
                 const stationToAdd = await stationService.save(station)
                 commit({ type: 'addStation', stationToAdd })
                 return station._id;
-            } catch {}
+            } catch { }
         },
     }
 }
