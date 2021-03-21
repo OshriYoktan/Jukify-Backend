@@ -17,7 +17,7 @@
               class="img-upload-input"
             />Upload Image</label
           >
-          <button @click="isUrl = !isUrl">Use URL</button>
+          <button v-if="!isUrl" @click="isUrl = !isUrl">Use URL</button>
           <div v-if="isUrl">
             <input type="text" placeholder="Place URL here" v-model="imgSrc" />
             <button @click="isUrl = !isUrl">Save</button>
@@ -70,6 +70,7 @@ export default {
     },
     async addStation() {
       try {
+        this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;
         console.log("station:", station);

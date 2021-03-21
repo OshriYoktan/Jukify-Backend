@@ -23,10 +23,12 @@
             height: 40px;
         }
         textarea {
+            border-radius: 10px;
+            font-family: cursive;
             width: 217px;
+            padding: 1em 1em;
             min-height: 50px;
             resize: none;
-            font-family: cursive;
         }
         .el-select {
             margin: 1em;
@@ -48,7 +50,7 @@
         border: 2px solid rgba(128, 128, 128, 0.5);
         border-radius: 20px;
         &:hover {
-            box-shadow: 0px 0px 5px 0px black;
+            box-shadow: 0px 0px 10px 5px white;
         }
     }
 }

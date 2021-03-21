@@ -1,6 +1,10 @@
 <template>
   <li class="station-song row-layout-container">
-    <div class="station-card-container" v-for="station in stationsFiltered" :key="station._id">
+    <div
+      class="station-card-container"
+      v-for="station in stationsFiltered"
+      :key="station._id"
+    >
       <station-preview :station="station" />
     </div>
   </li>
@@ -22,19 +26,15 @@ export default {
   methods: {
     checkGenre() {
       const stationsAfterFilter = this.stations.filter((s) => {
-        return s.genres.includes(this.genre.toLowerCase())
+        return s.genres.includes(this.genre.toLowerCase());
       });
       this.stationsFiltered = stationsAfterFilter;
-    },
-    classes(genre = false) {
-      if (!genre) console.log('ss');
-      if (!genre) return 'display-none';
     },
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
     this.stations = this.$store.state.stationStore.stations;
-    this.checkGenre()
+    this.checkGenre();
   },
   components: {
     stationPreview,

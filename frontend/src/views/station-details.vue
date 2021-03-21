@@ -47,7 +47,7 @@
             :key="song._id"
           >
             {{ song.name }}
-            <button @click="removeSong(song._id)">✖</button>
+            <button @click="removeSong(song._id)" style="color:red">🗑</button>
           </li>
         </ul>
       </div>
@@ -90,9 +90,6 @@ export default {
     likes(likes) {
       return likes.toLocaleString();
     },
-    // searchSongs(){
-    //   console.log('in');
-    // },
     async searchSongs() {
       try {
         console.log("im in");

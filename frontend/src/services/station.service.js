@@ -89,7 +89,7 @@ function getEmptystation() {
         desc: '',
         likes: 0,
         songs: [],
-        genres: 'hip-hop'
+        genres: []
     }
 }
 

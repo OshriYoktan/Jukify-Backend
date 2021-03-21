@@ -39,11 +39,15 @@ button {
     transition: .3s;
     padding: 1em;
     margin: 1em;
+    color: $clr5;
+    background-color: white;
     &:focus {
         outline: none;
     }
     &:hover {
-        box-shadow: 0px 0px 10px 1px $clr1;
+        color: white;
+        background-color: $clr5;
+        border-color: $clr1;
     }
 }
 
