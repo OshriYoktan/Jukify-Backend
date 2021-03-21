@@ -25,6 +25,7 @@
           v-model="newStation.name"
         />
         <genre-select @genre-selected="setGenre" />
+        <textarea placeholder="Station description" rows="3" v-model="newStation.desc" />
         <button>Save</button>
       </form>
     </div>

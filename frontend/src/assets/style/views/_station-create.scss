@@ -19,6 +19,12 @@
         width: 217px;
         height: 40px;
     }
+    textarea {
+        width: 217px;
+        min-height: 50px;
+        resize: none;
+        font-family: cursive;
+    }
     .el-select {
         margin: 1em;
     }

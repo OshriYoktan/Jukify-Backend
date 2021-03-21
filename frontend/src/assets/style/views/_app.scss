@@ -3,8 +3,9 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    font-family: cursive;
     .main-logo {
-        color: #1db954;
+        color: $clr1;
         font-size: 25px;
         &.router-link-exact-active {
             color: #1db954;
@@ -14,8 +15,9 @@
         }
     }
     a {
+        transition: .3s;
         font-weight: bold;
-        color: #2c3e50;
+        color: $clr2;
         font-size: 20px;
         &.router-link-exact-active {
             color: #1db954;

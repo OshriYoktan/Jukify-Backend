@@ -1,6 +1,37 @@
 <template>
-  <section class="details-container column-layout-container" v-if="currStation">
-    <h1>{{ currStation.name }} station</h1>
+  <section class="details-container" v-if="currStation">
+    <div class="station-details column-layout-container">
+      <div class="station-img column-layout-container">
+        <img :src="currStation.imgUrl" />
+      </div>
+
+      <div class="station-desc column-layout-container">
+        <h1>{{ currStation.name }}</h1>
+        <h1>{{ currStation.desc }}</h1>
+        <h4>♥ {{ likes(currStation.likes) }}</h4>
+      </div>
+
+      <div class="station-play-like row-layout-container">
+        <button>Play</button>
+        <button>Like</button>
+      </div>
+      <div class="search-songs-container row-layout-container">
+        <button @click="isSearch = !isSearch">Find songs</button>
+        <div class="search-songs row-layout-container">
+          <form @submit.prevent="searchSongs" v-if="isSearch">
+            <input
+              type="text"
+              placeholder="Search song online"
+              v-model="search"
+            />
+            <button>Find</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="chat-room column-layout-container">
+      <h1>Chat Room</h1>
+    </div>
     <div v-if="currStation" class="station-songs-container">
       <ul>
         <li
@@ -12,13 +43,6 @@
           <button @click="removeSong(song._id)">✖</button>
         </li>
       </ul>
-    </div>
-    <div class="search-songs-container column-layout-container">
-      <button @click="isSearch = !isSearch">Find songs</button>
-      <form @submit.prevent="searchSongs" v-if="isSearch">
-        <input type="text" placeholder="Search song online" v-model="search" />
-        <button>Find</button>
-      </form>
     </div>
     <div v-if="foundSongs && isSearch" class="songs-result-container">
       <ul>
@@ -154,6 +178,9 @@ export default {
         };
         await this.$store.dispatch({ type: "addToStation", payload });
       } catch {}
+    },
+    likes(likes) {
+      return likes.toLocaleString();
     },
   },
   computed: {

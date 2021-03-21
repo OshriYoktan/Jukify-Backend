@@ -53,6 +53,7 @@ export const gStations = [{
     {
         _id: 'eH8P2',
         name: 'Eminem',
+        desc: 'American rapper, songwriter, and record producer. Critically acclaimed as one of the greatest rappers of all time.',
         imgUrl: 'https://images1.calcalist.co.il/PicServer3/2019/10/27/942787/15_l.jpg',
         likes: 645422,
         genres: ['hip-pop', 'rap'],
