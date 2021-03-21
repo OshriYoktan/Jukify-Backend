@@ -9,7 +9,7 @@
           :key="song._id"
         >
           {{ song.name }}
-          <button @click="removeSong(song._id)">x</button>
+          <button @click="removeSong(song._id)">✖</button>
         </li>
       </ul>
     </div>
@@ -46,7 +46,7 @@
         <input
           type="range"
           min="0"
-          max="50"
+          max="100"
           @change="setSongVolume(songPlayer.volumeRange)"
           v-model="songPlayer.volumeRange"
           class="set-volume"

@@ -5,12 +5,12 @@
         <h3>Start listening to the best stations</h3>
       </div>
       <div class="cards-container column-layout-container">
-        <div class="genre-container column-layout-container" v-for="(genre, idx) in genres" :key="idx">
+        <ul class="genre-container column-layout-container" v-for="(genre, idx) in genres" :key="idx">
           <h1>{{ genre }}</h1>
           <div class="station-card-container row-layout-container">
           <station-list :genre="genre" />
           </div>
-        </div>
+        </ul>
       </div>
     </div>
 </template>
