@@ -1,9 +1,9 @@
 <template>
-  <div class="station-card-container row-layout-container">
-    <li v-for="station in stationsFiltered" :key="station._id">
+  <li class="station-song row-layout-container">
+    <div v-for="station in stationsFiltered" :key="station._id">
       <station-preview :station="station" />
-    </li>
-  </div>
+    </div>
+  </li>
 </template>
  
 <script>

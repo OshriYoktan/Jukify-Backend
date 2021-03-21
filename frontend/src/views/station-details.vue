@@ -6,9 +6,13 @@
       </div>
 
       <div class="station-desc column-layout-container">
-        <h1>{{ currStation.name }}</h1>
-        <h1>{{ currStation.desc }}</h1>
-        <h4>♥ {{ likes(currStation.likes) }}</h4>
+        <div>
+          <h1>{{ currStation.name }}</h1>
+          <p>{{ currStation.desc }}</p>
+        </div>
+        <div>
+          <h4>♥ {{ likes(currStation.likes) }}</h4>
+        </div>
       </div>
 
       <div class="station-play-like row-layout-container">
@@ -32,30 +36,31 @@
     <div class="chat-room column-layout-container">
       <h1>Chat Room</h1>
     </div>
-    <div v-if="currStation" class="station-songs-container">
-      <ul>
-        <li
-          v-for="song in currStation.songs"
-          @click="playVideo(song.videoId)"
-          :key="song._id"
-        >
-          {{ song.name }}
-          <button @click="removeSong(song._id)">✖</button>
-        </li>
-      </ul>
-    </div>
-    <div v-if="foundSongs && isSearch" class="songs-result-container">
-      <ul>
-        <li v-for="(song, idx) in foundSongs" :key="idx">
-          {{ song.snippet.title }}
-          <button @click="addToStation(idx)">➕</button>
-        </li>
-      </ul>
+    <div class="songs-container row-layout-container">
+      <div v-if="currStation" class="station-songs-container">
+        <ul>
+          <li
+            v-for="song in currStation.songs"
+            @click="playVideo(song.videoId)"
+            :key="song._id"
+          >
+            {{ song.name }}
+            <button @click="removeSong(song._id)">✖</button>
+          </li>
+        </ul>
+      </div>
+      <div v-if="foundSongs && isSearch" class="songs-result-container">
+        <ul>
+          <h3>Songs:</h3>
+          <li @click="addToStation(idx)" v-for="(song, idx) in foundSongs" :key="idx">
+            {{ song.snippet.title }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div v-if="videoId" class="song-video">
       <youtube :video-id="videoId" ref="youtube"></youtube>
     </div>
-
     <div v-if="videoId" class="song-player">
       <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
       <div class="playing-btns">
