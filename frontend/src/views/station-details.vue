@@ -15,7 +15,10 @@
             <span style="color: red">♥</span> {{ likes(currStation.likes) }}
           </div>
         </div>
-        <span class="station-menu" @click="removeStation">⋮</span>
+        <div class="menu-container">
+          <span class="station-menu" @click="removeStation">⋮</span>
+          <span class="station-menu-delete" @click="removeStation">🗑</span>
+        </div>
       </div>
       <div class="station-play-like row-layout-container">
         <button>Play</button>
@@ -82,6 +85,7 @@ export default {
       videoId: null,
       genreCount: 1,
       isLiked: false,
+      isMenu: false,
     };
   },
   methods: {
