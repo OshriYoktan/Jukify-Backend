@@ -1,10 +1,9 @@
 <template>
-  <div v-if="genre" class="station-card-container row-layout-container">
-    <li v-for="station in stationsFiltered" :key="station._id">
+  <li class="station-song row-layout-container">
+    <div v-for="station in stationsFiltered" :key="station._id">
       <station-preview :station="station" />
-    </li>
-    <!-- <ul v-else class="display-none"></ul> -->
-  </div>
+    </div>
+  </li>
 </template>
  
 <script>
@@ -21,24 +20,21 @@ export default {
     };
   },
   methods: {
-    setStations() {
-      this.stations = this.$store.state.stationStore.stations;
-      this.checkGenre()
-    },
     checkGenre() {
       const stationsAfterFilter = this.stations.filter((s) => {
         return s.genres.includes(this.genre.toLowerCase())
       });
       this.stationsFiltered = stationsAfterFilter;
-      console.log("this.stationsFiltered:", this.stationsFiltered);
     },
     classes(genre = false) {
       if (!genre) console.log('ss');
       if (!genre) return 'display-none';
     },
   },
-  created() {
-    this.setStations();
+  async created() {
+    await this.$store.dispatch({ type: "loadStations" });
+    this.stations = this.$store.state.stationStore.stations;
+    this.checkGenre()
   },
   components: {
     stationPreview,

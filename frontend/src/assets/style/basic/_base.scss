@@ -3,13 +3,14 @@
 }
 
 body {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    color: #2c3e50;
     margin: 0;
+    color: $clr2;
+    background-color: $clr3;
 }
 
 html {
     line-height: 1.6;
+    font-family: cursive;
 }
 
 h1,
@@ -21,14 +22,17 @@ h6 {
     font-family: GreatVibes, serif;
     margin: 0 0 1rem;
     font-weight: 500;
+    font-family: cursive;
 }
 
 ul {
     list-style-type: none;
     padding-inline-start: 0;
+    font-family: cursive;
 }
 
 button {
+    font-family: cursive;
     cursor: pointer;
     border: 1px solid rgba(128, 128, 128, 0.5);
     border-radius: 10px;
@@ -39,7 +43,7 @@ button {
         outline: none;
     }
     &:hover {
-        box-shadow: 0px 0px 5px 0px black;
+        box-shadow: 0px 0px 10px 1px $clr1;
     }
 }
 

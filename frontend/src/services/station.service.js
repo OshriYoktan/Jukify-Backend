@@ -86,6 +86,7 @@ function getEmptystation() {
     return {
         name: '',
         imgUrl: '',
+        desc: '',
         likes: 0,
         songs: [],
         genres: 'hip-hop'

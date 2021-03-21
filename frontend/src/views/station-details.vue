@@ -1,32 +1,62 @@
 <template>
-  <section class="details-container column-layout-container" v-if="currStation">
-    <h1>{{ currStation.name }}</h1>
-    <div v-if="currStation" class="station-songs-container">
-      <ul>
-        <li
-          v-for="song in currStation.songs"
-          @click="playVideo(song.videoId)"
-          :key="song._id"
-        >
-          {{ song.name }}
-          <button @click="removeSong(song._id)">✖</button>
-        </li>
-      </ul>
+  <section class="details-container" v-if="currStation">
+    <div class="station-details column-layout-container">
+      <div class="station-img column-layout-container">
+        <img :src="currStation.imgUrl" />
+      </div>
+
+      <div class="station-desc column-layout-container">
+        <div>
+          <h1>{{ currStation.name }}</h1>
+          <p>{{ currStation.desc }}</p>
+        </div>
+        <div>
+          <h4>♥ {{ likes(currStation.likes) }}</h4>
+        </div>
+      </div>
+
+      <div class="station-play-like row-layout-container">
+        <button>Play</button>
+        <button>Like</button>
+      </div>
+      <div class="search-songs-container row-layout-container">
+        <button @click="isSearch = !isSearch">Find songs</button>
+        <div class="search-songs row-layout-container">
+          <form @submit.prevent="searchSongs" v-if="isSearch">
+            <input
+              type="text"
+              placeholder="Search song online"
+              v-model="search"
+            />
+            <button>Find</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="search-songs-container column-layout-container">
-      <button @click="isSearch = !isSearch">Find songs</button>
-      <form @submit.prevent="searchSongs" v-if="isSearch">
-        <input type="text" placeholder="Search song online" v-model="search" />
-        <button>Find</button>
-      </form>
+    <div class="chat-room column-layout-container">
+      <h1>Chat Room</h1>
     </div>
-    <div v-if="foundSongs && isSearch" class="songs-result-container">
-      <ul>
-        <li v-for="(song, idx) in foundSongs" :key="idx">
-          {{ song.snippet.title }}
-          <button @click="addToStation(idx)">➕</button>
-        </li>
-      </ul>
+    <div class="songs-container row-layout-container">
+      <div v-if="currStation" class="station-songs-container">
+        <ul>
+          <li
+            v-for="song in currStation.songs"
+            @click="playVideo(song.videoId)"
+            :key="song._id"
+          >
+            {{ song.name }}
+            <button @click="removeSong(song._id)">✖</button>
+          </li>
+        </ul>
+      </div>
+      <div v-if="foundSongs && isSearch" class="songs-result-container">
+        <ul>
+          <h3>Songs:</h3>
+          <li @click="addToStation(idx)" v-for="(song, idx) in foundSongs" :key="idx">
+            {{ song.snippet.title }}
+          </li>
+        </ul>
+      </div>
     </div>
     <playerControll :station="currStation" v-if="videoId" :videoId="videoId" />
   </section>
@@ -51,13 +81,22 @@ export default {
     playVideo(id) {
       this.videoId = id;
     },
+    likes(likes) {
+      return likes.toLocaleString();
+    },
   },
-
+  // searchSongs(){
+  //   console.log('in');
+  // },
   async searchSongs() {
     try {
+      console.log('im in');
       const songs = await stationService.askSearch(this.search);
       this.foundSongs = songs;
-    } catch {}
+    } catch {
+      console.log('im catch');
+
+    }
   },
   async addToStation(idx) {
     try {
