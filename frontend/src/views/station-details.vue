@@ -1,44 +1,30 @@
 <template>
-  <section class="flex column-layout-container" v-if="currStation">
-    <div v-if="!isNew">
-      <h1>{{ currStation.name }}</h1>
-      <h2>GENRES</h2>
+  <section class="details-container column-layout-container" v-if="currStation">
+    <h1>{{ currStation.name }} station</h1>
+    <div v-if="currStation" class="station-songs-container">
+      <ul>
+        <li
+          v-for="song in currStation.songs"
+          @click="playVideo(song.videoId)"
+          :key="song._id"
+        >
+          {{ song.name }}
+          <button @click="removeSong(song._id)">✖</button>
+        </li>
+      </ul>
     </div>
-    <!-- TODO : mew component called CREATE STATION -->
-    <div v-if="isNew">
-      <form @submit.prevent="addStation">
-        <input
-          required
-          type="text"
-          placeholder="Station name"
-          v-model="currStation.name"
-        />
-        <genre-select @genre-selected="setGenre" />
-        <input type="file" @change="imgLoad" />
-        <button>Save</button>
+    <div class="search-songs-container column-layout-container">
+      <button @click="isSearch = !isSearch">Find songs</button>
+      <form @submit.prevent="searchSongs" v-if="isSearch">
+        <input type="text" placeholder="Search song online" v-model="search" />
+        <button>Find</button>
       </form>
     </div>
-    <!-- utill here -->
-    <ul v-if="currStation">
-      <li
-        v-for="song in currStation.songs"
-        @click="playVideo(song.videoId)"
-        :key="song._id"
-      >
-        {{ song.name }}
-        <button @click="removeSong(song._id)">x</button>
-      </li>
-    </ul>
-    <button @click="searchStatus">Add song to station.</button>
-    <form @submit.prevent="searchSongs" v-if="isSearch">
-      <input type="text" placeholder="Search song online" v-model="search" />
-      <button>Find</button>
-    </form>
-    <div v-if="foundSongs && isSearch">
+    <div v-if="foundSongs && isSearch" class="songs-result-container">
       <ul>
         <li v-for="(song, idx) in foundSongs" :key="idx">
           {{ song.snippet.title }}
-          <button @click="addToStation(idx)">+</button>
+          <button @click="addToStation(idx)">➕</button>
         </li>
       </ul>
     </div>
@@ -60,7 +46,7 @@
         <input
           type="range"
           min="0"
-          max="50"
+          max="100"
           @change="setSongVolume(songPlayer.volumeRange)"
           v-model="songPlayer.volumeRange"
           class="set-volume"
@@ -75,7 +61,6 @@
 </template>
 
 <script>
-import genreSelect from "../cmps/genre-select";
 import { stationService } from "../services/station.service";
 export default {
   name: "station-details",
@@ -84,7 +69,6 @@ export default {
       currStation: null,
       foundSongs: null,
       isSearch: false,
-      isNew: false,
       search: "",
       videoId: "",
       songPlayer: {
@@ -143,6 +127,9 @@ export default {
         this.player.playVideo();
       });
     },
+    playSong(videoId) {
+      this.videoId = videoId;
+    },
     async removeSong(id) {
       try {
         const payload = {
@@ -151,14 +138,6 @@ export default {
         };
         await this.$store.dispatch({ type: "removeSong", payload });
       } catch {}
-    },
-    imgLoad(ev) {
-      const image = ev.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = (ev) => {
-        this.currStation.imgUrl = ev.target.result;
-      };
     },
     async searchSongs() {
       try {
@@ -176,22 +155,6 @@ export default {
         await this.$store.dispatch({ type: "addToStation", payload });
       } catch {}
     },
-    searchStatus() {
-      return this.isSearch ? (this.isSearch = false) : (this.isSearch = true);
-    },
-    playSong(videoId) {
-      this.videoId = videoId;
-    },
-    async addStation() {
-      try {
-        const station = this.currStation;
-        console.log('station:', station)
-        await this.$store.dispatch({ type: "addStation", station });
-      } catch {}
-    },
-    setGenre(genres) {
-      this.currStation.genres = genres
-    },
   },
   computed: {
     player() {
@@ -204,20 +167,12 @@ export default {
       return this.$store.state.stationStore.genres;
     },
   },
-  components: {
-    genreSelect
-  },
   created() {
-    this.currStation = null;
     const id = this.$route.params.stationName;
-    if (!id) {
-      this.currStation = stationService.getEmptystation();
-      this.isNew = true;
-    } else
-      stationService.getStationIdxById(id).then((idx) => {
-        const station = this.$store.state.stationStore.stations[idx];
-        this.currStation = station;
-      });
+    stationService.getStationIdxById(id).then((idx) => {
+      const station = this.$store.state.stationStore.stations[idx];
+      this.currStation = station;
+    });
   },
 };
 </script>

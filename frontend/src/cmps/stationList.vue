@@ -1,35 +1,40 @@
 <template>
-  <div class="container">
-    <div class="explore-sub-container column-layout-container sub-container">
-      <div class="explore-header column-layout-container">
-        <h1>Explore world music</h1>
-        <h3>Start listening to the best new releases</h3>
-      </div>
-      <div
-        class="flex column-layout-container"
-        v-for="(genre, idx) in genres"
-        :key="idx"
-      >
-        <h1>{{ genre }}</h1>
-        <ul class="stations-list" v-for="(station, idx) in stations" :key="idx">
-          <station-preview :station="station" :genre="genre" />
-        </ul>
-      </div>
-    </div>
+  <div v-if="genre" class="station-card-container row-layout-container">
+    <li v-for="station in stationsFiltered" :key="station._id">
+      <station-preview :station="station" />
+    </li>
+    <!-- <ul v-else class="display-none"></ul> -->
   </div>
 </template>
  
 <script>
 import stationPreview from "../cmps/stationPreview.vue";
 export default {
-  name: "explore",
-  computed: {
-    stations() {
-      return this.$store.state.stationStore.stations;
+  props: ["genre"],
+  name: "station-list",
+  data() {
+    return {
+      isSameGenre: true,
+      stations: null,
+      stationsFiltered: null,
+      currStation: null,
+    };
+  },
+  methods: {
+    setStations() {
+      this.stations = this.$store.state.stationStore.stations;
+      this.checkGenre()
     },
-    genres() {
-      return this.$store.state.stationStore.genres;
+    checkGenre() {
+      const stationsAfterFilter = this.stations.filter((s) => {
+        return s.genres.includes(this.genre.toLowerCase())
+      });
+      this.stationsFiltered = stationsAfterFilter;
+      console.log("this.stationsFiltered:", this.stationsFiltered);
     },
+  },
+  created() {
+    this.setStations();
   },
   components: {
     stationPreview,

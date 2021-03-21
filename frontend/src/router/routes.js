@@ -4,6 +4,7 @@ import home from '../views/home.vue'
 import userProfile from '../views/user-profile.vue'
 import explore from '../views/explore.vue'
 import stationDetails from '../views/station-details.vue'
+import stationCreate from '../views/station-create.vue'
 
 Vue.use(VueRouter)
 
@@ -23,9 +24,9 @@ const routes = [{
         component: explore
     },
     {
-        path: '/details/',
-        name: 'newStation',
-        component: stationDetails
+        path: '/create',
+        name: 'create station',
+        component: stationCreate
     },
     {
         path: '/details/:stationName',

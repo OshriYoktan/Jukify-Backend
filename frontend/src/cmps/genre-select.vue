@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select v-model="value1" multiple @change="sendGenres" placeholder="Select">
+    <el-select v-model="value1" multiple @change="sendGenres" placeholder="Select genre/s">
       <el-option
         v-for="item in options"
         :key="item.value"

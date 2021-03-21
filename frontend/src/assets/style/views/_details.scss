@@ -1,4 +1,35 @@
-.details-container{
-    flex-direction: column;
-    align-items: center;
+.details-container {
+    h1 {
+        margin-top: 1em;
+        font-size: 30px;
+    }
+    .station-songs-container {
+        button {
+            padding: 10px;
+            margin: 0;
+        }
+        ul {
+            li {
+                display: flex;
+                margin: 5px;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    }
+    .search-songs-container {}
+    .songs-result-container {
+        button {
+            padding: 10px;
+            margin: 0;
+        }
+        ul {
+            li {
+                display: flex;
+                margin: 5px;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    }
 }

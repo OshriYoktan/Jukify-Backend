@@ -7,7 +7,11 @@
 @import './basic/base';
 @import './basic/layout';
 // CMPS //
+@import './cmps/station-preview';
+@import './cmps/station-list';
 // VIEWS
+@import './views/station-create';
+@import './views/home';
 @import './views/app';
 @import './views/explore';
 @import './views/details';
