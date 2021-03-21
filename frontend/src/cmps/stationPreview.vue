@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="station-preview-currStation column-layout-container"
-  >
+  <div class="station-card column-layout-container">
     <router-link
       class="link column-layout-container"
       :to="'/details/' + station._id"
@@ -10,9 +8,9 @@
         :src="station.imgUrl"
         :alt="station.name + ' image, cold\'nt found.'"
       />
-      <div>{{ station.name }}</div>
-      <div>♥ {{ this.likesToShow }}</div>
-      <div @click="clicked(station)">{{ station.songs.length }} songs</div>
+      <h2>{{ station.name }}</h2>
+      <p><span>♥</span> {{ this.likesToShow }}</p>
+      <p @click="clicked(station)">{{ station.songs.length }} songs</p>
     </router-link>
   </div>
 </template>

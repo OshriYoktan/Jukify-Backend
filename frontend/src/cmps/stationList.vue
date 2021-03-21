@@ -1,6 +1,6 @@
 <template>
   <li class="station-song row-layout-container">
-    <div v-for="station in stationsFiltered" :key="station._id">
+    <div class="station-card-container" v-for="station in stationsFiltered" :key="station._id">
       <station-preview :station="station" />
     </div>
   </li>
