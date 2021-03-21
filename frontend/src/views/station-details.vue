@@ -11,7 +11,9 @@
           <p>{{ currStation.desc }}</p>
         </div>
         <div>
-          <h4>♥ {{ likes(currStation.likes) }}</h4>
+          <h4>
+            <span style="color: red">♥</span> {{ likes(currStation.likes) }}
+          </h4>
         </div>
       </div>
 
@@ -45,7 +47,7 @@
             :key="song._id"
           >
             {{ song.name }}
-            <button @click="removeSong(song._id)">✖</button>
+            <button @click="removeSong(song._id)" style="color:red">🗑</button>
           </li>
         </ul>
       </div>
