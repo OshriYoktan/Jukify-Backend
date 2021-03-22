@@ -29,7 +29,6 @@
           Find songs
         </button>
         <button v-else @click="isSearch = !isSearch">Close</button>
-
         <div class="search-songs row-layout-container">
           <form @submit.prevent="searchSongs" v-if="isSearch">
             <input
@@ -103,10 +102,10 @@ export default {
         currStation: this.currStation,
       });
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit('startPlaySong'); 
+      this.$root.$emit("startPlaySong");
     },
     likes(likes) {
-      return likes.toLocaleString();
+      // return likes.toLocaleString();
     },
     async searchSongs() {
       try {
@@ -141,14 +140,16 @@ export default {
         // });
       } catch {}
     },
-    addStationLike() {
-      this.isLiked = !this.isLiked;
-      const num = this.isLiked ? 1 : -1;
-      const addLike = {
-        station: this.currStation._id,
-        num,
-      };
-      this.$store.dispatch({ type: "addStationLike", addLike });
+    async addStationLike() {
+      try {
+        this.isLiked = !this.isLiked;
+        const num = this.isLiked ? 1 : -1;
+        const addLike = {
+          station: this.currStation._id,
+          num,
+        };
+        await this.$store.dispatch({ type: "addStationLike", addLike });
+      } catch {}
     },
   },
   computed: {
@@ -156,12 +157,12 @@ export default {
       return this.$store.state.stationStore.genres;
     },
   },
-  created() {
-    const id = this.$route.params.stationName;
-    stationService.getStationIdxById(id).then((idx) => {
-      const station = this.$store.state.stationStore.stations[idx];
+  async created() {
+    try {
+      const id = this.$route.params.stationName;
+      const station = await stationService.getStationById(id);
       this.currStation = station;
-    });
+    } catch {}
   },
   components: {
     playerControl,

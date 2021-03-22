@@ -9,7 +9,7 @@
       </div>
   </div>
 </template>
- 
+
 <script>
 import stationList from "../cmps/stationList";
 import filterStations from "../cmps/filter-stations";

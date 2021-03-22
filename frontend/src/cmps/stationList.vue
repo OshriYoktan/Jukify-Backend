@@ -1,6 +1,11 @@
 <template>
   <div class="station-song row-layout-container">
+    <div v-if="!stations.length" class="list-empty column-layout-container">
+      <h1>No results found for this search.</h1>
+      <p>Please make sure youre words are spelled correctly or use less or different keywords.</p>
+    </div>
     <div
+      v-else
       class="station-card-container"
       v-for="station in stations"
       :key="station._id"
@@ -23,7 +28,7 @@ export default {
   computed: {
     stations() {
       return this.$store.state.stationStore.stations;
-    }
+    },
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });

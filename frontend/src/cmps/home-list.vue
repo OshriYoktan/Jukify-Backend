@@ -1,7 +1,7 @@
 <template>
-  <li class="station-song row-layout-container">
+  <li class="home-station-song row-layout-container">
     <div
-      class="station-card-container"
+      class="home-station-card-container"
       v-for="station in stations"
       :key="station._id"
     >
