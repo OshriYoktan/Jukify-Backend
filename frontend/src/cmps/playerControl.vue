@@ -3,15 +3,15 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div class="playing-now">Playing Now: {{ songPlayer.songName }}</div>
+    <div class="playing-now">Playing Now: {{ $store.getters.getSongName }}</div>
     <div class="playing-btns">
       <button @click="changeSong(-1)">Previous</button>
-      <button @click="togglePlay" v-if="!songPlayer.isPlaying">Stop</button>
+      <button @click="togglePlay" v-if="!$store.getters.getIsSongPlaying">Stop</button>
       <button @click="togglePlay" v-else>Start</button>
       <button @click="changeSong(1)">Next</button>
     </div>
     <div class="music-btns">
-      <button @click="muteSong" v-if="!songPlayer.isMuted">Mute</button>
+      <button @click="muteSong" v-if="!$store.getters.getIsSongMuted">Mute</button>
       <button @click="muteSong" v-else>Unmute</button>
       <input
         type="range"
@@ -21,7 +21,7 @@
         v-model="songPlayer.volumeRange"
         class="set-volume"
       />
-      <span>{{ songPlayer.volumeRange }}</span>
+      <span>{{ $store.getters.getSongVolume }}</span>
     </div>
   </div>
 </template>
@@ -30,12 +30,8 @@
 export default {
   data() {
     return {
-      // songId: null,
       songPlayer: {
-        isPlaying: false,
-        isMuted: false,
         volumeRange: 50,
-        songName: "",
       },
     };
   },
@@ -59,11 +55,10 @@ export default {
     async changeSong(dif) {
       const payload = { dif };
       await this.$store.dispatch({ type: "changeSong", payload });
-      // this.songId = this.$store.getters.getSongId;
       this.$nextTick(() => {
         this.player.playVideo();
       });
-      this.songPlayer.songName = this.$store.getters.getSongName;
+      this.$store.getters.getSongName;
     },
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
@@ -83,20 +78,12 @@ export default {
   },
   mounted() {
     this.$root.$on("startPlaySong", () => {
-      console.log("heyyy");
       this.$nextTick(() => {
         this.player.playVideo();
       });
       this.playVideo(this.songId);
-      this.songPlayer.songName = this.$store.getters.getSongName;
+      this.$store.getters.getSongName;
     });
-  },
-  created() {
-    // this.$nextTick(() => {
-    //   this.player.playVideo();
-    // });
-    // this.playVideo(this.songId);
-    // this.songPlayer.songName = this.$store.getters.getSongName;
   },
 };
 </script>

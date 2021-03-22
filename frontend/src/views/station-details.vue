@@ -5,21 +5,24 @@
         <img :src="currStation.imgUrl" />
       </div>
 
-      <div class="station-desc column-layout-container">
+      <div class="station-desc row-layout-container">
         <div>
-          <h1>{{ currStation.name }}</h1>
-          <p>{{ currStation.desc }}</p>
-        </div>
-        <div>
-          <h4>
+          <div>
+            <h1>{{ currStation.name }}</h1>
+            <p>{{ currStation.desc }}</p>
+          </div>
+          <div>
             <span style="color: red">♥</span> {{ likes(currStation.likes) }}
-          </h4>
+          </div>
+        </div>
+        <div class="menu-container">
+          <span class="station-menu" @click="removeStation">⋮</span>
+          <span class="station-menu-delete" @click="removeStation">🗑</span>
         </div>
       </div>
-
       <div class="station-play-like row-layout-container">
         <button>Play</button>
-        <button>Like</button>
+        <button @click="addStationLike">Like</button>
       </div>
       <div class="search-songs-container row-layout-container">
         <button v-if="!isSearch" @click="isSearch = !isSearch">
@@ -68,7 +71,6 @@
         </ul>
       </div>
     </div>
-    <!-- <playerControl  v-if="videoId"  /> -->
   </section>
 </template>
 
@@ -85,10 +87,16 @@ export default {
       search: "",
       videoId: null,
       genreCount: 1,
+      isLiked: false,
+      isMenu: false,
     };
   },
   methods: {
     playVideo(id) {
+      this.$store.dispatch({
+        type: "setStation",
+        currStation: this.currStation,
+      });
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
@@ -96,11 +104,6 @@ export default {
       });
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
       this.$root.$emit('startPlaySong'); 
-      //   this.$nextTick(() => {
-      //   this.player.playVideo();
-      // });
-      // this.playVideo(this.songId);
-      // this.songPlayer.songName = this.$store.getters.getSongName;
     },
     likes(likes) {
       return likes.toLocaleString();
@@ -130,6 +133,23 @@ export default {
         await this.$store.dispatch({ type: "addToStation", payload });
       } catch {}
     },
+    async removeStation() {
+      try {
+        // await this.$store.dispatch({
+        //   type: "removeStation",
+        //   payload: this.currStation._id,
+        // });
+      } catch {}
+    },
+    addStationLike() {
+      this.isLiked = !this.isLiked;
+      const num = this.isLiked ? 1 : -1;
+      const addLike = {
+        station: this.currStation._id,
+        num,
+      };
+      this.$store.dispatch({ type: "addStationLike", addLike });
+    },
   },
   computed: {
     genres() {
@@ -148,20 +168,3 @@ export default {
   },
 };
 </script>
-
-<style >
-iframe {
-  width: 100%;
-  max-width: 0px;
-  height: 0;
-}
-
-.song-player {
-  display: flex;
-  justify-content: space-between;
-  background-color: grey;
-  width: 100%;
-  height: 75px;
-  margin-top: 238px;
-}
-</style>
