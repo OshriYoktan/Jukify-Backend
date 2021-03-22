@@ -17,20 +17,15 @@
       <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
     </div>
     <div class="music-btns row-layout-container">
-      <button @click="muteSong" v-if="!$store.getters.getIsSongMuted">
+      <button @click="muteSong" v-if="$store.getters.getIsSongMuted">
         <font-awesome-icon icon="volume-mute" />
       </button>
       <button @click="muteSong" v-else>
         <font-awesome-icon icon="volume-up" />
       </button>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        @change="setSongVolume(songPlayer.volumeRange)"
-        v-model="songPlayer.volumeRange"
-        class="set-volume"
-      />
+      <div class="volume-range-container">
+        <el-slider @change="setSongVolume(songPlayer.volumeRange)" v-model="songPlayer.volumeRange" :show-tooltip="true"></el-slider>
+      </div>
     </div>
   </div>
 </template>
@@ -40,15 +35,15 @@ export default {
   data() {
     return {
       songPlayer: {
-        volumeRange: 50,
-        isPlaying: false
+        volumeRange: 100,
+        isPlaying: false,
       },
     };
   },
   methods: {
     async togglePlay() {
       const playing = await this.$store.dispatch({ type: "togglePlay" });
-      this.songPlayer.isPlaying = this.$store.getters.getIsSongPlaying
+      this.songPlayer.isPlaying = this.$store.getters.getIsSongPlaying;
       return playing ? this.player.pauseVideo() : this.player.playVideo();
     },
     async setSongVolume(vol) {
@@ -74,7 +69,8 @@ export default {
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
-      console.log("this.songPlayer.isMuted:", this.songPlayer.isMuted);
+      if(this.songPlayer.isMuted) this.songPlayer.volumeRange = 0
+      else this.songPlayer.volumeRange = 100
       return isMute ? this.player.mute() : this.player.unMute();
     },
   },

@@ -136,7 +136,6 @@ async function removeSong(payload) {
     }
 }
 
-_createStations()
 
 function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))

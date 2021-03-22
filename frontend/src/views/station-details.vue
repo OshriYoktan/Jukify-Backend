@@ -101,6 +101,7 @@ export default {
         type: "setStation",
         currStation: this.currStation,
       });
+      this.$store.state.playerStore.songPlayer.isPlaying = false
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
       this.$root.$emit("startPlaySong");
     },
