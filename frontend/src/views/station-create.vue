@@ -73,7 +73,6 @@ export default {
         this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;
-        console.log("station:", station);
         const stationId = await this.$store.dispatch({
           type: "addStation",
           station,

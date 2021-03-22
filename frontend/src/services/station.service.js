@@ -109,10 +109,9 @@ async function addSongToStation(payload) {
 }
 
 async function removeSong(payload) {
-    console.log('payload:', payload)
+
     try {
         var station = await getStationById(payload.stationId)
-        console.log('station:', station)
         const idx = station.songs.find((s) => s._id === payload.stationId)
             // const songIdx = station.songs.findIndex((s) => s._id === payload.id)
             // station.songs.splice(songIdx, 1)
