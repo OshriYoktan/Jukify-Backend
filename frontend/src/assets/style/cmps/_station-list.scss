@@ -1,17 +1,16 @@
 .station-song {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
     .station-card-container {
         width: 100%;
         height: 100%;
         border-radius: 25px;
         padding: 5px;
     }
-}
-
-.explore-sub-container {
-    .explore-header {
-        margin-top: 20em;
-        h1 {
-            font-size: 30px;
-        }
+    .list-empty {
+        grid-column: 3/5;
+        text-align: center;
+        color: rgb(151, 151, 151);
     }
 }

@@ -1,40 +1,37 @@
 <template>
-  <li class="station-song row-layout-container">
+  <div class="station-song row-layout-container">
+    <div v-if="!stations.length" class="list-empty column-layout-container">
+      <h1>No results found for this search.</h1>
+      <p>Please make sure youre words are spelled correctly or use less or different keywords.</p>
+    </div>
     <div
+      v-else
       class="station-card-container"
-      v-for="station in stationsFiltered"
+      v-for="station in stations"
       :key="station._id"
     >
       <station-preview :station="station" />
     </div>
-  </li>
+  </div>
 </template>
  
 <script>
 import stationPreview from "../cmps/stationPreview.vue";
 export default {
-  props: ["genre"],
   name: "station-list",
   data() {
     return {
-      isSameGenre: true,
-      stations: null,
       stationsFiltered: null,
       currStation: null,
     };
   },
-  methods: {
-    checkGenre() {
-      const stationsAfterFilter = this.stations.filter((s) => {
-        return s.genres.includes(this.genre.toLowerCase());
-      });
-      this.stationsFiltered = stationsAfterFilter;
+  computed: {
+    stations() {
+      return this.$store.state.stationStore.stations;
     },
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
-    this.stations = this.$store.state.stationStore.stations;
-    this.checkGenre();
   },
   components: {
     stationPreview,

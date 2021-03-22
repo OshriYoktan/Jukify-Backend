@@ -13,7 +13,6 @@ export const stationService = {
     save,
     addSongToStation,
     getStationById,
-    getStationIdxById,
     getEmptystation,
     removeSong,
     askSearch,
@@ -43,10 +42,19 @@ async function askSearch(txt) {
 async function query(filterBy) {
     try {
         const stations = await storageService.query(KEY)
-        const filteredStations = stations.filter(station => {
-            return station.name.toLowerCase().includes(filterBy)
-        })
-        return await filteredStations   
+        if (!filterBy || (!filterBy.byName && !filterBy.byGenre)) return stations
+        var stationCopy = stations
+        if (filterBy.byName) {
+            stationCopy = stations.filter(s => {
+                return s.name.toLowerCase().includes(filterBy.byName)
+            })
+        } else {
+            if (filterBy.byGenre === 'all') return stations || stationCopy;
+            stationCopy = stationCopy.filter(s => {
+                return s.genres.includes(filterBy.byGenre.toLowerCase())
+            })
+        }
+        return stationCopy;
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -72,15 +80,6 @@ function remove(stationId) {
 async function getStationById(id) {
     try {
         return await storageService.get(KEY, id)
-    } catch (err) {
-        console.log('Error from stationService - ', err);
-    }
-}
-
-async function getStationIdxById(id) {
-    try {
-        const stations = await storageService.query(KEY)
-        return stations.findIndex((s) => s._id === id)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -130,9 +129,9 @@ async function removeSong(payload) {
     }
 }
 
-_createstations()
+_createStations()
 
-function _createstations() {
+function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))
     if (!stations || !stations.length) {
         storageService.postMany(KEY, gStations)
