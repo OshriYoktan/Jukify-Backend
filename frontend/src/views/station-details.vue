@@ -105,7 +105,7 @@ export default {
       this.$root.$emit("startPlaySong");
     },
     likes(likes) {
-      // return likes.toLocaleString();
+      return likes.toLocaleString();
     },
     async searchSongs() {
       try {
