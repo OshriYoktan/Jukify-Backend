@@ -61,7 +61,7 @@ async function save(station) {
 }
 
 
-function remove(stationId) {
+async function remove(stationId) {
     try {
         return httpService.delete('station/' + stationId)
     } catch (err) {
@@ -102,20 +102,18 @@ async function addSongToStation(payload) {
             publishAt: song.snippet.publishedAt,
         };
         station.songs.push(songToAdd)
-        await storageService.put(KEY, station)
-        return songToAdd
+        return await save(station);
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
 }
 
-async function removeSong(payload) {
+async function removeSong(songRemove) {
     try {
-        var stations = await storageService.query(KEY)
-        const station = stations.find((s) => s._id === payload.stationId)
-        const songIdx = station.songs.findIndex((s) => s._id === payload.id)
-        station.songs.splice(songIdx, 1)
-        await storageService.put(KEY, station)
+        var station = await getStationById(songRemove.stationId)
+        const idx = station.songs.find((s) => s._id === songRemove.songId)
+        station.songs.splice(idx, 1)
+        return await save(station);
     } catch (err) {
         console.log('Error from stationService - ', err);
     }

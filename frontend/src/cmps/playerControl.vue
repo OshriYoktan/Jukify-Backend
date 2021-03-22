@@ -11,9 +11,13 @@
       <font-awesome-icon
         icon="play"
         @click="togglePlay"
-        v-if="$store.getters.getIsSongPlaying"
+        v-if="!$store.getters.getIsPlaying"
       />
-      <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
+      <font-awesome-icon
+        icon="pause-circle"
+        @click="togglePlay"
+        v-else
+      />
       <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
     </div>
     <div class="music-btns row-layout-container">
@@ -24,7 +28,12 @@
         <font-awesome-icon icon="volume-up" />
       </button>
       <div class="volume-range-container">
-        <el-slider @change="setSongVolume(songPlayer.volumeRange)" v-model="songPlayer.volumeRange" :show-tooltip="true"></el-slider>
+        <el-slider
+          @input="setSongVolume(songPlayer.volumeRange)"
+          v-if="!$store.getters.getIsSongMuted"
+          v-model="songPlayer.volumeRange"
+          :show-tooltip="false"
+        ></el-slider>
       </div>
     </div>
   </div>
@@ -36,15 +45,13 @@ export default {
     return {
       songPlayer: {
         volumeRange: 100,
-        isPlaying: false,
       },
     };
   },
   methods: {
     async togglePlay() {
       const playing = await this.$store.dispatch({ type: "togglePlay" });
-      this.songPlayer.isPlaying = this.$store.getters.getIsSongPlaying;
-      return playing ? this.player.pauseVideo() : this.player.playVideo();
+      playing ? this.player.playVideo() : this.player.pauseVideo();
     },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
@@ -69,8 +76,8 @@ export default {
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
-      if(this.songPlayer.isMuted) this.songPlayer.volumeRange = 0
-      else this.songPlayer.volumeRange = 100
+      // if(this.songPlayer.isMuted) this.songPlayer.volumeRange = 0
+      // else this.songPlayer.volumeRange = 100
       return isMute ? this.player.mute() : this.player.unMute();
     },
   },
