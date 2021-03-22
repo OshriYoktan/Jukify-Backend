@@ -9,7 +9,6 @@ export const userStore = {
     },
     getters: {
         getUser(state) {
-            console.log('state.user:', state.user)
             return state.user;
         },
     },

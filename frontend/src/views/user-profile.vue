@@ -41,7 +41,6 @@ export default {
     },
     getLoggedInUser() {
       const a =this.$store.getters.getUser
-      console.log('a:', a)
     },
   },
 };

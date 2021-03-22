@@ -11,13 +11,11 @@ export const userService = {
 }
 
 function getLoggedinUser() {
-    console.log('gUser:', gUser)
     return JSON.parse(JSON.stringify(gUser))
 }
 
 function saveUser(user) {
     gUser = user
-    console.log('gUser:', gUser)
     return httpService.post('auth/signup', user)
 }
 
