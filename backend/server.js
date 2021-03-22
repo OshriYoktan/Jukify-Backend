@@ -12,7 +12,6 @@ const session = expressSession({
     saveUninitialized: true,
     cookie: { secure: false }
 })
-// Express App Config
 app.use(express.json())
 app.use(session)
 
@@ -26,30 +25,25 @@ if (process.env.NODE_ENV === 'production') {
     app.use(cors(corsOptions))
 }
 
-const authRoutes = require('./api/auth/auth.routes')
-const userRoutes = require('./api/user/user.routes')
-const stationRoutes = require('./api/station/station.routes')
-const {connectSockets} = require('./services/socket.service')
-
-// routes
+const { connectSockets } = require('./services/socket.service')
 const setupAsyncLocalStorage = require('./middlewares/setupAls.middleware')
 app.all('*', setupAsyncLocalStorage)
 
-// TODO: check with app.use
-app.get('/api/setup-session', (req, res) =>{
+app.get('/api/setup-session', (req, res) => {
     req.session.connectedAt = Date.now()
     console.log('setup-session:', req.sessionID);
     res.end()
 })
+
+const authRoutes = require('./api/auth/auth.routes')
+const userRoutes = require('./api/user/user.routes')
+const stationRoutes = require('./api/station/station.routes')
 
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/station', stationRoutes)
 connectSockets(http, session)
 
-// Make every server-side-route to match the index.html
-// so when requesting http://localhost:3030/index.html/car/123 it will still respond with
-// our SPA (single page app) (the index.html file) and allow vue/react-router to take it from there
 app.get('/**', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
@@ -59,8 +53,3 @@ const port = process.env.PORT || 3030
 http.listen(port, () => {
     logger.info('Server is running on port: ' + port)
 })
-
-console.log('I am Here!, am I?')
-
-
-

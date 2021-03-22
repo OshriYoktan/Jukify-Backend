@@ -47,12 +47,8 @@
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
         <ul>
-          <li
-            v-for="song in currStation.songs"
-            @click="playVideo(song.videoId)"
-            :key="song._id"
-          >
-            {{ song.name }}
+          <li v-for="song in currStation.songs" :key="song._id">
+            <div @click="playVideo(song.videoId)">{{ song.name }}</div>
             <button @click="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>
@@ -92,10 +88,6 @@ export default {
   },
   methods: {
     playVideo(id) {
-      // this.$store.dispatch({
-      //   type: "setStation",
-      //   currStation: this.currStation,
-      // });
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
