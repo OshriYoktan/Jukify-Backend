@@ -3,7 +3,7 @@ const KEY = 'loggedinUser'
 
 var gUser = null;
 
-// _loadUserFromStorage();
+_loadUserFromStorage();
 
 export const userService = {
     getLoggedinUser,
@@ -22,13 +22,13 @@ function saveUser(user) {
 
 
 function _saveUserToStorage() {
-    localStorage.setItem(KEY, JSON.stringify(gUser))
+    sessionStorage.setItem(KEY, JSON.stringify(gUser))
 }
+
 function _loadUserFromStorage() {
-    gUser = JSON.parse(localStorage.getItem(KEY))
+    gUser = JSON.parse(sessionStorage.getItem(KEY))
     if (!gUser) {
         gUser = { _id: 'u101', fullname: 'Hadar Marom', username: 'Hadar' }
         _saveUserToStorage();
     }
 }
-
