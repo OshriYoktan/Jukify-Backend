@@ -48,7 +48,8 @@
       <div v-if="currStation" class="station-songs-container">
         <ul>
           <li @click="playVideo(song.videoId)" v-for="song in currStation.songs" :key="song._id">
-            <div>{{ song.name }}</div>
+            <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
+            <div v-else>{{ song.name }}</div>
             <button @click.prevent="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>
@@ -142,6 +143,11 @@ export default {
         await this.$store.dispatch({ type: "addStationLike", addLike });
       } catch {}
     },
+    songNameDisplay(song) {
+      var songName = JSON.parse(JSON.stringify(song.name));
+      const name = songName.slice(0, 40) + "...";
+      return name;
+    }
   },
   computed: {
     genres() {
