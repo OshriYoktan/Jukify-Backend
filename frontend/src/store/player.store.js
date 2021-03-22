@@ -4,7 +4,7 @@ export const playerStore = {
         songId: null,
         currStation: null,
         songPlayer: {
-            isPlaying: false,
+            isPlaying: true,
             isMuted: false,
             volumeRange: 50,
             songName: "",
