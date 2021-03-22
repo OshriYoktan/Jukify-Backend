@@ -1,0 +1,20 @@
+.song-player-container {
+    justify-content: space-between;
+    .playing-now {
+        width: 400px;
+        height: 100%;
+        justify-content: start;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+    .song-video {
+        display: none;
+    }
+    .song-player {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        background-color: inherit;
+    }
+}

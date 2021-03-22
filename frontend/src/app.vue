@@ -15,7 +15,7 @@
     <section class="view-router">
       <router-view  />
     </section>
-    <section>
+    <section class="song-player-container">
       <playerControl v-if="isFirstSong" />
       <playerControl v-else />
     </section>
