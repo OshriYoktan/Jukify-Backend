@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="station-play-like row-layout-container">
-        <button @click="playVideo()">Play</button>
+        <button @click="playVideo">Play</button>
         <button @click="addStationLike">Like</button>
       </div>
       <div class="search-songs-container row-layout-container">

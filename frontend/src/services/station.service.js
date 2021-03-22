@@ -13,6 +13,7 @@ export const stationService = {
     remove,
     save,
     addSongToStation,
+    addStationLike,
     getStationById,
     getEmptyStation,
     removeSong,
@@ -114,6 +115,18 @@ async function removeSong(songRemove) {
         var station = await getStationById(songRemove.stationId)
         const idx = station.songs.find((s) => s._id === songRemove.songId)
         station.songs.splice(idx, 1)
+        return await save(station);
+    } catch (err) {
+        console.log('Error from stationService - ', err);
+    }
+}
+
+async function addStationLike(stationLiked) {
+    try {
+        var station = await getStationById(stationLiked.station)
+        console.log('station:', station)
+        station.likes += stationLiked
+        console.log('station.likes:', station.likes)
         return await save(station);
     } catch (err) {
         console.log('Error from stationService - ', err);

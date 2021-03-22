@@ -2,12 +2,13 @@ import { httpService } from './http.service.js'
 const KEY = 'loggedinUser'
 
 var gUser = null;
-
 _loadUserFromStorage();
 
 export const userService = {
     getLoggedinUser,
-    saveUser
+    saveUser,
+    loginUser,
+    logoutUser
 }
 
 function getLoggedinUser() {
@@ -17,6 +18,16 @@ function getLoggedinUser() {
 function saveUser(user) {
     gUser = user
     return httpService.post('auth/signup', user)
+}
+
+function loginUser(user) {
+    return httpService.post('auth/login', user)
+}
+
+function logoutUser() {
+    gUser = null
+    _saveUserToStorage()
+    return httpService.post('auth/logout')
 }
 
 function _saveUserToStorage() {
