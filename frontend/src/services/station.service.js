@@ -42,10 +42,10 @@ async function askSearch(txt) {
 
 async function query(filterBy) {
     try {
-        var query = '?'
-        if (filterBy.byName) query += 'n=' + filterBy.byName + '&'
-        if (filterBy.byGenre) query += 'g=' + filterBy.byGenre + '&'
-        return httpService.get(KEY + query, filterBy)
+        // var query = '?'
+        // if (filterBy.byName) query += 'n=' + filterBy.byName + '&'
+        // if (filterBy.byGenre) query += 'g=' + filterBy.byGenre + '&'
+        return httpService.get(KEY)
         // return httpService.get('station', { params: filterBy })
         // const stations = await storageService.query(KEY)
         // if (!filterBy || (!filterBy.byName && !filterBy.byGenre)) return stations
@@ -148,7 +148,6 @@ async function removeSong(payload) {
     }
 }
 
-_createStations()
 
 function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))
