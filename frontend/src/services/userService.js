@@ -7,7 +7,9 @@ var gUser = null;
 
 export const userService = {
     getLoggedinUser,
-    saveUser
+    saveUser,
+    loginUser,
+    logoutUser
 }
 
 function getLoggedinUser() {
@@ -19,13 +21,20 @@ function saveUser(user) {
     return httpService.post('auth/signup', user)
 }
 
+function loginUser(user) {
+    return httpService.post('auth/login', user)
+}
+function logoutUser() {
+    return httpService.post('auth/logout')
+}
+
 
 
 function _saveUserToStorage() {
-    localStorage.setItem(KEY, JSON.stringify(gUser))
+    sessionStorage.setItem(KEY, JSON.stringify(gUser))
 }
 function _loadUserFromStorage() {
-    gUser = JSON.parse(localStorage.getItem(KEY))
+    gUser = JSON.parse(sessionStorage.getItem(KEY))
     if (!gUser) {
         gUser = { _id: 'u101', fullname: 'Hadar Marom', username: 'Hadar' }
         _saveUserToStorage();

@@ -9,6 +9,7 @@ export const userStore = {
     },
     getters: {
         getUser(state) {
+            console.log('state.user:', state.user)
             return state.user;
         },
     },
@@ -17,6 +18,13 @@ export const userStore = {
         signUp(state, { user }) {
             state.user = user
             userService.saveUser(user)
+        },
+        login(state, { user }) {
+            state.user = user
+            userService.loginUser(user)
+        },
+        logout() {
+            userService.logoutUser()
         }
     },
     actions: {
