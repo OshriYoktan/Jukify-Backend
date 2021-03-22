@@ -5,20 +5,26 @@ export const stationStore = {
     state: {
         stations: [],
         genres: ["Hip-Hop", "Band", "Israeli"],
-        filterBy: null
+        filterBy: null,
+        currStation: null
     },
     mutations: {
         setStations(state, { stations }) {
             state.stations = stations
         },
+        setCurrStation(state, { id }) {
+            const station = state.stations.find((s) => s._id === id)
+            state.currStation = station;
+        },
         addToStation(state, { payload }) {
             const station = state.stations.find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
         },
-        removeSong(state, { payload }) {
-            const station = state.stations.find((s) => s._id === payload.stationId)
-            const songIdx = station.songs.findIndex((s) => s._id === payload.id)
-            station.songs.splice(songIdx, 1)
+        removeSong(state, { songRemove }) {
+            console.log('songRemove:', songRemove)
+            const station = state.stations.find((s) => s._id === songRemove.stationId)
+            const idx = station.songs.findIndex((s) => s._id === songRemove.songId)
+            station.songs.splice(idx, 1)
         },
         addStation(state, { stationToAdd }) {
             state.stations.push(stationToAdd)
@@ -29,16 +35,22 @@ export const stationStore = {
         },
     },
     actions: {
-        async loadStations(context) {
+        async loadStations({ commit }) {
             try {
                 const stations = await stationService.query()
-                context.commit({ type: 'setStations', stations })
+                commit({ type: 'setStations', stations })
             } catch {}
         },
-        async removeSong({ commit }, { payload }) {
+        setCurrStation({ commit }, payload) {
             try {
-                await stationService.removeSong(payload)
-                commit({ type: 'removeSong', payload })
+                commit(payload)
+            } catch {}
+        },
+        async removeSong({ commit }, { songRemove }) {
+            console.log('songRemove:', songRemove)
+            try {
+                await stationService.removeSong(songRemove)
+                commit({ type: 'removeSong', songRemove })
             } catch {}
         },
         async addToStation({ commit }, { payload }) {

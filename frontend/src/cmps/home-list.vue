@@ -27,7 +27,6 @@ export default {
         return s.genres.includes(this.genre.toLowerCase());
       });
       this.stations = stationsAfterFilter;
-      console.log("this.stations:", this.stations);
     },
   },
   async created() {

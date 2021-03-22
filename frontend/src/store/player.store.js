@@ -4,7 +4,7 @@ export const playerStore = {
         songId: null,
         currStation: null,
         songPlayer: {
-            isPlaying: true,
+            isPlaying: false,
             isMuted: false,
             volumeRange: 50,
             songName: "",
@@ -17,7 +17,7 @@ export const playerStore = {
         getSongName(state) {
             return state.songPlayer.songName
         },
-        getIsSongPlaying(state) {
+        getIsPlaying(state) {
             return state.songPlayer.isPlaying
         },
         getIsSongMuted(state) {
@@ -29,11 +29,7 @@ export const playerStore = {
     },
     mutations: {
         togglePlay(state) {
-            if (!state.songPlayer.isPlaying) {
-                state.songPlayer.isPlaying = true;
-            } else {
-                state.songPlayer.isPlaying = false;
-            }
+            state.songPlayer.isPlaying = !state.songPlayer.isPlaying
         },
         setSongVolume(state, { vol }) {
             state.songPlayer.volumeRange = +vol
@@ -42,11 +38,12 @@ export const playerStore = {
             state.currStation = payload.currStation;
         },
         setVideoId(state, payload) {
+            state.songPlayer.isPlaying = true;
             state.songId = payload.videoId;
         },
         playVideo(state) {
             state.songId = state.songId
-            const currSong =state.currStation.songs.find((song) => {
+            const currSong = state.currStation.songs.find((song) => {
                 return song.videoId === state.songId;
             });
             state.songPlayer.songName = currSong.name;
@@ -61,7 +58,6 @@ export const playerStore = {
             const nextSong = state.currStation.songs[songIdx];
             state.songId = nextSong.videoId;
             state.songPlayer.songName = nextSong.name;
-            console.log('state.songPlayer.songName:', state.songPlayer.songName)
         },
         muteSong(state) {
             if (!state.songPlayer.isMuted) {
@@ -77,40 +73,40 @@ export const playerStore = {
                 state.commit({ type: 'togglePlay' })
                 return state.state.songPlayer.isPlaying;
 
-            } catch { }
+            } catch {}
         },
         setSongVolume(state, { vol }) {
             try {
                 state.commit({ type: 'setSongVolume', vol })
                 return state.state.songPlayer.volumeRange
-            } catch { }
+            } catch {}
         },
         playVideo(state) {
             try {
                 state.commit({ type: 'playVideo' })
                 return state.songPlayer.songName
-            } catch { }
+            } catch {}
         },
         changeSong(state, payload) {
             try {
                 state.commit({ type: 'changeSong', payload })
-            } catch { }
+            } catch {}
         },
         muteSong(state) {
             try {
                 state.commit({ type: 'muteSong' })
                 return state.state.songPlayer.isMuted
-            } catch { }
+            } catch {}
         },
         setStation(state, { currStation }) {
             try {
                 state.commit({ type: 'setStation', currStation })
-            } catch { }
+            } catch {}
         },
         setVideoId(state, { videoId }) {
             try {
                 state.commit({ type: 'setVideoId', videoId })
-            } catch { }
+            } catch {}
         },
     }
 }
