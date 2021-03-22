@@ -32,6 +32,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
+    if (this.stations.length) this.$emit('loader', false)
   },
   components: {
     stationPreview,
