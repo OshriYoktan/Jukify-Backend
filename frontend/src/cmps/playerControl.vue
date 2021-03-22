@@ -1,18 +1,28 @@
 <template>
-  <div class="song-player">
+  <div class="song-player row-layout-container">
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div class="playing-now">Playing Now: {{ $store.getters.getSongName }}</div>
-    <div class="playing-btns">
-      <button @click="changeSong(-1)">Previous</button>
-      <button @click="togglePlay" v-if="!$store.getters.getIsSongPlaying">Stop</button>
-      <button @click="togglePlay" v-else>Start</button>
-      <button @click="changeSong(1)">Next</button>
+    <div class="playing-now row-layout-container">
+      <h3>Playing Now:<br>{{ song }}</h3>
     </div>
-    <div class="music-btns">
-      <button @click="muteSong" v-if="!$store.getters.getIsSongMuted">Mute</button>
-      <button @click="muteSong" v-else>Unmute</button>
+    <div class="playing-btns row-layout-container">
+      <button @click="changeSong(-1)">
+        <font-awesome-icon icon="step-backward" />
+      </button>
+      <button @click="togglePlay" v-if="!$store.getters.getIsSongPlaying">
+        <font-awesome-icon icon="play" />
+      </button>
+      <button @click="togglePlay" v-else>
+        <font-awesome-icon icon="pause-circle" />
+      </button>
+      <button @click="changeSong(1)">
+        <font-awesome-icon icon="step-forward" />
+      </button>
+    </div>
+    <div class="music-btns row-layout-container">
+      <button @click="muteSong" v-if="!$store.getters.getIsSongMuted"><font-awesome-icon icon="volume-mute" /></button>
+      <button @click="muteSong" v-else><font-awesome-icon icon="volume-up" /></button>
       <input
         type="range"
         min="0"
@@ -21,7 +31,6 @@
         v-model="songPlayer.volumeRange"
         class="set-volume"
       />
-      <span>{{ $store.getters.getSongVolume }}</span>
     </div>
   </div>
 </template>
@@ -37,8 +46,9 @@ export default {
   },
   methods: {
     async togglePlay() {
-      const isPalying = await this.$store.dispatch({ type: "togglePlay" });
-      return isPalying ? this.player.pauseVideo() : this.player.playVideo();
+      const playing = await this.$store.dispatch({ type: "togglePlay" });
+      this.songPlayer.isPlaying = !this.songPlayer.isPlaying;
+      return playing ? this.player.pauseVideo() : this.player.playVideo();
     },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
@@ -62,6 +72,8 @@ export default {
     },
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
+      this.songPlayer.isMuted = !this.songPlayer.isMuted;
+      console.log('this.songPlayer.isMuted:', this.songPlayer.isMuted)
       return isMute ? this.player.mute() : this.player.unMute();
     },
   },
@@ -74,7 +86,12 @@ export default {
     },
     songId(){
       return this.$store.getters.getSongId;
-    }
+    },
+    song() {
+      var song = JSON.parse(JSON.stringify(this.$store.getters.getSongName));
+      const name = song.slice(0, 30) + '...'
+      return name;
+    },
   },
   mounted() {
     this.$root.$on("startPlaySong", () => {

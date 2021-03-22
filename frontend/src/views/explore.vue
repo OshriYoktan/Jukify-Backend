@@ -1,7 +1,7 @@
 <template>
     <div class="explore-sub-container column-layout-container">
         <h1>Explore world music</h1>
-        <filter-songs></filter-songs>
+        <filter-songs />
       <div class="explore-header column-layout-container">
       </div>
       <div class="cards-container column-layout-container">
