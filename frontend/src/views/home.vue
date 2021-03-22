@@ -14,16 +14,15 @@
           :key="idx"
         >
           <h1>{{ genre }}</h1>
-          <div class="station-card-container row-layout-container">
-            <station-list :genre="genre" />
-          </div>
+          <home-list :genre="genre" />
         </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
-import stationList from "../cmps/stationList";
+import stationPreview from "../cmps/stationPreview";
+import homeList from "../cmps/home-list";
 export default {
   name: "Home",
   computed: {
@@ -32,7 +31,8 @@ export default {
     },
   },
   components: {
-    stationList,
+    stationPreview,
+    homeList,
   },
 };
 </script>

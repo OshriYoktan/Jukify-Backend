@@ -1,5 +1,5 @@
 <template>
-  <div class="station-song row-layout-container">
+  <li class="station-song row-layout-container">
     <div
       class="station-card-container"
       v-for="station in stations"
@@ -7,26 +7,32 @@
     >
       <station-preview :station="station" />
     </div>
-  </div>
+  </li>
 </template>
  
 <script>
 import stationPreview from "../cmps/stationPreview.vue";
 export default {
+  props: ["genre"],
   name: "station-list",
   data() {
     return {
-      stationsFiltered: null,
-      currStation: null,
+      stations: null,
     };
   },
-  computed: {
-    stations() {
-      return this.$store.state.stationStore.stations;
-    }
+  methods: {
+    checkGenre() {
+      const stations = this.$store.state.stationStore.stations;
+      const stationsAfterFilter = stations.filter((s) => {
+        return s.genres.includes(this.genre.toLowerCase());
+      });
+      this.stations = stationsAfterFilter;
+      console.log("this.stations:", this.stations);
+    },
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
+    this.checkGenre();
   },
   components: {
     stationPreview,

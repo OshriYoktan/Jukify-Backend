@@ -27,14 +27,11 @@ export const stationStore = {
             const station = state.stations.find((s) => s._id === addLike.station)
             station.likes += addLike.num
         },
-        setFilter(state, { payload }) {
-            state.filterBy = payload;
-        },
     },
     actions: {
         async loadStations(context) {
             try {
-                const stations = await stationService.query(context.state.filterBy)
+                const stations = await stationService.query()
                 context.commit({ type: 'setStations', stations })
             } catch {}
         },
@@ -69,6 +66,13 @@ export const stationStore = {
             try {
                 const likeAdded = await stationService.addStationLike(addLike)
                 commit({ type: 'addStationLike', addLike })
+            } catch {}
+        },
+        async setFilter({ commit }, { filter }) {
+            console.log('filter:', filter)
+            try {
+                const stations = await stationService.query(filter)
+                commit({ type: 'setStations', stations })
             } catch {}
         },
     }

@@ -42,11 +42,22 @@ async function askSearch(txt) {
 
 async function query(filterBy) {
     try {
+        if (!filterBy) return await storageService.query(KEY)
         const stations = await storageService.query(KEY)
-        const filteredStations = stations.filter(station => {
-            return station.name.toLowerCase().includes(filterBy)
-        })
-        return await filteredStations   
+        var filteredStations = []
+        if (filterBy.byName) {
+            filteredStations = stations.filter(s => {
+                return s.name.toLowerCase().includes(filterBy.byName)
+            })
+        }
+        if (filterBy.byGenre) {
+            if (filterBy.byGenre === 'all') return stations || filteredStations;
+            filteredStations = stations.filter(s => {
+                return s.genres.includes(filterBy.byGenre.toLowerCase())
+            })
+        }
+        console.log('filteredStations:', filteredStations)
+        return filteredStations;
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
