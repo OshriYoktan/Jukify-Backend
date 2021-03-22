@@ -17,7 +17,7 @@
     <section class="view-router">
       <router-view  />
     </section>
-    <section>
+    <section class="player-container">
       <playerControl  />
     </section>
   </div>
