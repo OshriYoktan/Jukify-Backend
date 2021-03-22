@@ -51,7 +51,6 @@ async function deleteStation(req, res) {
 async function addStation(req, res) {
     try {
         var station = req.body
-        console.log('station:', station)
         // station.byUserId = req.session.user._id
         station = await stationService.add(station)
 
@@ -59,7 +58,6 @@ async function addStation(req, res) {
         // station.byUser = await userService.getById(station.byUserId)
         // station.aboutUser = await userService.getById(station.aboutUserId)
 
-        console.log('CTRL SessionId:', req.sessionID);
         // socketService.broadcast({ type: 'station-added', data: station })
         // socketService.emitToAll({ type: 'user-updated', data: station.byUser, room: req.session.user._id })
         res.send(station)
@@ -74,7 +72,6 @@ async function addStation(req, res) {
 async function updateStation(req, res) {
     try {
         const station = req.body
-        console.log('station:', station)
         const savedStation = await stationService.update(station)
         res.send(savedStation)
         // socketService.broadcast({type: 'user-updated', data: station, to:savedUser._id})
