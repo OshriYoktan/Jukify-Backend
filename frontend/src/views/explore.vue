@@ -1,11 +1,12 @@
 <template>
   <div class="explore-container column-layout-container">
-    <div v-if="isLoading" class="loading">
+    <!-- <div v-if="isLoading" class="loading">
       <img
-        src="https://i.pinimg.com/originals/ab/45/bb/ab45bb4451536652faca51ae4f42d5dd.gif"
+      class="jukify-loader"
+        src="https://cdn.dribbble.com/users/2172036/screenshots/4658367/music-anim.gif"
         alt=""
       />
-    </div>
+    </div> -->
     <div class="explore-header column-layout-container">
       <h1>Explore world music</h1>
       <filter-stations />
@@ -23,7 +24,7 @@ export default {
   name: "explore",
   data() {
     return {
-      isLoading: true,
+      // isLoading: true,
     };
   },
   computed: {

@@ -47,8 +47,8 @@
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
         <ul>
-          <li v-for="song in currStation.songs" :key="song._id">
-            <div @click="playVideo(song.videoId)">{{ song.name }}</div>
+          <li @click="playVideo(song.videoId)" v-for="song in currStation.songs" :key="song._id">
+            <div>{{ song.name }}</div>
             <button @click.prevent="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>

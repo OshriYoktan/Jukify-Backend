@@ -3,8 +3,11 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div class="playing-now row-layout-container">
+    <div class="playing-now row-layout-container" v-if="song">
       <h3>Playing Now:<br />{{ song }}</h3>
+    </div>
+    <div class="playing-now row-layout-container" v-else>
+      <h3>No song has been playing</h3>
     </div>
     <div class="playing-btns row-layout-container">
       <font-awesome-icon icon="step-backward" @click="changeSong(-1)" />
@@ -21,12 +24,8 @@
       <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
     </div>
     <div class="music-btns row-layout-container">
-      <button @click="muteSong" v-if="$store.getters.getIsSongMuted">
-        <font-awesome-icon icon="volume-mute" />
-      </button>
-      <button @click="muteSong" v-else>
-        <font-awesome-icon icon="volume-up" />
-      </button>
+        <font-awesome-icon icon="volume-mute" @click="muteSong" v-if="$store.getters.getIsSongMuted" />
+        <font-awesome-icon icon="volume-up" @click="muteSong" v-else />
       <div class="volume-range-container">
         <el-slider
           @input="setSongVolume(songPlayer.volumeRange)"
@@ -76,8 +75,6 @@ export default {
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
-      // if(this.songPlayer.isMuted) this.songPlayer.volumeRange = 0
-      // else this.songPlayer.volumeRange = 100
       return isMute ? this.player.mute() : this.player.unMute();
     },
   },
@@ -93,6 +90,7 @@ export default {
     },
     song() {
       var song = JSON.parse(JSON.stringify(this.$store.getters.getSongName));
+      if (!song) return
       const name = song.slice(0, 30) + "...";
       return name;
     },

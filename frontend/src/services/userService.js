@@ -19,8 +19,6 @@ function saveUser(user) {
     return httpService.post('auth/signup', user)
 }
 
-
-
 function _saveUserToStorage() {
     sessionStorage.setItem(KEY, JSON.stringify(gUser))
 }
