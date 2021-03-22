@@ -86,7 +86,7 @@ export default {
     genreSelect,
   },
   created() {
-    this.newStation = stationService.getEmptystation();
+    this.newStation = stationService.getEmptyStation();
   },
 };
 </script>
