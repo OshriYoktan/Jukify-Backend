@@ -9,10 +9,7 @@ export const stationStore = {
     },
     mutations: {
         setStations(state, { stations }) {
-            const filteredStations = stations.filter(station => {
-                return station.name.toLowerCase().includes(state.filterBy)
-            })
-            state.stations = filteredStations
+            state.stations = stations
         },
         addToStation(state, { payload }) {
             const station = state.stations.find((s) => s._id === payload.stationId)
@@ -37,7 +34,7 @@ export const stationStore = {
     actions: {
         async loadStations(context) {
             try {
-                const stations = await stationService.query()
+                const stations = await stationService.query(context.state.filterBy)
                 context.commit({ type: 'setStations', stations })
             } catch {}
         },

@@ -16,7 +16,6 @@ export const stationService = {
     getStationIdxById,
     getEmptystation,
     removeSong,
-    addStationLike,
     askSearch,
 }
 
@@ -41,9 +40,13 @@ async function askSearch(txt) {
     }
 }
 
-async function query() {
+async function query(filterBy) {
     try {
-        return await storageService.query(KEY)
+        const stations = await storageService.query(KEY)
+        const filteredStations = stations.filter(station => {
+            return station.name.toLowerCase().includes(filterBy)
+        })
+        return await filteredStations   
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -72,14 +75,6 @@ async function getStationById(id) {
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
-}
-
-async function addStationLike(addLike) {
-    try {
-        const station = await storageService.get(KEY, addLike.station)
-        station.likes += addLike.num
-        await storageService.put(KEY, station)
-    } catch {}
 }
 
 async function getStationIdxById(id) {
