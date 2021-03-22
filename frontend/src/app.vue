@@ -7,7 +7,7 @@
         </div>
         <div>
           <router-link class="link" to="/explore">Explore</router-link> |
-          <router-link class="link" to="/create">Create station</router-link> |
+           <router-link class="link" to="/create">Create station</router-link> |
           <router-link class="link" to="/user">user</router-link>
         </div>
       </div>

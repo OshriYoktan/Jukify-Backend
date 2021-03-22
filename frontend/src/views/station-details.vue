@@ -22,9 +22,11 @@
         <button>Like</button>
       </div>
       <div class="search-songs-container row-layout-container">
-        <button v-if="!isSearch" @click="isSearch = !isSearch">Find songs</button>
+        <button v-if="!isSearch" @click="isSearch = !isSearch">
+          Find songs
+        </button>
         <button v-else @click="isSearch = !isSearch">Close</button>
-        
+
         <div class="search-songs row-layout-container">
           <form @submit.prevent="searchSongs" v-if="isSearch">
             <input
@@ -49,7 +51,7 @@
             :key="song._id"
           >
             {{ song.name }}
-            <button @click="removeSong(song._id)" style="color:red">🗑</button>
+            <button @click="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>
       </div>
@@ -88,13 +90,17 @@ export default {
   methods: {
     playVideo(id) {
       this.videoId = id;
-      this.$store.dispatch({ type: "setStation", currStation:this.currStation })
-      this.$store.dispatch({ type: "setVideoId", videoId:this.videoId })
-    //   this.$nextTick(() => {
-    //   this.player.playVideo();
-    // });
-    // this.playVideo(this.songId);
-    // this.songPlayer.songName = this.$store.getters.getSongName;
+      this.$store.dispatch({
+        type: "setStation",
+        currStation: this.currStation,
+      });
+      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
+      this.$root.$emit('startPlaySong'); 
+      //   this.$nextTick(() => {
+      //   this.player.playVideo();
+      // });
+      // this.playVideo(this.songId);
+      // this.songPlayer.songName = this.$store.getters.getSongName;
     },
     likes(likes) {
       return likes.toLocaleString();

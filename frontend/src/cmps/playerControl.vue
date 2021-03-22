@@ -30,7 +30,7 @@
 export default {
   data() {
     return {
-      songId: null,
+      // songId: null,
       songPlayer: {
         isPlaying: false,
         isMuted: false,
@@ -59,7 +59,7 @@ export default {
     async changeSong(dif) {
       const payload = { dif };
       await this.$store.dispatch({ type: "changeSong", payload });
-      this.songId = this.$store.getters.getSongId;
+      // this.songId = this.$store.getters.getSongId;
       this.$nextTick(() => {
         this.player.playVideo();
       });
@@ -77,13 +77,26 @@ export default {
     songs() {
       return this.$store.state.stationState.songs;
     },
+    songId(){
+      return this.$store.getters.getSongId;
+    }
+  },
+  mounted() {
+    this.$root.$on("startPlaySong", () => {
+      console.log("heyyy");
+      this.$nextTick(() => {
+        this.player.playVideo();
+      });
+      this.playVideo(this.songId);
+      this.songPlayer.songName = this.$store.getters.getSongName;
+    });
   },
   created() {
-    this.$nextTick(() => {
-      this.player.playVideo();
-    });
-    this.playVideo(this.songId);
-    this.songPlayer.songName = this.$store.getters.getSongName;
+    // this.$nextTick(() => {
+    //   this.player.playVideo();
+    // });
+    // this.playVideo(this.songId);
+    // this.songPlayer.songName = this.$store.getters.getSongName;
   },
 };
 </script>
