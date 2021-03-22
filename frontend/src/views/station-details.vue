@@ -92,10 +92,10 @@ export default {
   },
   methods: {
     playVideo(id) {
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
+      // this.$store.dispatch({
+      //   type: "setStation",
+      //   currStation: this.currStation,
+      // });
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",

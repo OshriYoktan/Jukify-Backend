@@ -48,7 +48,7 @@ export default {
   methods: {
     async togglePlay() {
       const playing = await this.$store.dispatch({ type: "togglePlay" });
-      this.songPlayer.isPlaying = this.$store.state.playerStore.songPlayer.isPlaying
+      this.songPlayer.isPlaying = this.$store.getters.getIsSongPlaying
       return playing ? this.player.pauseVideo() : this.player.playVideo();
     },
     async setSongVolume(vol) {
