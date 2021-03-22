@@ -10,7 +10,7 @@
       <button @click="changeSong(-1)">
         <font-awesome-icon icon="step-backward" />
       </button>
-      <button @click="togglePlay" v-if="!songPlayer.isPlaying">
+      <button @click="togglePlay" v-if="!$store.getters.getIsSongPlaying">
         <font-awesome-icon icon="play" />
       </button>
       <button @click="togglePlay" v-else>
@@ -21,7 +21,7 @@
       </button>
     </div>
     <div class="music-btns row-layout-container">
-      <button @click="muteSong" v-if="!songPlayer.isMuted"><font-awesome-icon icon="volume-mute" /></button>
+      <button @click="muteSong" v-if="!$store.getters.getIsSongMuted"><font-awesome-icon icon="volume-mute" /></button>
       <button @click="muteSong" v-else><font-awesome-icon icon="volume-up" /></button>
       <input
         type="range"
@@ -39,12 +39,8 @@
 export default {
   data() {
     return {
-      songId: null,
       songPlayer: {
-        isPlaying: false,
-        isMuted: false,
         volumeRange: 50,
-        songName: "",
       },
     };
   },
@@ -69,11 +65,10 @@ export default {
     async changeSong(dif) {
       const payload = { dif };
       await this.$store.dispatch({ type: "changeSong", payload });
-      this.songId = this.$store.getters.getSongId;
       this.$nextTick(() => {
         this.player.playVideo();
       });
-      this.songPlayer.songName = this.$store.getters.getSongName;
+      this.$store.getters.getSongName;
     },
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
@@ -89,18 +84,23 @@ export default {
     songs() {
       return this.$store.state.stationState.songs;
     },
+    songId(){
+      return this.$store.getters.getSongId;
+    },
     song() {
-      var song = JSON.parse(JSON.stringify(this.songPlayer.songName));
+      var song = JSON.parse(JSON.stringify(this.$store.getters.getSongName));
       const name = song.slice(0, 30) + '...'
       return name;
     },
   },
-  created() {
-    this.$nextTick(() => {
-      this.player.playVideo();
+  mounted() {
+    this.$root.$on("startPlaySong", () => {
+      this.$nextTick(() => {
+        this.player.playVideo();
+      });
+      this.playVideo(this.songId);
+      this.$store.getters.getSongName;
     });
-    this.playVideo(this.songId);
-    this.songPlayer.songName = this.$store.getters.getSongName;
   },
 };
 </script>

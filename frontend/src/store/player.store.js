@@ -17,6 +17,15 @@ export const playerStore = {
         getSongName(state) {
             return state.songPlayer.songName
         },
+        getIsSongPlaying(state) {
+            return state.songPlayer.isPlaying
+        },
+        getIsSongMuted(state) {
+            return state.songPlayer.isMuted
+        },
+        getSongVolume(state) {
+            return state.songPlayer.volumeRange
+        },
     },
     mutations: {
         togglePlay(state) {

@@ -71,7 +71,6 @@
         </ul>
       </div>
     </div>
-    <!-- <playerControl  v-if="videoId"  /> -->
   </section>
 </template>
 
@@ -104,11 +103,7 @@ export default {
         currStation: this.currStation,
       });
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      //   this.$nextTick(() => {
-      //   this.player.playVideo();
-      // });
-      // this.playVideo(this.songId);
-      // this.songPlayer.songName = this.$store.getters.getSongName;
+      this.$root.$emit('startPlaySong'); 
     },
     likes(likes) {
       return likes.toLocaleString();
