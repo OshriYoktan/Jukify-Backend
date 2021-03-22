@@ -2,6 +2,7 @@ import axios from 'axios'
 import { storageService } from './async-storage.service.js'
 import { gStations } from '../data/station'
 import { utilService } from './util.service.js'
+import { httpService } from './http.service.js'
 
 const API = 'AIzaSyAw9w3LHiai8ET2O2DIWA34fVjkrQBIanQ'
 const SONGS_KEY = 'songs-results'
@@ -41,20 +42,25 @@ async function askSearch(txt) {
 
 async function query(filterBy) {
     try {
-        const stations = await storageService.query(KEY)
-        if (!filterBy || (!filterBy.byName && !filterBy.byGenre)) return stations
-        var stationCopy = stations
-        if (filterBy.byName) {
-            stationCopy = stations.filter(s => {
-                return s.name.toLowerCase().includes(filterBy.byName)
-            })
-        } else {
-            if (filterBy.byGenre === 'all') return stations || stationCopy;
-            stationCopy = stationCopy.filter(s => {
-                return s.genres.includes(filterBy.byGenre.toLowerCase())
-            })
-        }
-        return stationCopy;
+        var query = '?'
+        if (filterBy.byName) query += 'n=' + filterBy.byName + '&'
+        if (filterBy.byGenre) query += 'g=' + filterBy.byGenre + '&'
+        return httpService.get(KEY + query, filterBy)
+        // return httpService.get('station', { params: filterBy })
+        // const stations = await storageService.query(KEY)
+        // if (!filterBy || (!filterBy.byName && !filterBy.byGenre)) return stations
+        // var stationCopy = stations
+        // if (filterBy.byName) {
+        //     stationCopy = stations.filter(s => {
+        //         return s.name.toLowerCase().includes(filterBy.byName)
+        //     })
+        // } else {
+        //     if (filterBy.byGenre === 'all') return stations || stationCopy;
+        //     stationCopy = stationCopy.filter(s => {
+        //         return s.genres.includes(filterBy.byGenre.toLowerCase())
+        //     })
+        // }
+        // return stationCopy;
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -62,27 +68,38 @@ async function query(filterBy) {
 
 async function save(station) {
     try {
-        if (station._id) return await storageService.put(KEY, station)
-        return await storageService.post(KEY, station)
+        if (station._id) {
+            return httpService.put('station/' + station._id, station)
+            // return axios.put(TOY_URL + toy._id, toy).then((res) => res.data);
+        } else {
+            return httpService.post('station', station)
+            // return axios.post(TOY_URL, toy).then((res) => res.data);
+        }
+        // if (station._id) return await storageService.put(KEY, station)
+        // return await storageService.post(KEY, station)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
 }
 
+
 function remove(stationId) {
     try {
-        return storageService.remove(stationId).then(res => res.data)
+        return httpService.delete('station/' + stationId)
+        // return storageService.remove(stationId).then(res => res.data)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
 }
 
 async function getStationById(id) {
-    try {
-        return await storageService.get(KEY, id)
-    } catch (err) {
-        console.log('Error from stationService - ', err);
-    }
+    return httpService.get('station/' + id)
+
+    // try {
+    //     return await storageService.get(KEY, id)
+    // } catch (err) {
+    //     console.log('Error from stationService - ', err);
+    // }
 }
 
 function getEmptystation() {
@@ -95,6 +112,8 @@ function getEmptystation() {
         genres: []
     }
 }
+
+
 
 async function addSongToStation(payload) {
     try {
