@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="station-play-like row-layout-container">
-        <button>Play</button>
+        <button @click="playVideo()">Play</button>
         <button @click="addStationLike">Like</button>
       </div>
       <div class="search-songs-container row-layout-container">
@@ -49,7 +49,7 @@
         <ul>
           <li v-for="song in currStation.songs" :key="song._id">
             <div @click="playVideo(song.videoId)">{{ song.name }}</div>
-            <button @click="removeSong(song._id)" style="color: red">🗑</button>
+            <button @click.prevent="removeSong(song._id)" style="color: red">🗑</button>
           </li>
         </ul>
       </div>
@@ -81,19 +81,17 @@ export default {
       isSearch: false,
       search: "",
       videoId: null,
-      genreCount: 1,
       isLiked: false,
-      isMenu: false,
     };
   },
   methods: {
     playVideo(id) {
+      if (!id) id = this.currStation.songs[0].videoId
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
         currStation: this.currStation,
       });
-      this.$store.state.playerStore.songPlayer.isPlaying = false
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
       this.$root.$emit("startPlaySong");
     },
@@ -106,13 +104,13 @@ export default {
         this.foundSongs = songs;
       } catch {}
     },
-    async removeSong(id) {
+    async removeSong(songId) {
       try {
-        const payload = {
-          id,
-          stationId: this.station._id,
+        const songRemove = {
+          songId,
+          stationId: this.currStation._id,
         };
-        await this.$store.dispatch({ type: "removeSong", payload });
+        await this.$store.dispatch({ type: "removeSong", songRemove });
       } catch {}
     },
     async addToStation(idx) {
@@ -152,9 +150,10 @@ export default {
   },
   async created() {
     try {
+      await this.$store.dispatch({ type: "loadStations" });
       const id = this.$route.params.stationName;
-      const station = await stationService.getStationById(id);
-      this.currStation = station;
+      this.$store.dispatch({ type: "setCurrStation", id });
+      this.currStation = this.$store.state.stationStore.currStation;
     } catch {}
   },
   components: {
