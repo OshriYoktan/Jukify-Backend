@@ -14,7 +14,7 @@ export const stationService = {
     save,
     addSongToStation,
     getStationById,
-    getEmptystation,
+    getEmptyStation,
     removeSong,
     askSearch,
 }
@@ -40,27 +40,12 @@ async function askSearch(txt) {
     }
 }
 
-async function query(filterBy) {
+async function query(filterBy = {}) {
     try {
-        // var query = '?'
-        // if (filterBy.byName) query += 'n=' + filterBy.byName + '&'
-        // if (filterBy.byGenre) query += 'g=' + filterBy.byGenre + '&'
-        return httpService.get(KEY)
-            // return httpService.get('station', { params: filterBy })
-            // const stations = await storageService.query(KEY)
-            // if (!filterBy || (!filterBy.byName && !filterBy.byGenre)) return stations
-            // var stationCopy = stations
-            // if (filterBy.byName) {
-            //     stationCopy = stations.filter(s => {
-            //         return s.name.toLowerCase().includes(filterBy.byName)
-            //     })
-            // } else {
-            //     if (filterBy.byGenre === 'all') return stations || stationCopy;
-            //     stationCopy = stationCopy.filter(s => {
-            //         return s.genres.includes(filterBy.byGenre.toLowerCase())
-            //     })
-            // }
-            // return stationCopy;
+        var query = '?'
+        if (filterBy.byName) query += 'name=' + filterBy.byName + '&'
+        if (filterBy.byGenre) query += 'genre=' + filterBy.byGenre + '&'
+        return httpService.get(KEY + query)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -92,7 +77,7 @@ async function getStationById(id) {
     }
 }
 
-function getEmptystation() {
+function getEmptyStation() {
     return {
         name: '',
         imgUrl: '',
@@ -135,8 +120,6 @@ async function removeSong(payload) {
         console.log('Error from stationService - ', err);
     }
 }
-
-_createStations()
 
 function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))
