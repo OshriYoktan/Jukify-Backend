@@ -35,7 +35,12 @@ export const stationStore = {
         },
         shuffleSongs(state, { stationShuffled }) {
             const station = state.stations.find((s) => s._id === stationShuffled._id)
-            station = stationShuffled
+            station.songs = stationShuffled.songs
+        },
+        removeStation(state, { stationId }) {
+            const idx = state.stations.findIndex((s) => s._id === stationId)
+            console.log('idx:', idx)
+            state.stations.splice(idx, 1)
         },
     },
     actions: {
@@ -70,11 +75,11 @@ export const stationStore = {
                 return stationToAdd._id;
             } catch {}
         },
-        async removeStation({ commit }, { payload }) {
+        async removeStation({ commit }, { stationId }) {
+            console.log('stationId:', stationId)
             try {
-                // const stationToRemove = await stationService.save(payload._id)
-                // commit({ type: 'addStation', stationToAdd })
-                // return station._id;
+                await stationService.remove(stationId)
+                commit({ type: 'removeStation', stationId })
             } catch {}
         },
         async addStationLike({ commit }, { addLike }) {

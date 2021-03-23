@@ -82,7 +82,20 @@
                     }
                 }
                  :nth-child(2) {
-                    >* {
+                     :first-child {
+                        &:hover {
+                            color: $clr1;
+                        }
+                    }
+                    &:hover {
+                        color: $clr1;
+                    }
+                }
+                 :nth-child(3) {
+                    &:hover {
+                        color: red;
+                    }
+                     :first-child {
                         &:hover {
                             color: red;
                         }
@@ -212,7 +225,7 @@
                     align-items: center;
                     height: 50px;
                     padding: 5px 10px;
-                    margin: 5spx;
+                    margin: 5px;
                     border: 1px solid $clr4;
                     transition: .3s;
                     cursor: pointer;

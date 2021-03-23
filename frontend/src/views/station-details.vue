@@ -16,13 +16,13 @@
           </div>
         </div>
         <div class="menu-container">
-          <span class="station-menu" @click="removeStation">⋮</span>
+          <span class="station-menu">⋮</span>
           <span class="station-menu-delete" @click="removeStation">🗑</span>
         </div>
       </div>
       <div class="station-play-like row-layout-container">
-        <font-awesome-icon icon="play" @click="playVideo" />
-        <button @click="shuffleSongs">Shuffle</button>
+        <font-awesome-icon icon="play" @click="playVideo(null)" />
+        <font-awesome-icon icon="random" @click="shuffleSongs" />
         <font-awesome-icon
           v-if="!isLiked"
           icon="heart"
@@ -74,7 +74,7 @@
           >
             <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
             <div v-else>{{ song.name }}</div>
-            <button @click.prevent="removeSong(song._id)" style="color: red">
+            <button @click.stop="removeSong(song._id)" style="color: red">
               🗑
             </button>
           </li>
@@ -178,11 +178,27 @@ export default {
     },
     async removeStation() {
       try {
-        // await this.$store.dispatch({
-        //   type: "removeStation",
-        //   payload: this.currStation._id,
-        // });
-      } catch {}
+        await this.$confirm(
+          "Are you sure you want to delete this station?",
+          "Warning",
+          {
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            type: "warning",
+          }
+        );
+        const stationId = this.currStation._id;
+        await this.$store.dispatch({
+          type: "removeStation",
+          stationId,
+        });
+        this.$message({ type: "success", message: "Station deleted successfuly!" });
+        this.$router.push("/explore");
+      } catch (err) {
+        if (err === 'cancel') return
+        this.$message({ type: "error", message: "Station could'nt be deleted, please try again later." });
+
+      }
     },
     async addStationLike() {
       try {
@@ -207,9 +223,9 @@ export default {
     },
     async shuffleSongs() {
       try {
-        const stationId = this.currStation._id
+        const stationId = this.currStation._id;
         await this.$store.dispatch({ type: "shuffleSongs", stationId });
-
+        this.playVideo();
       } catch {}
     },
   },

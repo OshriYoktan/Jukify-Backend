@@ -70,7 +70,7 @@ export default {
     },
     async addStation() {
       try {
-        if (!this.imgSrc) this.imgSrc = "../assets/img/no-img-jukify.jpg";
+        if (!this.imgSrc) this.imgSrc =  'https://lh3.googleusercontent.com/proxy/fCs7rHfpNqF3aMkYTFBPLTRgZfc2SASKWdg6KQaJf7sFvGKHrveit2fFDz-NP59Cyc4aRHXE12U-s_xfoN4_Vsfm5rgL3i9XNE4ZPypr9fa3DMJ_Qpo1FLbmC1MNaFeQSEs'
         this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;
