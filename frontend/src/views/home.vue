@@ -1,5 +1,6 @@
 <template>
-  <div class="home-page column-layout-container">
+
+  <div class="home-page-container column-layout-container">
     <!-- <div v-if="isLoading" class="loading">
       <img
         class="jukify-loader"

@@ -31,6 +31,8 @@ export const stationStore = {
         },
         addStationLike(state, { addLike }) {
             const station = state.stations.find((s) => s._id === addLike.station)
+            console.log('addLike.num:', addLike.num)
+            console.log('station.likes:', station.likes)
             station.likes += addLike.num
         },
     },
@@ -47,7 +49,6 @@ export const stationStore = {
             } catch {}
         },
         async removeSong({ commit }, { songRemove }) {
-            console.log('songRemove:', songRemove)
             try {
                 await stationService.removeSong(songRemove)
                 commit({ type: 'removeSong', songRemove })
