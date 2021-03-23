@@ -80,12 +80,13 @@ async function getById(stationId) {
 
 async function update(station) {
     try {
+        const likes = parseInt(station.likes)
         const stationToSave = {
             _id: ObjectId(station._id),
             name: station.name,
             desc: station.desc,
             imgUrl: station.imgUrl,
-            likes: station.likes,
+            likes: likes,
             genres: station.genres,
             songs: station.songs
         }
