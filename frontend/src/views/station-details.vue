@@ -67,7 +67,7 @@
       </div>
     </div>
     <div class="chat-room column-layout-container">
-      <h1>dsvsbdbn</h1>
+      <station-chat :currStation="currStation" />
       <h1>Chat Room</h1>
     </div>
     <div class="songs-container row-layout-container">
@@ -105,6 +105,7 @@
 <script>
 import { stationService } from "../services/station.service";
 import playerControl from "../cmps/playerControl.vue";
+import StationChat from '../cmps/station-chat.vue';
 export default {
   name: "station-details",
   data() {
@@ -255,6 +256,7 @@ export default {
   },
   components: {
     playerControl,
+    StationChat,
   },
 };
 </script>
