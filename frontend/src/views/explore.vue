@@ -11,7 +11,7 @@
       <h1>Explore world music</h1>
       <filter-stations />
     </div>
-    <div class="station-card-container row-layout-container">
+    <div class="station-list-container row-layout-container">
       <station-list @loader="loading" />
     </div>
   </div>

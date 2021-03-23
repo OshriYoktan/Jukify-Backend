@@ -63,3 +63,9 @@ iframe {
     max-width: 0px;
     height: 0;
 }
+
+textarea {
+    &:focus {
+        outline: none;
+    }
+}

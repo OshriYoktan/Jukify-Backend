@@ -39,7 +39,6 @@ export const stationStore = {
         },
         removeStation(state, { stationId }) {
             const idx = state.stations.findIndex((s) => s._id === stationId)
-            console.log('idx:', idx)
             state.stations.splice(idx, 1)
         },
     },
@@ -76,7 +75,6 @@ export const stationStore = {
             } catch {}
         },
         async removeStation({ commit }, { stationId }) {
-            console.log('stationId:', stationId)
             try {
                 await stationService.remove(stationId)
                 commit({ type: 'removeStation', stationId })
