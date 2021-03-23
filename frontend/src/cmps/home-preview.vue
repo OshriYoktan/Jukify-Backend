@@ -3,15 +3,8 @@
     class="link station-card column-layout-container"
     :to="'/details/' + station._id"
   >
-    <img
-      :src="station.imgUrl"
-      :alt="station.name + ' image, cold\'nt found.'"
-    />
+    <img :src="station.imgUrl" />
     <h2>{{ showName(station.name) }}</h2>
-    <div class="station-genre-container column-layout-container">
-      <h4>{{ station.genres[0] }}</h4>
-      <h4>{{ station.genres[1] }}</h4>
-    </div>
     <p>
       <font-awesome-icon icon="heart" />
       {{ this.likesToShow }}

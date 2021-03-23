@@ -1,7 +1,29 @@
 <template>
   <section>
+    <div class="login" v-if="!$store.state.userStore.user">
+      <div v-if="!isSignup">
+        <button @click="toLogin">Login</button>
+      </div>
+      <form v-if="isLogin" @submit.prevent="login">
+        <input
+          type="text"
+          v-model="userLogin.username"
+          placeholder="Enter UserName"
+        />
+        <input
+          type="password"
+          v-model="userLogin.password"
+          placeholder="Enter Password"
+        />
+        <button>login</button>
+      </form>
+      <!-- <button v-if="$store.getters.getUser" @click="logout">logout</button> -->
+    </div>
     <div class="sign-up" v-if="!$store.state.userStore.user">
-      <form @submit.prevent="signUp">
+      <div v-if="!isLogin">
+        <button @click="toSignup">Sign-Up</button>
+      </div>
+      <form v-if="isSignup" @submit.prevent="signup">
         <input
           type="text"
           v-model="userSignup.fullname"
@@ -20,23 +42,7 @@
         <button>Sign-Up</button>
       </form>
     </div>
-
-    <div class="login" v-if="!$store.state.userStore.user">
-      <form @submit.prevent="login">
-        <input
-          type="text"
-          v-model="userSignin.username"
-          placeholder="Enter UserName"
-        />
-        <input
-          type="password"
-          v-model="userSignin.password"
-          placeholder="Enter Password"
-        />
-        <button>login</button>
-      </form>
-      <!-- <button v-if="$store.getters.getUser" @click="logout">logout</button> -->
-    </div>
+    <button @click="closeAll">Back</button>
     <div v-if="$store.getters.getUser">{{ $store.getters.getUser }}</div>
     <div v-else>{{ $store.getters.getMsgToUser }}</div>
     <button v-if="$store.state.userStore.user" @click="logout">logout</button>
@@ -53,14 +59,32 @@ export default {
         username: "",
         password: "",
       },
-      userSignin: {
+      userLogin: {
         username: "",
         password: "",
       },
+        isLogin: false,
+        isSignup: false,
     };
   },
   methods: {
-    async signUp() {
+    toLogin() {
+      this.isLogin = true;
+      this.isSignup = false;
+    },
+    toSignup() {
+      this.isLogin = false;
+      this.isSignup = true;
+    },
+    toLogout() {
+      this.isLogin = false;
+      this.isSignup = true;
+    },
+    closeAll() {
+      this.isLogin = false;
+      this.isSignup = false;
+    },
+    async signup() {
       try {
         if (
           this.userSignup.fullname === "" ||
@@ -68,7 +92,7 @@ export default {
           this.userSignup.password === ""
         )
           throw error;
-        await this.$store.dispatch({ type: "signUp", user: this.userSignup });
+        await this.$store.dispatch({ type: "signup", user: this.userSignup });
         this.$message({ type: "success", message: "congrads, you'r in" });
         this.userSignup = {
           fullname: "",
@@ -84,18 +108,14 @@ export default {
     },
     async login() {
       try {
-        if (
-          this.userSignin.username === "" ||
-          this.userSignin.password === ""
-        )
+        if (this.userLogin.username === "" || this.userLogin.password === "")
           throw error;
-        await this.$store.dispatch({ type: "login", user: this.userSignin });
+        await this.$store.dispatch({ type: "login", user: this.userLogin });
         this.$message({ type: "success", message: "logged in seccesfully" });
-        this.userSignin = {
+        this.userLogin = {
           username: "",
           password: "",
         };
-        
       } catch {
         this.$message.error({
           type: "error",
@@ -105,15 +125,11 @@ export default {
     },
     async logout() {
       try {
-        await this.$confirm(
-          "Are you sure you want to log our?",
-          "Warning",
-          {
-            confirmButtonText: "Sure",
-            cancelButtonText: "Cancle",
-            type: "warning",
-          }
-        );
+        await this.$confirm("Are you sure you want to log our?", "Warning", {
+          confirmButtonText: "Sure",
+          cancelButtonText: "Cancle",
+          type: "warning",
+        });
         await this.$store.dispatch({ type: "logout" });
         this.$message({
           type: "success",

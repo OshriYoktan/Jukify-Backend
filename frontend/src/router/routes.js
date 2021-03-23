@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import home from '../views/home.vue'
-import userProfile from '../views/user-profile.vue'
+import profileProfile from '../views/profile.vue'
 import explore from '../views/explore.vue'
 import stationDetails from '../views/station-details.vue'
 import stationCreate from '../views/station-create.vue'
@@ -14,9 +14,9 @@ const routes = [{
         component: home
     },
     {
-        path: '/user',
-        name: 'user',
-        component: userProfile
+        path: '/profile',
+        name: 'profile',
+        component: profileProfile
     },
     {
         path: '/explore',

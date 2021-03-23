@@ -1,6 +1,7 @@
-export const gStations = [{
+const gStations = [{
         name: 'The Beatles',
         desc: 'The Beatles were an English rock band, they are often publicised as leaders of the era\'s youth and sociocultural movements.',
+        msg: [],
         imgUrl: 'https://upload.wikimedia.org/wikipedia/he/8/86/WiththeBeatles.jpg',
         likes: 55369,
         genres: ['band', 'blues'],
@@ -27,6 +28,7 @@ export const gStations = [{
     {
         name: 'Omer Adam',
         desc: 'an American-Israeli singer whose music fuses elements of eastern "Mizrahi" and Western pop instrumentation.',
+        msg: [],
         imgUrl: 'https://yt3.ggpht.com/ytc/AAUvwnhL1dgkSNJKfaxkujXDx99GugpWSCtK6WvQ5rjcYQ=s176-c-k-c0x00ffffff-no-rj',
         likes: 11222,
         genres: ['mizrahit', 'yam tichoni', 'israeli'],
@@ -53,6 +55,7 @@ export const gStations = [{
     {
         name: 'Eminem',
         desc: 'American rapper, songwriter, and record producer. Critically acclaimed as one of the greatest rappers of all time.',
+        msg: [],
         imgUrl: 'https://images1.calcalist.co.il/PicServer3/2019/10/27/942787/15_l.jpg',
         likes: 645422,
         genres: ['hip-hop', 'rap'],
@@ -79,6 +82,7 @@ export const gStations = [{
     {
         desc: "Goshen is one of our country’s greatest success stories in recent times.",
         genres: ["israeli"],
+        msg: [],
         imgUrl: "https://www.tedy.co.il/f-users/user_106098/website_106273/images/nathan-shows.png",
         likes: 0,
         name: "Nathan Goshen",
@@ -87,6 +91,7 @@ export const gStations = [{
     {
         desc: "An Israeli singer who sings in the Mizrahi style and considered one of the most successful singers of this genre in Israel.",
         genres: ["israeli"],
+        msg: [],
         imgUrl: "https://i.scdn.co/image/5a2bb382a625f10f2467950202c0729711d6878b",
         likes: 0,
         name: "Eyal Golan",
@@ -95,6 +100,7 @@ export const gStations = [{
     {
         desc: "An Israeli \"Mizrahi\" pop singer-songwriter and composer. He is also currently serving as a judge for the first season of The X Factor Israel.",
         genres: ["israeli"],
+        msg: [],
         imgUrl: 'https://i1.sndcdn.com/artworks-000003723094-kumqrt-t500x500.jpg',
         likes: 0,
         name: "Moshe Peretz",
@@ -103,6 +109,7 @@ export const gStations = [{
     {
         desc: "An Israeli singer-songwriter and record producer.",
         genres: ["israeli"],
+        msg: [],
         imgUrl: "https://i1.sndcdn.com/artworks-lLNtEapCg1rjJrfy-BSqvcw-t500x500.jpg",
         likes: 0,
         name: "Eden Hasson",
@@ -111,6 +118,7 @@ export const gStations = [{
     {
         desc: "an American rapper and actor who came to embody the 1990s gangsta-rap aesthetic.",
         genres: ["hip-hop"],
+        msg: [],
         imgUrl: "https://i1.sndcdn.com/artworks-000559377156-n3hr78-t500x500.jpg",
         likes: 0,
         name: "2Pac",
@@ -119,6 +127,7 @@ export const gStations = [{
     {
         desc: "An American rapper and songwriter who became one of the best-known figures in gangsta rap in the 1990s.",
         genres: ["hip-hop"],
+        msg: [],
         imgUrl: "https://i.pinimg.com/236x/f5/b9/a7/f5b9a75eefba665487a33085a1b4a316--hiphop-music-artists.jpg",
         likes: 0,
         name: "Snoop Dogg",
@@ -127,6 +136,7 @@ export const gStations = [{
     {
         desc: "An Australian rock band, formed in 1973 by brothers Malcolm and Angus Young.",
         genres: ["band"],
+        msg: [],
         imgUrl: "https://cdn.squaremile.com/gallery/5ba8a91e461fc.jpeg",
         likes: 0,
         name: "AC/DC",
@@ -135,6 +145,7 @@ export const gStations = [{
     {
         desc: "An American rapper, record producer and entrepreneur.",
         genres: ["hip-hop"],
+        msg: [],
         imgUrl: "https://www.beatnik.co.il/wp-content/uploads/2018/07/JAY-Z-IN-MY-LIFETIME-2LP.jpg",
         likes: 0,
         name: "Jay Z",
@@ -143,6 +154,7 @@ export const gStations = [{
     {
         desc: "An  American producer, rapper, and fashion designer who parlayed his production success in the late 1990s.",
         genres: ["hip-hop"],
+        msg: [],
         imgUrl: "https://images.businessoffashion.com/profiles/asset/1797/43897e2e4a6d155d72dd9df352017b546ef9e229.jpeg?auto=format%2Ccompress&fit=crop&",
         likes: 0,
         name: "Kanye West",
@@ -151,6 +163,7 @@ export const gStations = [{
     {
         desc: "An English new wave band active during the late 1970s and early 1980s.",
         genres: ["band"],
+        msg: [],
         imgUrl: "https://dt7v1i9vyp3mf.cloudfront.net/styles/news_large/s3/imagelibrary/C/ClassicTracks_03-0113-8KKYayUUFRDDp64pAKKclnqGl4T_k0QW.jpg",
         likes: 0,
         name: "Adam & the ants",
@@ -159,6 +172,7 @@ export const gStations = [{
     {
         desc: "An English rock band formed in 2002 in High Green, a suburb of Sheffield.",
         genres: ["band"],
+        msg: [],
         imgUrl: "https://cdn.pastemagazine.com/www/articles/ARCTICMONKEYS2main.jpg",
         likes: 0,
         name: "Arctic Monkeys",
@@ -167,6 +181,7 @@ export const gStations = [{
     {
         desc: "An English post-punk band, formed in Northampton, England in 1978.",
         genres: ["band"],
+        msg: [],
         imgUrl: "https://1yd4xt11c7is39w2ckdxdls5-wpengine.netdna-ssl.com/wp-content/uploads/2018/01/Bauhaus-by-Graham-Trott-FB.jpg",
         likes: 0,
         name: "Bauhaus",

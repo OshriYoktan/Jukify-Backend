@@ -3,8 +3,8 @@
     <div v-if="!stations.length" class="list-empty column-layout-container">
       <h1>No results found for this search.</h1>
       <p>
-        Please make sure youre words are spelled correctly or use less or
-        different keywords.
+        Please make sure you're words are spelled correctly<br />
+        or use less or different keywords.
       </p>
     </div>
     <div

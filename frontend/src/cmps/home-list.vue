@@ -1,17 +1,17 @@
 <template>
-  <li class="home-station-song row-layout-container">
-    <div
+  <ul class="home-station-song row-layout-container">
+    <li
       class="home-station-card-container"
       v-for="station in stations"
       :key="station._id"
     >
-      <station-preview :station="station" />
-    </div>
-  </li>
+      <home-preview :station="station" />
+    </li>
+  </ul>
 </template>
  
 <script>
-import stationPreview from "../cmps/stationPreview.vue";
+import homePreview from "../cmps/home-preview.vue";
 export default {
   props: ["genre"],
   name: "station-list",
@@ -35,7 +35,7 @@ export default {
     this.checkGenre();
   },
   components: {
-    stationPreview,
+    homePreview,
   },
 };
 </script>
