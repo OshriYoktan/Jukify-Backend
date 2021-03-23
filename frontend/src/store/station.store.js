@@ -39,7 +39,6 @@ export const stationStore = {
         },
         removeStation(state, { stationId }) {
             const idx = state.stations.findIndex((s) => s._id === stationId)
-            console.log('idx:', idx)
             state.stations.splice(idx, 1)
         },
     },
@@ -62,7 +61,6 @@ export const stationStore = {
             } catch {}
         },
         async addToStation({ commit }, { payload }) {
-            console.log('action - ', payload)
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
                 commit({ type: 'addToStation', payload: { stationId: payload.stationId, song: songToAdd } })

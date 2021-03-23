@@ -62,6 +62,7 @@
       </div>
     </div>
     <div class="chat-room column-layout-container">
+      <h1>dsvsbdbn</h1>
       <h1>Chat Room</h1>
     </div>
     <div class="songs-container row-layout-container">
@@ -202,7 +203,7 @@ export default {
     },
     async addStationLike() {
       try {
-        const num = this.isLiked ? 1 : -1;
+        const num = this.isLiked ? -1 : 1;
         const addLike = {
           station: this.currStation._id,
           num,
