@@ -67,7 +67,7 @@
       </div>
     </div>
     <div class="chat-room column-layout-container">
-      <h1>Chat Room</h1>
+      <station-chat :currStation="currStation" />
     </div>
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
@@ -104,6 +104,7 @@
 <script>
 import { stationService } from "../services/station.service";
 import playerControl from "../cmps/playerControl.vue";
+import StationChat from '../cmps/station-chat.vue';
 export default {
   name: "station-details",
   data() {
@@ -212,7 +213,7 @@ export default {
     },
     async addStationLike() {
       try {
-        const num = this.isLiked ? 1 : -1;
+        const num = this.isLiked ? -1 : 1;
         const addLike = {
           station: this.currStation._id,
           num,
@@ -254,6 +255,7 @@ export default {
   },
   components: {
     playerControl,
+    StationChat,
   },
 };
 </script>

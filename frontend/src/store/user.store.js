@@ -1,11 +1,12 @@
 
 import { userService } from '../services/userService.js'
+import { socketService, SOCKET_EMIT_USER_WATCH, SOCKET_EVENT_USER_UPDATED } from '../services/socket.service.js'
 
 
 export const userStore = {
     strict: true,
     state: {
-        user: userService.getLoggedinUser(),
+        user: userService.getLoggedinUser()||'guest',
         msgToUser: null
     },
     getters: {

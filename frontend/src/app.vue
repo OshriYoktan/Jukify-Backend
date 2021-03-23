@@ -24,10 +24,12 @@
 </template>
 
 <script>
+import {socketService} from "./services/socket.service.js";
 import playerControl from "./cmps/playerControl.vue";
 export default {
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
+    socketService.setup()    
   },
   components: {
     playerControl,

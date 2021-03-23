@@ -39,7 +39,6 @@ async function addStation(req, res) {
         res.send(addedStation)
 
     } catch (err) {
-        console.log(err)
         logger.error('Failed to add station', err)
         res.status(500).send({ err: 'Failed to add station' })
     }
