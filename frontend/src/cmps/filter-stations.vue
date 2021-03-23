@@ -9,7 +9,7 @@
       />
     </div>
     <div class="filter-genre-container">
-      <button :class="isClicked('All')" @click="genreSelect('All')">All</button>
+      <button :class="isClicked('all')" @click="genreSelect('all')">All</button>
       <button
         v-for="(genre, idx) in genres"
         :key="idx"
@@ -18,9 +18,6 @@
       >
         {{ genre }}
       </button>
-    </div>
-    <div v-if="genre">
-      <h3>{{ showGenre }}</h3>
     </div>
   </div>
 </template>
@@ -43,7 +40,7 @@ export default {
     },
     genreSelect(genre) {
       this.genre = genre;
-      this.filterBy.byGenre = genre;
+      this.filterBy.byGenre = genre.toLowerCase();
       this.filterSong();
     },
     isClicked(genre) {

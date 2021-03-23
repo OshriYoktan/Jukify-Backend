@@ -1,10 +1,10 @@
 <template>
   <div class="station-create-container column-layout-container">
-    <div>
+    <div class="create-header">
       <h1>Create new station!</h1>
     </div>
     <div class="form-container row-layout-container">
-      <div>
+      <div class="left-side-container column-layout-container">
         <div class="img-container">
           <img v-if="!imgSrc" src="../assets/img/no-img-jukify.jpg" />
           <img v-else :src="imgSrc" />
@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="right-side-container column-layout-container">
         <form @submit.prevent="addStation">
           <input
             type="text"

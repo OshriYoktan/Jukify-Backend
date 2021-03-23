@@ -91,8 +91,10 @@ function getEmptyStation() {
 }
 
 async function addSongToStation(payload) {
+    console.log('service -', payload)
     try {
         const song = payload.selectedSong
+        console.log('song:', song)
         const station = await getStationById(payload.stationId)
         const songToAdd = {
             _id: utilService.makeId(),
@@ -104,7 +106,8 @@ async function addSongToStation(payload) {
             publishAt: song.snippet.publishedAt,
         };
         station.songs.push(songToAdd)
-        return await save(station);
+        await save(station);
+        return songToAdd;
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -124,9 +127,7 @@ async function removeSong(songRemove) {
 async function addStationLike(stationLiked) {
     try {
         var station = await getStationById(stationLiked.station)
-        console.log('station:', station)
-        station.likes += stationLiked
-        console.log('station.likes:', station.likes)
+        station.likes += stationLiked.num
         return await save(station);
     } catch (err) {
         console.log('Error from stationService - ', err);

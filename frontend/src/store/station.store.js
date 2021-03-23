@@ -17,11 +17,11 @@ export const stationStore = {
             state.currStation = station;
         },
         addToStation(state, { payload }) {
+            console.log('mutation -', payload)
             const station = state.stations.find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
         },
         removeSong(state, { songRemove }) {
-            console.log('songRemove:', songRemove)
             const station = state.stations.find((s) => s._id === songRemove.stationId)
             const idx = station.songs.findIndex((s) => s._id === songRemove.songId)
             station.songs.splice(idx, 1)
@@ -54,6 +54,7 @@ export const stationStore = {
             } catch {}
         },
         async addToStation({ commit }, { payload }) {
+            console.log('action - ', payload)
             try {
                 const songToAdd = await stationService.addSongToStation(payload)
                 commit({ type: 'addToStation', payload: { stationId: payload.stationId, song: songToAdd } })
@@ -62,6 +63,7 @@ export const stationStore = {
         async addStation({ commit }, { station }) {
             try {
                 const stationToAdd = await stationService.save(station)
+                console.log('action - after service -:', stationToAdd)
                 commit({ type: 'addStation', stationToAdd })
                 return station._id;
             } catch {}

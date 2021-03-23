@@ -41,8 +41,5 @@ export default {
     stationList,
     filterStations,
   },
-  created() {
-    console.log(this.genres);
-  },
 };
 </script>

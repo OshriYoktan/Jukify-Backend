@@ -26,7 +26,7 @@
       </div>
       <div class="search-songs-container row-layout-container">
         <button v-if="!isSearch" @click="isSearch = !isSearch">
-          Find songs
+          Add songs
         </button>
         <button v-else @click="isSearch = !isSearch">Close</button>
         <div class="search-songs row-layout-container">
@@ -47,22 +47,28 @@
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
         <ul>
-          <li @click="playVideo(song.videoId)" v-for="song in currStation.songs" :key="song._id">
+          <li
+            @click="playVideo(song.videoId)"
+            v-for="song in currStation.songs"
+            :key="song._id"
+          >
             <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
             <div v-else>{{ song.name }}</div>
-            <button @click.prevent="removeSong(song._id)" style="color: red">🗑</button>
+            <button @click.prevent="removeSong(song._id)" style="color: red">
+              🗑
+            </button>
           </li>
         </ul>
       </div>
       <div v-if="foundSongs && isSearch" class="songs-result-container">
         <ul>
-          <h3>Songs:</h3>
           <li
             @click="addToStation(idx)"
             v-for="(song, idx) in foundSongs"
             :key="idx"
           >
-            {{ song.snippet.title }}
+            {{ songResaultNameDisplay(song.snippet.title) }}
+            <button>➕</button>
           </li>
         </ul>
       </div>
@@ -87,7 +93,7 @@ export default {
   },
   methods: {
     playVideo(id) {
-      if (!id) id = this.currStation.songs[0].videoId
+      if (!id) id = this.currStation.songs[0].videoId;
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
@@ -107,12 +113,30 @@ export default {
     },
     async removeSong(songId) {
       try {
+        await this.$confirm(
+          "Are you sure you want to delete this song?",
+          "Warning",
+          {
+            confirmButtonText: "Sure",
+            cancelButtonText: "Cancel",
+            type: "warning",
+          }
+        );
         const songRemove = {
           songId,
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "removeSong", songRemove });
-      } catch {}
+          this.$message({
+            type: "success",
+            message: "Song deleted successfuly!",
+          });
+      } catch {
+        this.$message({
+          type: "error",
+          message: "Song could'nt be deleted, please try again later.",
+        });
+      }
     },
     async addToStation(idx) {
       try {
@@ -121,8 +145,15 @@ export default {
           selectedSong,
           stationId: this.currStation._id,
         };
+        console.log("selectedSong:", selectedSong);
         await this.$store.dispatch({ type: "addToStation", payload });
-      } catch {}
+        this.$message({ type: "success", message: "Song added successfuly!" });
+      } catch {
+        this.$message({
+          type: "error",
+          message: "Song could'nt be added, please try again later.",
+        });
+      }
     },
     async removeStation() {
       try {
@@ -145,9 +176,14 @@ export default {
     },
     songNameDisplay(song) {
       var songName = JSON.parse(JSON.stringify(song.name));
-      const name = songName.slice(0, 40) + "...";
+      const name =
+        song.name.length >= 45 ? songName.slice(0, 45) + "..." : song.name;
       return name;
-    }
+    },
+    songResaultNameDisplay(song) {
+      const name = song.length >= 50 ? song.slice(0, 50) + "..." : song;
+      return name;
+    },
   },
   computed: {
     genres() {
