@@ -21,7 +21,6 @@ export const stationStore = {
             station.songs.push(payload.song)
         },
         removeSong(state, { songRemove }) {
-            console.log('songRemove:', songRemove)
             const station = state.stations.find((s) => s._id === songRemove.stationId)
             const idx = station.songs.findIndex((s) => s._id === songRemove.songId)
             station.songs.splice(idx, 1)
@@ -31,6 +30,8 @@ export const stationStore = {
         },
         addStationLike(state, { addLike }) {
             const station = state.stations.find((s) => s._id === addLike.station)
+            console.log('addLike.num:', addLike.num)
+            console.log('station.likes:', station.likes)
             station.likes += addLike.num
         },
     },
@@ -47,7 +48,6 @@ export const stationStore = {
             } catch {}
         },
         async removeSong({ commit }, { songRemove }) {
-            console.log('songRemove:', songRemove)
             try {
                 await stationService.removeSong(songRemove)
                 commit({ type: 'removeSong', songRemove })

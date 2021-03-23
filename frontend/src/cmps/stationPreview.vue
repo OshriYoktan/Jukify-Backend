@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     clicked(station) {
-      console.log(station);
     },
     sendStation() {},
     likes(likes) {

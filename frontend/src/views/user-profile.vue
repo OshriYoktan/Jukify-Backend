@@ -4,17 +4,17 @@
       <form @submit.prevent="signUp">
         <input
           type="text"
-          v-model="user.fullname"
+          v-model="userSignup.fullname"
           placeholder="Enter Full Name:"
         />
         <input
           type="text"
-          v-model="user.username"
+          v-model="userSignup.username"
           placeholder="Enter UserName"
         />
         <input
           type="password"
-          v-model="user.password"
+          v-model="userSignup.password"
           placeholder="Enter Password"
         />
         <button>Sign-Up</button>
@@ -25,20 +25,20 @@
       <form @submit.prevent="login">
         <input
           type="text"
-          v-model="user.username"
+          v-model="userSignin.username"
           placeholder="Enter UserName"
         />
         <input
           type="password"
-          v-model="user.password"
+          v-model="userSignin.password"
           placeholder="Enter Password"
         />
         <button>login</button>
       </form>
       <!-- <button v-if="$store.getters.getUser" @click="logout">logout</button> -->
     </div>
-    {{ $store.getters.getUser }}
-    {{ $store.state.userStore.user }}
+    <div v-if="$store.getters.getUser">{{ $store.getters.getUser }}</div>
+    <div v-else>{{ $store.getters.getMsgToUser }}</div>
     <button v-if="$store.state.userStore.user" @click="logout">logout</button>
   </section>
 </template>
@@ -48,8 +48,12 @@ export default {
   name: "user-profile",
   data() {
     return {
-      user: {
+      userSignup: {
         fullname: "",
+        username: "",
+        password: "",
+      },
+      userSignin: {
         username: "",
         password: "",
       },
@@ -57,21 +61,15 @@ export default {
   },
   methods: {
     signUp() {
-      this.$store.commit({ type: "signUp", user: this.user });
+      this.$store.dispatch({ type: "signUp", user: this.userSignup });
     },
-    login() {
-      const user = {
-        username: this.user.username,
-        password: this.user.password,
-      };
-      this.$store.commit({ type: "login", user });
+    async login() {
+      this.$store.dispatch({ type: "login", user: this.userSignin });
     },
-    logout() {
-      this.$store.commit({ type: "logout" });
+    async logout() {
+      this.$store.dispatch({ type: "logout" });
+      // this.$store.commit({ type: "logout" });
     },
-  },
-  created() {
-    console.log("oshri", this.$store.state.userStore.user);
   },
 };
 </script>
