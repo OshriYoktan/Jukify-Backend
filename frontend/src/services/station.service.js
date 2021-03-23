@@ -19,6 +19,7 @@ export const stationService = {
     removeSong,
     shuffleSongs,
     askSearch,
+    addStationMsg,
 }
 
 async function askSearch(txt) {
@@ -147,6 +148,19 @@ async function shuffleSongs(stationId) {
         console.log('Error from stationService - ', err);
     }
 }
+async function addStationMsg(addMsg) {
+    try {
+        var station = await getStationById(addMsg.stationId)
+        station.msgs.push(addMsg.msg)
+        return await save(station);
+
+
+    } catch (err) {
+        console.log('Error from stationService - ', err);
+    }
+}
+
+
 
 function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currStation">
+  <div class="chat-room-container" v-if="currStation">
     <h1>{{ currStation.name }}</h1>
     <ul v-if="currStation.msgs.length" id="messages">
       <li v-for="(msg, idx) in msgs" :key="idx">
@@ -14,7 +14,6 @@
 </template>
 <script>
 import io from "socket.io";
-import { stationService } from "../services/station.service";
 import { socketService } from "../services/socket.service";
 export default {
   props: ["currStation"],
@@ -28,9 +27,15 @@ export default {
     };
   },
   methods: {
-    addMsg(msg) {
-      this.currStation.msgs.push(msg);
-      this.$store.dispatch({ type: "saveStation", station: this.currStation });
+    async addMsg(msg) {
+      try {
+        msg.from = this.$store.state.userStore.user;
+        const addMsg = { msg, stationId: this.currStation._id };
+        await this.$store.dispatch({
+          type: "addStationMsg",
+          addMsg,
+        });
+      } catch {}
     },
     sendMsg() {
       socketService.emit("chat newMsg", this.msg);
@@ -46,7 +51,12 @@ export default {
     },
   },
   created() {
-    socketService.on("chat addMsg", this.addMsg);
+    // this.currStation.msgs;
+    console.log("this.addMsg:", this.addMsg);
+    socketService.on("chat addMsg", this.addMsg());
+    setTimeout(() => {
+      this.changeTopic(this.currStation._id);
+    }, 700);
   },
   destroyed() {
     socketService.off("chat addMsg", this.addMsg);
@@ -58,11 +68,9 @@ export default {
 #form {
   background: rgba(0, 0, 0, 0.15);
   padding: 0.25rem;
-  position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
+
   height: 3rem;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
@@ -96,5 +104,11 @@ export default {
 }
 #messages > li:nth-child(odd) {
   background: #efefef;
+}
+.chat-room-container {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

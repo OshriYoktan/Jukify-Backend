@@ -68,7 +68,6 @@
     </div>
     <div class="chat-room column-layout-container">
       <station-chat :currStation="currStation" />
-      <h1>Chat Room</h1>
     </div>
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
