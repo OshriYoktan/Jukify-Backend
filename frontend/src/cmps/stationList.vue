@@ -1,12 +1,14 @@
 <template>
-  <div class="station-song row-layout-container">
+  <div class="station-cards-container row-layout-container">
     <div v-if="!stations.length" class="list-empty column-layout-container">
       <h1>No results found for this search.</h1>
-      <p>Please make sure youre words are spelled correctly or use less or different keywords.</p>
+      <p>
+        Please make sure youre words are spelled correctly or use less or
+        different keywords.
+      </p>
     </div>
     <div
-      v-else
-      class="station-card-container"
+      class="station-preview-container column-layout-container"
       v-for="station in stations"
       :key="station._id"
     >
@@ -32,7 +34,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
-    if (this.stations.length) this.$emit('loader', false)
+    if (this.stations.length) this.$emit("loader", false);
   },
   components: {
     stationPreview,

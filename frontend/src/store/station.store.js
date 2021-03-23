@@ -74,7 +74,6 @@ export const stationStore = {
             } catch {}
         },
         async removeStation({ commit }, { stationId }) {
-            console.log('stationId:', stationId)
             try {
                 await stationService.remove(stationId)
                 commit({ type: 'removeStation', stationId })

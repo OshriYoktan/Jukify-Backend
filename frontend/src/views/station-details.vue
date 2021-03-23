@@ -12,7 +12,12 @@
             <p>{{ currStation.desc }}</p>
           </div>
           <div>
-            <span style="color: red">♥</span> {{ likes(currStation.likes) }}
+            <font-awesome-icon
+            style="color: red;"
+              icon="heart"
+              @click="addStationLike"
+            />
+            {{ likes(currStation.likes) }}
           </div>
         </div>
         <div class="menu-container">
@@ -193,12 +198,17 @@ export default {
           type: "removeStation",
           stationId,
         });
-        this.$message({ type: "success", message: "Station deleted successfuly!" });
+        this.$message({
+          type: "success",
+          message: "Station deleted successfuly!",
+        });
         this.$router.push("/explore");
       } catch (err) {
-        if (err === 'cancel') return
-        this.$message({ type: "error", message: "Station could'nt be deleted, please try again later." });
-
+        if (err === "cancel") return;
+        this.$message({
+          type: "error",
+          message: "Station could'nt be deleted, please try again later.",
+        });
       }
     },
     async addStationLike() {

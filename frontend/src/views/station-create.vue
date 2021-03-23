@@ -71,6 +71,7 @@ export default {
     async addStation() {
       try {
         if (!this.imgSrc) this.imgSrc =  'https://lh3.googleusercontent.com/proxy/fCs7rHfpNqF3aMkYTFBPLTRgZfc2SASKWdg6KQaJf7sFvGKHrveit2fFDz-NP59Cyc4aRHXE12U-s_xfoN4_Vsfm5rgL3i9XNE4ZPypr9fa3DMJ_Qpo1FLbmC1MNaFeQSEs'
+        this.newStation.name = this.newStation.name.charAt(0).toUpperCase() + this.newStation.name.slice(1);
         this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;
