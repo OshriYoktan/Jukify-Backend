@@ -60,15 +60,61 @@ export default {
     };
   },
   methods: {
-    signUp() {
-      this.$store.dispatch({ type: "signUp", user: this.userSignup });
+    async signUp() {
+      try {
+        if (
+          this.userSignup.fullname === "" ||
+          this.userSignup.username === "" ||
+          this.userSignup.password === ""
+        )
+          throw error;
+        await this.$store.dispatch({ type: "signUp", user: this.userSignup });
+        this.$message({ type: "success", message: "congrads, you'r in" });
+        this.userSignup = {
+          fullname: "",
+          username: "",
+          password: "",
+        };
+      } catch {
+        this.$message.error({
+          message:
+            "Oops, could'nt sign up, please check if  your details are currect.",
+        });
+      }
     },
     async login() {
-      this.$store.dispatch({ type: "login", user: this.userSignin });
+      try {
+        if (
+          this.userSignin.username === "" ||
+          this.userSignin.password === ""
+        )
+          throw error;
+        await this.$store.dispatch({ type: "login", user: this.userSignin });
+        this.$message({ type: "success", message: "logged in seccesfully" });
+        this.userSignin = {
+          username: "",
+          password: "",
+        };
+      } catch {
+        this.$message.error({
+          type: "error",
+          message: "Oops, could'nt log in, please try again later.",
+        });
+      }
     },
     async logout() {
-      this.$store.dispatch({ type: "logout" });
-      // this.$store.commit({ type: "logout" });
+      try {
+        await this.$store.dispatch({ type: "logout" });
+        this.$message({
+          type: "success",
+          message: "logged out seccesfully",
+        });
+      } catch {
+        this.$message.error({
+          type: "error",
+          message: "Oops, could'nt log out, please try again later.",
+        });
+      }
     },
   },
 };

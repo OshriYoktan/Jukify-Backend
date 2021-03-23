@@ -78,7 +78,12 @@ export default {
           station,
         });
         this.$router.push(`/details/${stationId}`);
-      } catch {}
+      } catch {
+        this.$message.error({
+          type: "error",
+          message: "Oops, could'nt create station, please try again later.",
+        });
+      }
     },
   },
   components: {
