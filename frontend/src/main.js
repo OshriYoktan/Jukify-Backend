@@ -9,9 +9,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faHeart, faPauseCircle, faPlay, faSearch, faStepBackward, faStepForward, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faPauseCircle, faPlay, faRandom, faSearch, faStepBackward, faStepForward, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faPlay, faSearch, faHeart, faVolumeUp, faStepForward, faPauseCircle, faVolumeMute, faStepBackward)
+library.add(faPlay, faRandom, faSearch, faHeart, faVolumeUp, faStepForward, faPauseCircle, faVolumeMute, faStepBackward)
 library.add()
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

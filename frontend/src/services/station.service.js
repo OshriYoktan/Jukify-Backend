@@ -66,7 +66,7 @@ async function save(station) {
 
 async function remove(stationId) {
     try {
-        return await httpService.delete('station/' + stationId)
+        return await httpService.delete(KEY + stationId)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
