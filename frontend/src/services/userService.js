@@ -15,20 +15,31 @@ function getLoggedinUser() {
     return JSON.parse(JSON.stringify(gUser))
 }
 
-function saveUser(user) {
-    gUser = user
-    return httpService.post('auth/signup', user)
+async function saveUser(user) {
+    try {
+        gUser = user
+        return await httpService.post('auth/signup', user)
+    } catch (err) {
+        throw err
+    }
 }
 
-function loginUser(user) {
-    console.log('user:', user)
-    return httpService.post('auth/login', user)
+async function loginUser(user) {
+    try {
+        return await httpService.post('auth/login', user)
+    } catch (err) {
+        throw err
+    }
 }
 
-function logoutUser() {
-    gUser = null
-    _saveUserToStorage()
-    return httpService.post('auth/logout')
+async function logoutUser() {
+    try {
+        gUser = null
+        _saveUserToStorage()
+        return httpService.post('auth/logout')
+    } catch (err) {
+        throw err
+    }
 }
 
 function _saveUserToStorage() {

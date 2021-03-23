@@ -66,9 +66,8 @@ export const stationStore = {
         async addStation({ commit }, { station }) {
             try {
                 const stationToAdd = await stationService.save(station)
-                console.log('action - after service -:', stationToAdd)
                 commit({ type: 'addStation', stationToAdd })
-                return station._id;
+                return stationToAdd._id;
             } catch {}
         },
         async removeStation({ commit }, { payload }) {

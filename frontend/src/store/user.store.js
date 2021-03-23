@@ -6,11 +6,10 @@ export const userStore = {
     strict: true,
     state: {
         user: userService.getLoggedinUser(),
-        msgToUser:null
+        msgToUser: null
     },
     getters: {
         getUser(state) {
-            console.log('state.user:', state.user)
             return state.user;
         },
         getMsgToUser(state) {
@@ -25,13 +24,8 @@ export const userStore = {
         login(state, { loggedInUser }) {
             state.user = loggedInUser
         },
-        logout(state, { logout }) {
-            console.log('logout:', logout)
-            // massage to the user with 'logout'
-        },
-        msg(state, { msg }) {
-            state.msgToUser = msg
-            // massage to the user with 'logout'
+        logout(state) {
+            state.user = null;
         },
     },
     actions: {
@@ -40,8 +34,7 @@ export const userStore = {
                 const signedUpUser = await userService.saveUser(user)
                 state.commit({ type: "signUp", signedUpUser })
             } catch (err) {
-                state.commit({ type: "msg", msg:err })
-                console.log('errorrrrrr', err);
+                throw err
             }
         },
         async login(state, { user }) {
@@ -49,8 +42,7 @@ export const userStore = {
                 const loggedInUser = await userService.loginUser(user)
                 state.commit({ type: "login", loggedInUser })
             } catch (err) {
-                state.commit({ type: "msg", msg:err })
-                console.log('errorrrrrr', err);
+                throw err
             }
         },
         async logout(state) {
@@ -58,8 +50,7 @@ export const userStore = {
                 const logout = await userService.logoutUser()
                 state.commit({ type: "logout", logout })
             } catch (err) {
-                state.commit({ type: "msg", msg:err })
-                console.log('errorrrrrr', err);
+                throw err
             }
         },
 
