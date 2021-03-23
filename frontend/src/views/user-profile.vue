@@ -95,6 +95,7 @@ export default {
           username: "",
           password: "",
         };
+        
       } catch {
         this.$message.error({
           type: "error",
@@ -104,15 +105,24 @@ export default {
     },
     async logout() {
       try {
+        await this.$confirm(
+          "Are you sure you want to log our?",
+          "Warning",
+          {
+            confirmButtonText: "Sure",
+            cancelButtonText: "Cancle",
+            type: "warning",
+          }
+        );
         await this.$store.dispatch({ type: "logout" });
         this.$message({
           type: "success",
-          message: "logged out seccesfully",
+          message: "Logged out seccesfully",
         });
       } catch {
         this.$message.error({
-          type: "error",
-          message: "Oops, could'nt log out, please try again later.",
+          type: "success",
+          message: "You stayed after all",
         });
       }
     },

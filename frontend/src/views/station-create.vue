@@ -70,13 +70,17 @@ export default {
     },
     async addStation() {
       try {
-        if (!this.imgSrc) this.imgSrc =  '../assets/img/no-img-jukify.jpg'
+        if (!this.imgSrc) this.imgSrc = "../assets/img/no-img-jukify.jpg";
         this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;
         const stationId = await this.$store.dispatch({
           type: "addStation",
           station,
+        });
+        this.$message({
+          type: "success",
+          message: "station created seccesfully",
         });
         this.$router.push(`/details/${stationId}`);
       } catch {
