@@ -18,7 +18,7 @@
 </template>
  
 <script>
-import stationPreview from "../cmps/stationPreview.vue";
+import stationPreview from "./station-preview.vue";
 export default {
   name: "station-list",
   data() {

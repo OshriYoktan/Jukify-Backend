@@ -148,19 +148,19 @@ async function shuffleSongs(stationId) {
         console.log('Error from stationService - ', err);
     }
 }
+
 async function addStationMsg(addMsg) {
     try {
         var station = await getStationById(addMsg.stationId)
+        console.log('station:', station.msgs)
         station.msgs.push(addMsg.msg)
-        return await save(station);
-
-
+        console.log('station:', station.msgs)
+        await save(station);
+        return station;
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
 }
-
-
 
 function _createStations() {
     var stations = JSON.parse(localStorage.getItem(KEY))

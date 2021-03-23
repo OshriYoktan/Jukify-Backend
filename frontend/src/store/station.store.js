@@ -41,10 +41,10 @@ export const stationStore = {
             const idx = state.stations.findIndex((s) => s._id === stationId)
             state.stations.splice(idx, 1)
         },
-        addStationMsg(state, { addMsg }) {
-            console.log('addMsg:', addMsg)
-            const station = state.stations.find((s) => s._id === addMsg.stationId)
-            station.msgs.push(addMsg.msg)
+        addStationMsg(state, { stationMsgsAdd }) {
+            console.log('stationMsgsAdd:', stationMsgsAdd)
+            const station = state.stations.find((s) => s._id === stationMsgsAdd._id)
+            station.msgs = stationMsgsAdd.msgs
         },
     },
     actions: {
@@ -104,8 +104,8 @@ export const stationStore = {
         },
         async addStationMsg({ commit }, { addMsg }) {
             try {
-                await stationService.addStationMsg(addMsg)
-                commit({ type: 'addStationMsg', addMsg })
+                const stationMsgsAdd = await stationService.addStationMsg(addMsg)
+                commit({ type: 'addStationMsg', stationMsgsAdd })
             } catch {}
         },
     }
