@@ -21,14 +21,34 @@
         </div>
       </div>
       <div class="station-play-like row-layout-container">
-        <button @click="playVideo">Play</button>
-        <button @click="addStationLike">Like</button>
+        <font-awesome-icon icon="play" @click="playVideo" />
+        <button @click="shuffleSongs">Shuffle</button>
+        <font-awesome-icon
+          v-if="!isLiked"
+          icon="heart"
+          @click="addStationLike"
+        />
+        <font-awesome-icon
+          v-else
+          style="color: red"
+          icon="heart"
+          @click="addStationLike"
+        />
       </div>
       <div class="search-songs-container row-layout-container">
-        <button v-if="!isSearch" @click="isSearch = !isSearch">
-          Add songs
-        </button>
-        <button v-else @click="isSearch = !isSearch">Close</button>
+        <font-awesome-icon
+          class="search-icon"
+          icon="search"
+          v-if="!isSearch"
+          @click="isSearch = !isSearch"
+        />
+        <font-awesome-icon
+          class="search-icon"
+          icon="search"
+          style="color: #1db954"
+          v-else
+          @click="isSearch = !isSearch"
+        />
         <div class="search-songs row-layout-container">
           <form @submit.prevent="searchSongs" v-if="isSearch">
             <input
@@ -127,11 +147,12 @@ export default {
           stationId: this.currStation._id,
         };
         await this.$store.dispatch({ type: "removeSong", songRemove });
-          this.$message({
-            type: "success",
-            message: "Song deleted successfuly!",
-          });
-      } catch {
+        this.$message({
+          type: "success",
+          message: "Song deleted successfuly!",
+        });
+      } catch (err) {
+        if ((err = "cancel")) return;
         this.$message({
           type: "error",
           message: "Song could'nt be deleted, please try again later.",
@@ -165,13 +186,13 @@ export default {
     },
     async addStationLike() {
       try {
-        this.isLiked = !this.isLiked;
         const num = this.isLiked ? 1 : -1;
         const addLike = {
           station: this.currStation._id,
           num,
         };
         await this.$store.dispatch({ type: "addStationLike", addLike });
+        this.isLiked = !this.isLiked;
       } catch {}
     },
     songNameDisplay(song) {
@@ -183,6 +204,13 @@ export default {
     songResaultNameDisplay(song) {
       const name = song.length >= 50 ? song.slice(0, 50) + "..." : song;
       return name;
+    },
+    async shuffleSongs() {
+      try {
+        const stationId = this.currStation._id
+        await this.$store.dispatch({ type: "shuffleSongs", stationId });
+
+      } catch {}
     },
   },
   computed: {

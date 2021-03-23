@@ -70,6 +70,7 @@ export default {
     },
     async addStation() {
       try {
+        if (!this.imgSrc) this.imgSrc =  '../assets/img/no-img-jukify.jpg'
         this.newStation.name.replace(" and ", " & ");
         this.newStation.imgUrl = this.imgSrc;
         const station = this.newStation;

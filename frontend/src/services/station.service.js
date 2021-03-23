@@ -17,6 +17,7 @@ export const stationService = {
     getStationById,
     getEmptyStation,
     removeSong,
+    shuffleSongs,
     askSearch,
 }
 
@@ -47,7 +48,7 @@ async function query(filterBy = {}) {
         var query = '?'
         if (filterBy.byName) query += 'name=' + filterBy.byName + '&'
         if (filterBy.byGenre) query += 'genre=' + filterBy.byGenre + '&'
-        return httpService.get(KEY + query)
+        return await httpService.get(KEY + query)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -55,8 +56,8 @@ async function query(filterBy = {}) {
 
 async function save(station) {
     try {
-        if (station._id) return httpService.put(KEY + station._id, station)
-        else return httpService.post(KEY, station)
+        if (station._id) return await httpService.put(KEY + station._id, station)
+        else return await httpService.post(KEY, station)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -65,7 +66,7 @@ async function save(station) {
 
 async function remove(stationId) {
     try {
-        return httpService.delete('station/' + stationId)
+        return await httpService.delete('station/' + stationId)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -73,7 +74,7 @@ async function remove(stationId) {
 
 async function getStationById(id) {
     try {
-        return httpService.get(KEY + id)
+        return await httpService.get(KEY + id)
     } catch (err) {
         console.log('Error from stationService - ', err);
     }
@@ -128,6 +129,19 @@ async function addStationLike(stationLiked) {
     try {
         var station = await getStationById(stationLiked.station)
         station.likes += stationLiked.num
+        return await save(station);
+    } catch (err) {
+        console.log('Error from stationService - ', err);
+    }
+}
+
+async function shuffleSongs(stationId) {
+    try {
+        var station = await getStationById(stationId)
+        for (let i = station.songs.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [station.songs[i], station.songs[j]] = [station.songs[j], station.songs[i]];
+        }
         return await save(station);
     } catch (err) {
         console.log('Error from stationService - ', err);

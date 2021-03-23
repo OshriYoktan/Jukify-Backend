@@ -31,9 +31,11 @@ export const stationStore = {
         },
         addStationLike(state, { addLike }) {
             const station = state.stations.find((s) => s._id === addLike.station)
-            console.log('addLike.num:', addLike.num)
-            console.log('station.likes:', station.likes)
             station.likes += addLike.num
+        },
+        shuffleSongs(state, { stationShuffled }) {
+            const station = state.stations.find((s) => s._id === stationShuffled._id)
+            station = stationShuffled
         },
     },
     actions: {
@@ -86,6 +88,12 @@ export const stationStore = {
             try {
                 const stations = await stationService.query(filter)
                 commit({ type: 'setStations', stations })
+            } catch {}
+        },
+        async shuffleSongs({ commit }, { stationId }) {
+            try {
+                const stationShuffled = await stationService.shuffleSongs(stationId)
+                commit({ type: 'shuffleSongs', stationShuffled })
             } catch {}
         },
     }
