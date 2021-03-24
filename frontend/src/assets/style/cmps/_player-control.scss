@@ -7,7 +7,7 @@
         height: 100%;
         justify-content: start;
         overflow: hidden;
-        text-overflow: ellipsis
+        text-overflow: ellipsis;
     }
     .volume-range-container {
         width: 130px;
@@ -25,20 +25,24 @@
     }
     .playing-btns {
         grid-column: 2/3;
-        >* {
+        > * {
             cursor: pointer;
             width: 25px;
             height: 25px;
             margin: 15px;
-            transition: .3s;
+            transition: 0.3s;
             &:hover {
                 color: $clr1;
             }
         }
-         :nth-child(2) {
+        :nth-child(2) {
             width: 30px;
             height: 30px;
         }
+    }
+    input[type="range"] {
+        width: 100%;
+        cursor: pointer;
     }
     .music-btns {
         grid-column: 3/4;
@@ -48,7 +52,7 @@
             width: 25px;
             height: 25px;
             margin: 10px;
-            transition: .3s;
+            transition: 0.3s;
             &:hover {
                 color: $clr1;
             }

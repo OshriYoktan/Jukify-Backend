@@ -96,7 +96,7 @@ export default {
       return isMute ? this.player.mute() : this.player.unMute();
     },
     async setSongTime() {
-      this.player.seekTo(this.songPlayer.currTime)
+      this.player.seekTo(this.songPlayer.currTime);
     },
   },
   computed: {
