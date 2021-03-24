@@ -3,9 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image  row-layout-container">
-      <img :src="songImage" alt="" />
-    </div>
+    <img v-if="song" :src="songImage" alt="" :class="imgRotate" />
     <div class="playing-now row-layout-container" v-if="song">
       <h3>{{ song }}</h3>
     </div>
@@ -23,10 +21,10 @@
         <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
         <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
       </div>
-      <!-- <div v-if="songPlayer.currTime" class="duration-song row-layout-container"> -->
       <div class="duration-song row-layout-container">
         <span>{{ songPlayer.currTime }}</span>
         <input
+          class="song-duration"
           @input="setSongTime"
           v-model="songPlayer.currTime"
           type="range"
@@ -149,6 +147,15 @@ export default {
       if (!song) return;
       const name = song.slice(0, 30) + "...";
       return name;
+    },
+    imgRotate() {
+      console.log(
+        "this.$store.state.playerStore.songPlayer.isPlaying:",
+        this.$store.state.playerStore.songPlayer.isPlaying
+      );
+      return this.$store.state.playerStore.songPlayer.isPlaying
+        ? "song-image rotating"
+        : "song-image";
     },
   },
   created() {},
