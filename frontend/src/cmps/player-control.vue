@@ -72,7 +72,7 @@ export default {
     },
     async togglePlayForSockets() {
       try {
-        console.log('heyyy');
+        console.log("heyyy");
         const playing = await this.$store.dispatch({ type: "togglePlay" });
         playing ? this.player.playVideo() : this.player.pauseVideo();
       } catch (err) {
@@ -152,9 +152,9 @@ export default {
           this.player.getCurrentTime().then((duration) => {
             this.songPlayer.currTime = duration.toFixed(0);
           });
+          this.getDuration();
         }, 1000);
       });
-      this.getDuration();
       this.playVideo(this.songId);
     });
   },
@@ -167,7 +167,7 @@ export default {
     } catch {}
   },
   destroyed() {
-    socketService.off('player toggle-play-song');
+    socketService.off("player toggle-play-song");
     socketService.terminate();
   },
 };
