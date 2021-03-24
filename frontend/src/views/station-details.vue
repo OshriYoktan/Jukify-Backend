@@ -61,7 +61,7 @@
               placeholder="Search song online"
               v-model="search"
             />
-            <button>Find</button>
+            <button @click="isResult = !isResult">Find</button>
           </form>
         </div>
       </div>
@@ -73,7 +73,7 @@
       <div v-if="currStation" class="station-songs-container">
         <ul>
           <li
-            @click="playVideo(song.videoId) "
+            @click="playVideo(song.videoId)"
             v-for="song in currStation.songs"
             :key="song._id"
           >
@@ -85,14 +85,20 @@
           </li>
         </ul>
       </div>
-      <div v-if="foundSongs && isSearch" class="songs-result-container">
+      <!-- <div v-if="foundSongs && isSearch" class="songs-result-container"> -->
+      <div
+        class="songs-result-container"
+        :style="{ 'max-width': resultsMaxwidth}"
+      >
         <ul>
           <li
             @click="addToStation(idx)"
             v-for="(song, idx) in foundSongs"
             :key="idx"
           >
-            {{ songResaultNameDisplay(song.snippet.title) }}
+            <span>
+              {{ songResaultNameDisplay(song.snippet.title) }}
+            </span>
             <button>➕</button>
           </li>
         </ul>
@@ -116,6 +122,7 @@ export default {
       search: "",
       videoId: null,
       isLiked: false,
+      isResult: false,
     };
   },
   methods: {
@@ -134,8 +141,8 @@ export default {
       );
       socketService.emit("chat topic", this.currStation._id);
     },
-    playSongForSockets(id){
-          if (!id) id = this.currStation.songs[0].videoId;
+    playSongForSockets(id) {
+      if (!id) id = this.currStation.songs[0].videoId;
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
@@ -260,6 +267,9 @@ export default {
     genres() {
       return this.$store.state.stationStore.genres;
     },
+    resultsMaxwidth() {
+      return this.isResult ? "100vw" : "0";
+    },
   },
   async created() {
     try {
@@ -270,10 +280,9 @@ export default {
       socketService.on("station change-song", this.playSongForSockets);
     } catch {}
   },
-  destroyed(){
+  destroyed() {
     socketService.off("station change-song", this.playSongForSockets);
     socketService.terminate();
-
   },
   components: {
     playerControl,
