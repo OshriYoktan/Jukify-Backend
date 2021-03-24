@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import stationList from "../cmps/stationList";
+import stationList from "../cmps/station-list";
 import filterStations from "../cmps/filter-stations";
 export default {
   name: "explore",

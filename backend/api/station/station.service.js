@@ -56,7 +56,8 @@ async function add(station) {
             desc: station.desc,
             likes: station.likes,
             genres: station.genres,
-            songs: []
+            songs: [],
+            msgs: station.msgs,
         }
         const collection = await dbService.getCollection('station')
         await collection.insertOne(stationToAdd)
@@ -88,6 +89,7 @@ async function update(station) {
             desc: station.desc,
             imgUrl: station.imgUrl,
             likes: likes,
+            msgs: station.msgs,
             genres: station.genres,
             songs: station.songs,
             msgs: station.msgs

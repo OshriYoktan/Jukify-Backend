@@ -3,9 +3,7 @@
     <section class="container">
       <div class="nav sub-container">
         <div>
-          <router-link class="main-logo link" to="/">
-            Jukify</router-link
-          >
+          <router-link class="main-logo link" to="/"> Jukify</router-link>
         </div>
         <div>
           <router-link class="link" to="/explore">Explore</router-link> |
@@ -24,12 +22,12 @@
 </template>
 
 <script>
-import {socketService} from "./services/socket.service.js";
-import playerControl from "./cmps/playerControl.vue";
+import { socketService } from "./services/socket.service";
+import playerControl from "./cmps/player-control";
 export default {
   async created() {
     await this.$store.dispatch({ type: "loadStations" });
-    socketService.setup()    
+    socketService.setup();
   },
   components: {
     playerControl,

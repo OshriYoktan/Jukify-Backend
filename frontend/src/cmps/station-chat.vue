@@ -21,7 +21,7 @@ export default {
     return {
       socket: io(),
       msg: {
-        from: "me",
+        from: "Guest",
         txt: "",
       },
     };
@@ -38,8 +38,12 @@ export default {
       } catch {}
     },
     sendMsg() {
-      socketService.emit("chat newMsg", this.msg);
-      this.msg = { from: "Me", txt: "" };
+      try {
+        socketService.emit("chat newMsg", this.msg);
+        this.msg = { from: "Guest", txt: "" };
+      } catch (err) {
+        console.log("err:", err);
+      }
     },
     changeTopic(id) {
       socketService.emit("chat topic", id);
@@ -47,16 +51,12 @@ export default {
   },
   computed: {
     msgs() {
-      return this.currStation.msgs;
+      return this.$store.state.stationStore.currStation.msgs;
     },
   },
   created() {
-    // this.currStation.msgs;
-    console.log("this.addMsg:", this.addMsg);
-    socketService.on("chat addMsg", this.addMsg());
-    setTimeout(() => {
-      this.changeTopic(this.currStation._id);
-    }, 700);
+    socketService.on("chat addMsg", this.addMsg);
+    this.changeTopic(this.currStation._id);
   },
   destroyed() {
     socketService.off("chat addMsg", this.addMsg);
@@ -64,51 +64,3 @@ export default {
   },
 };
 </script>
-<style>
-#form {
-  background: rgba(0, 0, 0, 0.15);
-  padding: 0.25rem;
-  bottom: 0;
-  display: flex;
-
-  height: 3rem;
-  box-sizing: border-box;
-  backdrop-filter: blur(10px);
-}
-#input {
-  border: none;
-  padding: 0 1rem;
-  flex-grow: 1;
-  border-radius: 2rem;
-  margin: 0.25rem;
-}
-#input:focus {
-  outline: none;
-}
-#form > button {
-  background: #333;
-  border: none;
-  padding: 0 1rem;
-  margin: 0.25rem;
-  border-radius: 3px;
-  outline: none;
-  color: #fff;
-}
-#messages {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-#messages > li {
-  padding: 0.5rem 1rem;
-}
-#messages > li:nth-child(odd) {
-  background: #efefef;
-}
-.chat-room-container {
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-</style>

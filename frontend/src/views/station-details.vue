@@ -103,8 +103,8 @@
 
 <script>
 import { stationService } from "../services/station.service";
-import playerControl from "../cmps/playerControl.vue";
-import StationChat from '../cmps/station-chat.vue';
+import playerControl from "../cmps/player-control";
+import stationChat from '../cmps/station-chat';
 export default {
   name: "station-details",
   data() {
@@ -255,7 +255,7 @@ export default {
   },
   components: {
     playerControl,
-    StationChat,
+    stationChat,
   },
 };
 </script>
