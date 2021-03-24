@@ -116,7 +116,6 @@ export default {
       search: "",
       videoId: null,
       isLiked: false,
-      songDuration: null
     };
   },
   methods: {
@@ -128,7 +127,6 @@ export default {
         currStation: this.currStation,
       });
       this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      // this.$store.dispatch({ type: "setDuration", duration: this.songDuration });
       this.$root.$emit("startPlaySong");
       socketService.emit(
         "station new-song",

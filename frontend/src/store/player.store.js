@@ -8,7 +8,6 @@ export const playerStore = {
             isMuted: false,
             volumeRange: 50,
             songName: "",
-            duration: 0,
         },
     },
     getters: {
@@ -27,16 +26,10 @@ export const playerStore = {
         getSongVolume(state) {
             return state.songPlayer.volumeRange
         },
-        getDuration(state) {
-            return state.songPlayer.duration
-        },
     },
     mutations: {
         togglePlay(state) {
             state.songPlayer.isPlaying = !state.songPlayer.isPlaying
-        },
-        setDuration(state, {duration}){
-            state.songPlayer.duration = duration
         },
         setSongVolume(state, { vol }) {
             state.songPlayer.volumeRange = +vol
@@ -80,11 +73,6 @@ export const playerStore = {
                 state.commit({ type: 'togglePlay' })
                 return state.state.songPlayer.isPlaying;
 
-            } catch {}
-        },
-        async setDuration(state, {duration}) {
-            try {
-                state.commit({ type: 'setDuration', duration })
             } catch {}
         },
         setSongVolume(state, { vol }) {
