@@ -16,14 +16,15 @@ function getRandomInt(min, max) {
 function saveToStorage(key, val) {
     localStorage.setItem(key, JSON.stringify(val));
 }
-  
-  function loadFromStorage(key) {
-      var val = localStorage.getItem(key);
+
+function loadFromStorage(key) {
+    var val = localStorage.getItem(key);
     return JSON.parse(val);
 }
+
 export const utilService = {
     makeId,
     getRandomInt,
     saveToStorage,
-    loadFromStorage
+    loadFromStorage,
 }

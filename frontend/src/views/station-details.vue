@@ -55,13 +55,13 @@
           @click="isSearch = !isSearch"
         />
         <div class="search-songs row-layout-container">
-          <form @submit.prevent="searchSongs" v-if="isSearch">
+          <form v-if="isSearch">
             <input
+              @input="debounceInput"
               type="text"
               placeholder="Search song online"
               v-model="search"
             />
-            <button @click="isResult = !isResult">Find</button>
           </form>
         </div>
       </div>
@@ -79,16 +79,18 @@
           >
             <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
             <div v-else>{{ song.name }}</div>
-            <button @click.stop="removeSong(song._id)" style="color: red">
-              🗑
-            </button>
+            <font-awesome-icon
+              class="delete-song"
+              icon="trash-alt"
+              @click.stop="removeSong(song._id)"
+              style="color: red"
+            />
           </li>
         </ul>
       </div>
-      <!-- <div v-if="foundSongs && isSearch" class="songs-result-container"> -->
       <div
         class="songs-result-container"
-        :style="{ 'max-width': resultsMaxwidth}"
+        :style="{ 'max-width': resultsMaxwidth }"
       >
         <ul>
           <li
@@ -96,10 +98,8 @@
             v-for="(song, idx) in foundSongs"
             :key="idx"
           >
-            <span>
-              {{ songResaultNameDisplay(song.snippet.title) }}
-            </span>
-            <button>➕</button>
+            <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
+            <font-awesome-icon class="add-song" icon="plus" />
           </li>
         </ul>
       </div>
@@ -156,6 +156,10 @@ export default {
     },
     async searchSongs() {
       try {
+        if (!this.search) this.isResult = false;
+        this.isResult = true;
+        console.log("in search");
+        console.log("this.isResult:", this.isResult);
         const songs = await stationService.askSearch(this.search);
         this.foundSongs = songs;
       } catch {}
@@ -262,6 +266,17 @@ export default {
         this.playVideo();
       } catch {}
     },
+    debounce(func, wait = 500) {
+      let timeout;
+      return function (...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    },
   },
   computed: {
     genres() {
@@ -278,6 +293,7 @@ export default {
       this.$store.dispatch({ type: "setCurrStation", id });
       this.currStation = this.$store.state.stationStore.currStation;
       socketService.on("station change-song", this.playSongForSockets);
+      this.debounceInput = this.debounce(this.searchSongs);
     } catch {}
   },
   destroyed() {
