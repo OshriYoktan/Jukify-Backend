@@ -93,10 +93,8 @@ function getEmptyStation() {
 }
 
 async function addSongToStation(payload) {
-    console.log('service -', payload)
     try {
         const song = payload.selectedSong
-        console.log('song:', song)
         const station = await getStationById(payload.stationId)
         const songToAdd = {
             _id: utilService.makeId(),
