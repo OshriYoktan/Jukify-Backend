@@ -49,12 +49,32 @@ export default {
   },
   methods: {
     async togglePlay() {
-      const playing = await this.$store.dispatch({ type: "togglePlay" });
-      playing ? this.player.playVideo() : this.player.pauseVideo();
+      try {
+        socketService.emit("player to-toggle-play-song");
+      } catch (err) {
+        throw err;
+      }
     },
+    async togglePlayForSockets() {
+      try {
+        const playing = await this.$store.dispatch({ type: "togglePlay" });
+        console.log("heyyy");
+        playing ? this.player.playVideo() : this.player.pauseVideo();
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async setSongVolume(vol) {
-      const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
-      return this.player.setVolume(volume);
+      try {
+        const volume = await this.$store.dispatch({
+          type: "setSongVolume",
+          vol,
+        });
+        return this.player.setVolume(volume);
+      } catch (err) {
+        throw err;
+      }
     },
     async playVideo() {
       await this.$store.dispatch({
@@ -65,12 +85,16 @@ export default {
       });
     },
     async changeSong(dif) {
-      const payload = { dif };
-      await this.$store.dispatch({ type: "changeSong", payload });
-      this.$nextTick(() => {
-        this.player.playVideo();
-      });
-      this.$store.getters.getSongName;
+      try {
+        const payload = { dif };
+        await this.$store.dispatch({ type: "changeSong", payload });
+        this.$nextTick(() => {
+          this.player.playVideo();
+        });
+        this.$store.getters.getSongName;
+      } catch (err) {
+        throw err;
+      }
     },
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
@@ -97,21 +121,20 @@ export default {
   },
   mounted() {
     this.$root.$on("startPlaySong", () => {
-      this.$nextTick(() => {
-        this.player.playVideo();
-      });
       this.playVideo(this.songId);
-      this.$store.getters.getSongName;
     });
   },
   async created() {
     try {
-      // socketService.on("station change-song", this.playSongForSockets);
+      socketService.on("player toggle-play-song", () => {
+        console.log("socket arrived");
+        this.togglePlayForSockets();
+      });
     } catch {}
   },
   destroyed() {
-    // socketService.off("station change-song", this.playSongForSockets);
-    // socketService.terminate();
+    socketService.off('player toggle-play-song', this.togglePlayForSockets);
+    socketService.terminate();
   },
 };
 </script>

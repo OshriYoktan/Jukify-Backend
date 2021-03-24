@@ -26,6 +26,9 @@ export const playerStore = {
         getSongVolume(state) {
             return state.songPlayer.volumeRange
         },
+        getCurrStation(state) {
+            return state.currStation
+        },
     },
     mutations: {
         togglePlay(state) {

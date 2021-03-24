@@ -73,7 +73,7 @@
       <div v-if="currStation" class="station-songs-container">
         <ul>
           <li
-            @click="playVideo(song.videoId) "
+            @click="playVideo(song.videoId)"
             v-for="song in currStation.songs"
             :key="song._id"
           >
@@ -120,29 +120,27 @@ export default {
   },
   methods: {
     playVideo(id) {
-      if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
-      socketService.emit(
-        "station new-song",
-        this.$store.state.playerStore.songId
-      );
+      console.log("id:", id);
+      socketService.emit("station new-song", id);
       socketService.emit("chat topic", this.currStation._id);
     },
-    playSongForSockets(id){
-          if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
+    async playSongForSockets(id) {
+      try {
+        console.log("id:", id);
+        if (!id) id = this.currStation.songs[0].videoId;
+        this.videoId = id;
+        console.log("heyyyyyyyyyyy");
+        await this.$store.dispatch({
+          type: "setStation",
+          currStation: this.currStation,
+        });
+        await this.$store.dispatch({
+          type: "setVideoId",
+          videoId: this.videoId,
+        });
+        this.$root.$emit("startPlaySong");
+        console.log("gfghtjyf");
+      } catch (err) {}
     },
     likes(likes) {
       return likes.toLocaleString();
@@ -270,10 +268,9 @@ export default {
       socketService.on("station change-song", this.playSongForSockets);
     } catch {}
   },
-  destroyed(){
+  destroyed() {
     socketService.off("station change-song", this.playSongForSockets);
     socketService.terminate();
-
   },
   components: {
     playerControl,
