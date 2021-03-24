@@ -3,11 +3,10 @@
     justify-content: space-between;
     align-items: center;
     font-family: ReemKufi;
-    font-size: 25px;
     width: 100%;
     .main-logo {
         color: $clr1;
-        font-size: 25px;
+        font-size: 20px;
         &.router-link-exact-active {
             color: #1db954;
         }
@@ -17,9 +16,9 @@
     }
     a {
         transition: .3s;
-        font-weight: bold;
         color: $clr2;
-        font-size: 20px;
+        font-size: 15px;
+        text-transform: uppercase;
         &.router-link-exact-active {
             color: #1db954;
         }
@@ -35,13 +34,11 @@
 .view-router {
     overflow: auto;
     background-color: $clr4;
-    box-shadow: inset 0px 0px 20px 5px black;
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
     }
-    border: 1px solid black;
 }
 
 .loading {

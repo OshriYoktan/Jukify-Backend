@@ -1,9 +1,8 @@
 .home-cards-container {
-    margin-top: 20em;
     margin-bottom: 2em;
     height: 100%;
     h1 {
-        margin: 0;
+        margin-top: 15px;
         font-size: 35px;
     }
     .home-genre-container {
@@ -20,9 +19,28 @@
 }
 
 .home-page-container {
-    // background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=967&q=80');
-    // background-repeat: no-repeat, repeat;
-    // background-size: cover;
     width: 100%;
     // height: 100vh;
+}
+
+.hero-container {
+    width: 100%;
+    height: 520px;
+    background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2100&q=80');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-attachment: fixed;
+    .hero-header {
+        font-size: 40px;
+        color: $clr2;
+        text-transform: uppercase;
+        transition: .4s;
+        letter-spacing: 1.15px;
+        &:hover {
+            letter-spacing: 2.15px;
+            color: $clr1;
+            font-size: 45px;
+        }
+    }
 }

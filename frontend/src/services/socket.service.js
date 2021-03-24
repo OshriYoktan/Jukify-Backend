@@ -1,15 +1,18 @@
 import io from 'socket.io-client'
 
-export const SOCKET_EMIT_USER_WATCH = 'user-watch';
-export const SOCKET_EVENT_USER_CONNECTED = 'user-connect';
-export const SOCKET_EVENT_PLAY_PLAYLIST = 'play-playlist';
-export const SOCKET_EVENT_LIKE_PLAYLIST = 'Like-playlist';
-export const SOCKET_EVENT_SONG_HAS_ADDED = 'song-has-added';
-export const SOCKET_EVENT_SONG_HAS_REMOVED = 'song-has-remove';
-export const SOCKET_EVENT_NEW_MSG = 'new-msg';
-export const SOCKET_EVENT_IS_TYPING = 'is-typing';
+//HADAR'S  ::::***************************** 
+// DO NOT DELETE!
 
+// export const SOCKET_EMIT_USER_WATCH = 'user-watch';
+// export const SOCKET_EVENT_USER_CONNECTED = 'user-connect';
+// export const SOCKET_EVENT_SONG_IS_PLAYING = 'song-in-station-is-playing';
+// export const SOCKET_EVENT_LIKE_PLAYLIST = 'Like-playlist';
+// export const SOCKET_EVENT_SONG_HAS_ADDED = 'song-has-added';
+// export const SOCKET_EVENT_SONG_HAS_REMOVED = 'song-has-remove';
+// export const SOCKET_EVENT_NEW_MSG = 'new-msg';
+// export const SOCKET_EVENT_IS_TYPING = 'is-typing';
 
+// ***************************************
 const baseUrl = (process.env.NODE_ENV === 'production')? '' : '//localhost:3030'
 export const socketService = createSocketService()
 // export const socketService = createDummySocketService()

@@ -7,8 +7,8 @@
         alt=""
       />
     </div> -->
-    <div class="hero-container">
-      <router-link class="link" to="/explore">start listening </router-link>
+    <div class="hero-container column-layout-container">
+      <router-link class="hero-header link" to="/explore">start listening now</router-link>
     </div>
     <div class="home-cards-container column-layout-container">
       <h1>Looking for music?</h1>

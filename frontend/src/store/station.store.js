@@ -17,7 +17,6 @@ export const stationStore = {
             state.currStation = station;
         },
         addToStation(state, { payload }) {
-            console.log('mutation -', payload)
             const station = state.stations.find((s) => s._id === payload.stationId)
             station.songs.push(payload.song)
         },
@@ -42,7 +41,6 @@ export const stationStore = {
             state.stations.splice(idx, 1)
         },
         addStationMsg(state, { stationMsgsAdd }) {
-            console.log('stationMsgsAdd:', stationMsgsAdd)
             const station = state.stations.find((s) => s._id === stationMsgsAdd._id)
             station.msgs = stationMsgsAdd.msgs
         },

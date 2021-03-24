@@ -13,10 +13,11 @@ function connectSockets(http, session) {
         autoSave: true
     }));
     gIo.on('connection', socket => {
-        console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
+        console.log('Someone connected')
+        // console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
-            // TODO: emitToUser feature - need to tested for CaJan21
-            // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
+        // TODO: emitToUser feature - need to tested for CaJan21
+        // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
         socket.on('disconnect', socket => {
             console.log('Someone disconnected')
             if (socket.handshake) {
@@ -29,18 +30,21 @@ function connectSockets(http, session) {
                 socket.leave(socket.myTopic)
             }
             socket.join(topic)
-                // logger.debug('Session ID is', socket.handshake.sessionID)
+            // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic
         })
         socket.on('chat newMsg', msg => {
             // emits to all sockets:
             // gIo.emit('chat addMsg', msg)
             // emits only to sockets in the same room
-            console.log('msg:', msg)
+            console.log('msg:', msg, 'eeeeee')
             gIo.to(socket.myTopic).emit('chat addMsg', msg)
         })
         socket.on('user-watch', userId => {
             socket.join(userId)
+        })
+        socket.on('station new-song', songName => {
+            socket.to(socket.myTopic).emit('station change-song', songName)
         })
 
     })

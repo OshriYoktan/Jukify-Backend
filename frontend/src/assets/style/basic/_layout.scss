@@ -2,8 +2,8 @@
     font-family: Avenir, Helvetica, Arial, sans-serif;
     display: grid;
     height: 100vh;
-    grid-template-columns: 1fr 85rem 1fr;
-    grid-template-rows: 95px 1fr 100px;
+    grid-template-columns: 1fr 93rem 1fr;
+    grid-template-rows: 60px 1fr 70px;
     >* {
         grid-column: 2;
     }

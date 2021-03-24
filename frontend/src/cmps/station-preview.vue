@@ -16,7 +16,7 @@
       <font-awesome-icon icon="heart" />
       {{ this.likesToShow }}
     </p>
-    <p>{{ station.songs.length }} songs</p>
+    <p>{{ station.songs.length }} Songs</p>
   </router-link>
 </template>
 

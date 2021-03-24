@@ -127,5 +127,14 @@ export default {
       this.$store.getters.getSongName;
     });
   },
+  async created() {
+    try {
+      // socketService.on("station change-song", this.playSongForSockets);
+    } catch {}
+  },
+  destroyed() {
+    // socketService.off("station change-song", this.playSongForSockets);
+    // socketService.terminate();
+  },
 };
 </script>
