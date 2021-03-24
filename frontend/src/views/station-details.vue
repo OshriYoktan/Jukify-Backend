@@ -15,7 +15,6 @@
             <font-awesome-icon
               style="color: red"
               icon="heart"
-              @click="addStationLike"
             />
             {{ likes(currStation.likes) }}
           </div>
@@ -77,8 +76,8 @@
             v-for="song in currStation.songs"
             :key="song._id"
           >
-            <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
-            <div v-else>{{ song.name }}</div>
+            <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
+            <div>{{ songNameDisplay(song) }}</div>
             <font-awesome-icon
               class="delete-song"
               icon="trash-alt"
@@ -267,7 +266,7 @@ export default {
     songNameDisplay(song) {
       var songName = JSON.parse(JSON.stringify(song.name));
       const name =
-        song.name.length >= 40 ? songName.slice(0, 40) + "..." : song.name;
+        song.name.length >= 70 ? songName.slice(0, 70) + "..." : song.name;
       return name;
     },
     songResaultNameDisplay(song) {

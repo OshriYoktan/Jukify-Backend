@@ -3,7 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image row-layout-container">
+    <div v-if="song" class="song-image  row-layout-container">
       <img :src="songImage" alt="" />
     </div>
     <div class="playing-now row-layout-container" v-if="song">
@@ -12,25 +12,29 @@
     <div class="playing-now row-layout-container" v-else>
       <h3>No song has been playing</h3>
     </div>
-    <div v-if="songPlayer.currTime" class="duration-song row-layout-container">
-      <span>{{ songPlayer.currTime }}</span>
-      <input
-        @input="setSongTime"
-        v-model="songPlayer.currTime"
-        type="range"
-        :max="songPlayer.duration"
-      />
-      <span>{{ songPlayer.duration }}</span>
-    </div>
-    <div class="playing-btns row-layout-container">
-      <font-awesome-icon icon="step-backward" @click="changeSong(-1)" />
-      <font-awesome-icon
-        icon="play"
-        @click="togglePlay"
-        v-if="!$store.getters.getIsPlaying"
-      />
-      <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
-      <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
+    <div class="main-player-section column-layout-container">
+      <div class="playing-btns row-layout-container">
+        <font-awesome-icon icon="step-backward" @click="changeSong(-1)" />
+        <font-awesome-icon
+          icon="play"
+          @click="togglePlay"
+          v-if="!$store.getters.getIsPlaying"
+        />
+        <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
+        <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
+      </div>
+      <!-- <div v-if="songPlayer.currTime" class="duration-song row-layout-container"> -->
+      <div class="duration-song row-layout-container">
+        <span>{{ songPlayer.currTime }}</span>
+        <input
+          @input="setSongTime"
+          v-model="songPlayer.currTime"
+          type="range"
+          :max="songPlayer.duration"
+        />
+        <span v-if="songPlayer.duration">{{ songPlayer.duration }}</span>
+        <span v-else>00:00</span>
+      </div>
     </div>
     <div class="music-btns row-layout-container">
       <font-awesome-icon
@@ -64,11 +68,8 @@ export default {
   },
   methods: {
     async togglePlay() {
-      try {
-        socketService.emit("player to-toggle-play-song");
-      } catch (err) {
-        throw err;
-      }
+      const playing = await this.$store.dispatch({ type: "togglePlay" });
+      playing ? this.player.playVideo() : this.player.pauseVideo();
     },
     async togglePlayForSockets() {
       try {
@@ -86,15 +87,8 @@ export default {
     //   }
     // },
     async setSongVolume(vol) {
-      try {
-        const volume = await this.$store.dispatch({
-          type: "setSongVolume",
-          vol,
-        });
-        return this.player.setVolume(volume);
-      } catch (err) {
-        throw err;
-      }
+      const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
+      return this.player.setVolume(volume);
     },
     async playVideo() {
       await this.$store.dispatch({
@@ -171,6 +165,7 @@ export default {
         },1000)
       });
       this.playVideo(this.songId);
+      this.$store.getters.getSongName;
     });
   },
   async created() {
