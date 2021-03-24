@@ -77,17 +77,13 @@ export default {
         throw err;
       }
     },
-    async getDuration() {
-      try {
-        this.$nextTick(() => {
-          this.player.getDuration();
-          this.player.playVideo();
-        });
-        this.songPlayer.duration = await this.player.getDuration();
-      } catch (err) {
-        console.log("err", err);
-      }
-    },
+    // async getDuration() {
+    //   try {
+    //     this.songPlayer.duration = await this.player.getDuration();
+    //   } catch (err) {
+    //     console.log("err", err);
+    //   }
+    // },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
       return this.player.setVolume(volume);
@@ -168,8 +164,13 @@ export default {
             this.songPlayer.currTime = duration.toFixed(0);
           });
         }, 1000);
+        // this.getDuration();
+        setTimeout(() => {
+          this.player.getDuration().then((duration) => {
+            this.songPlayer.duration = duration
+          })
+        },1000)
       });
-      this.getDuration();
       this.playVideo(this.songId);
       this.$store.getters.getSongName;
     });

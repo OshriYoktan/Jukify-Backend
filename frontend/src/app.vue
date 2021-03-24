@@ -3,7 +3,7 @@
     <section class="container">
       <div class="nav sub-container">
         <div>
-          <router-link class="main-logo link" to="/"> Jukify</router-link>
+          <router-link class="main-logo link" to="/"> <img class="logo-image" height="60px" width="65.5" src="./assets/img/logo1.jpg" alt=""></router-link>
         </div>
         <div>
           <router-link class="link" to="/explore">Explore</router-link> |
