@@ -225,7 +225,7 @@ export default {
     songNameDisplay(song) {
       var songName = JSON.parse(JSON.stringify(song.name));
       const name =
-        song.name.length >= 45 ? songName.slice(0, 45) + "..." : song.name;
+        song.name.length >= 40 ? songName.slice(0, 40) + "..." : song.name;
       return name;
     },
     songResaultNameDisplay(song) {
