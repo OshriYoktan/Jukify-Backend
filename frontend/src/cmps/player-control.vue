@@ -3,7 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image">
+    <div v-if="song" class="song-image row-layout-container">
       <img :src="songImage" alt="" />
     </div>
     <div class="playing-now row-layout-container" v-if="song">
@@ -12,7 +12,7 @@
     <div class="playing-now row-layout-container" v-else>
       <h3>No song has been playing</h3>
     </div>
-    <div v-if="songPlayer.currTime" class="duration-song">
+    <div v-if="songPlayer.currTime" class="duration-song row-layout-container">
       <span>{{ songPlayer.currTime }}</span>
       <input
         @input="setSongTime"
@@ -64,15 +64,35 @@ export default {
   },
   methods: {
     async togglePlay() {
-      const playing = await this.$store.dispatch({ type: "togglePlay" });
-      playing ? this.player.playVideo() : this.player.pauseVideo();
+      try {
+        socketService.emit("player to-toggle-play-song");
+      } catch (err) {
+        throw err;
+      }
     },
+    async togglePlayForSockets() {
+      try {
+        const playing = await this.$store.dispatch({ type: "togglePlay" });
+        console.log("heyyy");
+        playing ? this.player.playVideo() : this.player.pauseVideo();
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async getDuration() {
       this.songPlayer.duration = await this.player.getDuration();
     },
     async setSongVolume(vol) {
-      const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
-      return this.player.setVolume(volume);
+      try {
+        const volume = await this.$store.dispatch({
+          type: "setSongVolume",
+          vol,
+        });
+        return this.player.setVolume(volume);
+      } catch (err) {
+        throw err;
+      }
     },
     async playVideo() {
       await this.$store.dispatch({
@@ -83,12 +103,16 @@ export default {
       });
     },
     async changeSong(dif) {
-      const payload = { dif };
-      await this.$store.dispatch({ type: "changeSong", payload });
-      this.$nextTick(() => {
-        this.player.playVideo();
-      });
-      this.$store.getters.getSongName;
+      try {
+        const payload = { dif };
+        await this.$store.dispatch({ type: "changeSong", payload });
+        this.$nextTick(() => {
+          this.player.playVideo();
+        });
+        this.$store.getters.getSongName;
+      } catch (err) {
+        throw err;
+      }
     },
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
@@ -132,17 +156,19 @@ export default {
       });
       this.getDuration();
       this.playVideo(this.songId);
-      this.$store.getters.getSongName;
     });
   },
   async created() {
     try {
-      // socketService.on("station change-song", this.playSongForSockets);
+      socketService.on("player toggle-play-song", () => {
+        console.log("socket arrived");
+        this.togglePlayForSockets();
+      });
     } catch {}
   },
   destroyed() {
-    // socketService.off("station change-song", this.playSongForSockets);
-    // socketService.terminate();
+    socketService.off('player toggle-play-song', this.togglePlayForSockets);
+    socketService.terminate();
   },
 };
 </script>

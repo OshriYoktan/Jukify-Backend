@@ -55,13 +55,13 @@
           @click="isSearch = !isSearch"
         />
         <div class="search-songs row-layout-container">
-          <form @submit.prevent="searchSongs" v-if="isSearch">
+          <form v-if="isSearch">
             <input
+              @input="debounceInput"
               type="text"
               placeholder="Search song online"
               v-model="search"
             />
-            <button>Find</button>
           </form>
         </div>
       </div>
@@ -73,27 +73,33 @@
       <div v-if="currStation" class="station-songs-container">
         <ul>
           <li
-            @click="playVideo(song.videoId) "
+            @click="playVideo(song.videoId)"
             v-for="song in currStation.songs"
             :key="song._id"
           >
             <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
             <div v-else>{{ song.name }}</div>
-            <button @click.stop="removeSong(song._id)" style="color: red">
-              🗑
-            </button>
+            <font-awesome-icon
+              class="delete-song"
+              icon="trash-alt"
+              @click.stop="removeSong(song._id)"
+              style="color: red"
+            />
           </li>
         </ul>
       </div>
-      <div v-if="foundSongs && isSearch" class="songs-result-container">
+      <div
+        class="songs-result-container"
+        :style="{ 'max-width': resultsMaxwidth }"
+      >
         <ul>
           <li
             @click="addToStation(idx)"
             v-for="(song, idx) in foundSongs"
             :key="idx"
           >
-            {{ songResaultNameDisplay(song.snippet.title) }}
-            <button>➕</button>
+            <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
+            <font-awesome-icon class="add-song" icon="plus" />
           </li>
         </ul>
       </div>
@@ -116,39 +122,33 @@ export default {
       search: "",
       videoId: null,
       isLiked: false,
+      isResult: false,
     };
   },
   methods: {
     playVideo(id) {
-      if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
-      socketService.emit(
-        "station new-song",
-        this.$store.state.playerStore.songId
-      );
+      console.log("id:", id);
+      socketService.emit("station new-song", id);
       socketService.emit("chat topic", this.currStation._id);
     },
-    playSongForSockets(id){
-          if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
+    async playSongForSockets(id) {
+      try {
+        if (!id) id = this.currStation.songs[0].videoId;
+        this.videoId = id;
+        await this.$store.dispatch({type: "setStation",currStation: this.currStation});
+        await this.$store.dispatch({type: "setVideoId",videoId: this.videoId,});
+        this.$root.$emit("startPlaySong");
+      } catch (err) {}
     },
     likes(likes) {
       return likes.toLocaleString();
     },
     async searchSongs() {
       try {
+        if (!this.search) this.isResult = false;
+        this.isResult = true;
+        console.log("in search");
+        console.log("this.isResult:", this.isResult);
         const songs = await stationService.askSearch(this.search);
         this.foundSongs = songs;
       } catch {}
@@ -255,10 +255,24 @@ export default {
         this.playVideo();
       } catch {}
     },
+    debounce(func, wait = 500) {
+      let timeout;
+      return function (...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    },
   },
   computed: {
     genres() {
       return this.$store.state.stationStore.genres;
+    },
+    resultsMaxwidth() {
+      return this.isResult ? "100vw" : "0";
     },
   },
   async created() {
@@ -268,12 +282,12 @@ export default {
       this.$store.dispatch({ type: "setCurrStation", id });
       this.currStation = this.$store.state.stationStore.currStation;
       socketService.on("station change-song", this.playSongForSockets);
+      this.debounceInput = this.debounce(this.searchSongs);
     } catch {}
   },
-  destroyed(){
+  destroyed() {
     socketService.off("station change-song", this.playSongForSockets);
     socketService.terminate();
-
   },
   components: {
     playerControl,
