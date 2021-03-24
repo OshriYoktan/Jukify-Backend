@@ -127,29 +127,18 @@ export default {
   },
   methods: {
     playVideo(id) {
-      if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
-      socketService.emit(
-        "station new-song",
-        this.$store.state.playerStore.songId
-      );
+      console.log("id:", id);
+      socketService.emit("station new-song", id);
       socketService.emit("chat topic", this.currStation._id);
     },
-    playSongForSockets(id) {
-      if (!id) id = this.currStation.songs[0].videoId;
-      this.videoId = id;
-      this.$store.dispatch({
-        type: "setStation",
-        currStation: this.currStation,
-      });
-      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
-      this.$root.$emit("startPlaySong");
+    async playSongForSockets(id) {
+      try {
+        if (!id) id = this.currStation.songs[0].videoId;
+        this.videoId = id;
+        await this.$store.dispatch({type: "setStation",currStation: this.currStation});
+        await this.$store.dispatch({type: "setVideoId",videoId: this.videoId,});
+        this.$root.$emit("startPlaySong");
+      } catch (err) {}
     },
     likes(likes) {
       return likes.toLocaleString();
