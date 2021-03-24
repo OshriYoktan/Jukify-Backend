@@ -160,13 +160,9 @@ export default {
   },
   async created() {
     try {
-      console.log('qqqqqqqqqqqqqqqqqqq');
       socketService.on("player toggle-play-song", () => {
         console.log("socket arrived");
         this.togglePlayForSockets();
-      });
-      socketService.on("player toggle-play-song", () => {
-        console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyy");
       });
     } catch {}
   },
