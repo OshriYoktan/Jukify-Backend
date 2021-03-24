@@ -3,7 +3,7 @@
     display: grid;
     height: 100vh;
     grid-template-columns: 1fr 93rem 1fr;
-    grid-template-rows: 60px 1fr 70px;
+    grid-template-rows: 60px 1fr 110px;
     >* {
         grid-column: 2;
     }

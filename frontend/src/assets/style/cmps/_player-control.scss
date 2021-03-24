@@ -5,7 +5,7 @@
 
 .song-player {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 150px 1fr 1fr 1fr;
     height: 100%;
     width: 100%;
     background-color: inherit;
@@ -26,24 +26,27 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .duration-song {
+    .main-player-section {
         grid-column: 3/4;
-    }
-    .playing-btns {
-        grid-column: 4/5;
-        >* {
-            cursor: pointer;
-            width: 25px;
-            height: 25px;
-            margin: 15px;
-            transition: 0.3s;
-            &:hover {
-                color: $clr1;
+        .playing-btns {
+            width: 100%;
+            >* {
+                cursor: pointer;
+                width: 25px;
+                height: 25px;
+                margin: 15px;
+                transition: 0.3s;
+                &:hover {
+                    color: $clr1;
+                }
+            }
+             :nth-child(2) {
+                width: 30px;
+                height: 30px;
             }
         }
-        :nth-child(2) {
-            width: 30px;
-            height: 30px;
+        .duration-song {
+            width: 100%;
         }
     }
     input[type="range"] {
@@ -51,7 +54,7 @@
         cursor: pointer;
     }
     .music-btns {
-        grid-column: 5/6;
+        grid-column: 4/5;
         .volume-range-container {
             width: 130px;
         }

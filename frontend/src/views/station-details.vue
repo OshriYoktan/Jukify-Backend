@@ -77,8 +77,8 @@
             v-for="song in currStation.songs"
             :key="song._id"
           >
-            <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div>
-            <div v-else>{{ song.name }}</div>
+            <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
+            <div>{{ songNameDisplay(song) }}</div>
             <font-awesome-icon
               class="delete-song"
               icon="trash-alt"
@@ -135,8 +135,14 @@ export default {
       try {
         if (!id) id = this.currStation.songs[0].videoId;
         this.videoId = id;
-        await this.$store.dispatch({type: "setStation",currStation: this.currStation});
-        await this.$store.dispatch({type: "setVideoId",videoId: this.videoId,});
+        await this.$store.dispatch({
+          type: "setStation",
+          currStation: this.currStation,
+        });
+        await this.$store.dispatch({
+          type: "setVideoId",
+          videoId: this.videoId,
+        });
         this.$root.$emit("startPlaySong");
       } catch (err) {}
     },
@@ -241,7 +247,7 @@ export default {
     songNameDisplay(song) {
       var songName = JSON.parse(JSON.stringify(song.name));
       const name =
-        song.name.length >= 40 ? songName.slice(0, 40) + "..." : song.name;
+        song.name.length >= 70 ? songName.slice(0, 70) + "..." : song.name;
       return name;
     },
     songResaultNameDisplay(song) {
