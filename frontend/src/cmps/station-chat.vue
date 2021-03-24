@@ -1,11 +1,14 @@
 <template>
   <div class="chat-room-container" v-if="currStation">
-    <h1>{{ currStation.name }}</h1>
-    <ul v-if="currStation.msgs.length" id="messages">
-      <li v-for="(msg, idx) in msgs" :key="idx">
-        {{ msg.from }}: {{ msg.txt }}
-      </li>
-    </ul>
+    <h2>Chat</h2>
+      <ul v-if="currStation.msgs.length" id="messages">
+        <li v-for="(msg, idx) in msgs" :key="idx">
+          <p>{{ msg.from }}</p>
+          <p>{{ msg.txt }}</p>
+          <span>{{ msg.sentAt | moment("from", "now", true) }} ago</span>
+        </li>
+      </ul>
+      <h3 v-else>Quiet here...</h3>
     <form id="form" @submit.prevent="sendMsg">
       <input id="input" v-model="msg.txt" autocomplete="off" />
       <button>Send</button>
@@ -23,6 +26,7 @@ export default {
       msg: {
         from: "Guest",
         txt: "",
+        sentAt: "",
       },
     };
   },
@@ -39,6 +43,7 @@ export default {
     },
     sendMsg() {
       try {
+        this.msg.sentAt = Date.now();
         socketService.emit("chat newMsg", this.msg);
         this.msg = { from: "Guest", txt: "" };
       } catch (err) {

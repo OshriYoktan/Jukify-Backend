@@ -3,7 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image">
+    <div v-if="song" class="song-image  row-layout-container">
       <img :src="songImage" alt="" />
     </div>
     <div class="playing-now row-layout-container" v-if="song">
@@ -33,7 +33,7 @@
           :max="songPlayer.duration"
         />
         <span v-if="songPlayer.duration">{{ songPlayer.duration }}</span>
-        <span v-else>13:15</span>
+        <span v-else>00:00</span>
       </div>
     </div>
     <div class="music-btns row-layout-container">

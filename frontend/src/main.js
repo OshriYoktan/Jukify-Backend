@@ -9,15 +9,16 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faHeart, faPauseCircle, faPlay, faPlus, faRandom, faSearch, faStepBackward, faStepForward, faTrashAlt, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faPauseCircle, faPlay, faPlus, faRandom, faSearch, faStepBackward, faStepForward, faTrashAlt, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlay, faPlus, faTrashAlt, faRandom, faSearch, faHeart, faVolumeUp, faStepForward, faPauseCircle, faVolumeMute, faStepBackward)
-library.add()
+library.add(faPlay, faPlus, faTrashAlt, faRandom, faSearch, faHeart, faVolumeUp, faStepForward, faPauseCircle, faVolumeMute, faStepBackward);
+library.add();
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.use(VueYoutube)
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.use(VueYoutube);
 Vue.use(ElementUI);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.use(require('vue-moment'));
 
 new Vue({
     router,

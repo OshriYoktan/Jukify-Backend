@@ -15,7 +15,6 @@
             <font-awesome-icon
               style="color: red"
               icon="heart"
-              @click="addStationLike"
             />
             {{ likes(currStation.likes) }}
           </div>

@@ -1,7 +1,7 @@
     .details-container {
         height: 100%;
         display: grid;
-        grid-template-columns: 65% 1fr;
+        grid-template-columns: 1fr 400px;
         grid-template-rows: 50% 1fr;
         background-color: $clr4;
         .station-details {
@@ -119,7 +119,7 @@
                     form {
                         width: 100%;
                         input {
-                            width: 80%;
+                            width: 97.8%;
                         }
                     }
                 }
@@ -129,8 +129,6 @@
             background-image: url('https://bluebeat.herokuapp.com/img/chat-background.72ed0661.jpg?__WB_REVISION__=72ed06611cd7ac4d2979e3ed32ac598a');
             grid-column: 2;
             grid-row: 1/3;
-            border: 1px solid white;
-            user-select: none;
             color: $clr1;
         }
         h1 {
