@@ -72,7 +72,6 @@ async function getById(stationId) {
     try {
         const collection = await dbService.getCollection('station')
         const station = await collection.findOne({ '_id': ObjectId(stationId) })
-        console.log('station:', station)
         return station
     } catch (err) {
         logger.error(`while finding user ${stationId}`, err)
