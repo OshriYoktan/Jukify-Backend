@@ -47,6 +47,7 @@ async function addStation(req, res) {
 async function updateStation(req, res) {
     try {
         const station = req.body
+        console.log('station:', station)
         const savedStation = await stationService.update(station)
         res.send(savedStation)
             // socketService.broadcast({type: 'user-updated', data: station, to:savedUser._id})

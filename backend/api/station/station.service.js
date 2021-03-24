@@ -72,6 +72,7 @@ async function getById(stationId) {
     try {
         const collection = await dbService.getCollection('station')
         const station = await collection.findOne({ '_id': ObjectId(stationId) })
+        console.log('station:', station)
         return station
     } catch (err) {
         logger.error(`while finding user ${stationId}`, err)
@@ -90,7 +91,8 @@ async function update(station) {
             likes: likes,
             msgs: station.msgs,
             genres: station.genres,
-            songs: station.songs
+            songs: station.songs,
+            msgs: station.msgs
         }
         const collection = await dbService.getCollection('station')
         await collection.updateOne({ '_id': stationToSave._id }, { $set: stationToSave })
