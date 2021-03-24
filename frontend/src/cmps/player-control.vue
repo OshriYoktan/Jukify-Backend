@@ -71,6 +71,16 @@ export default {
       const playing = await this.$store.dispatch({ type: "togglePlay" });
       playing ? this.player.playVideo() : this.player.pauseVideo();
     },
+    async togglePlayForSockets() {
+      try {
+        console.log('heyyy');
+        const playing = await this.$store.dispatch({ type: "togglePlay" });
+        playing ? this.player.playVideo() : this.player.pauseVideo();
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async getDuration() {
       this.songPlayer.duration = await this.player.getDuration();
     },
@@ -145,8 +155,8 @@ export default {
     } catch {}
   },
   destroyed() {
-    // socketService.off("station change-song", this.playSongForSockets);
-    // socketService.terminate();
+    socketService.off('player toggle-play-song');
+    socketService.terminate();
   },
 };
 </script>

@@ -127,7 +127,6 @@ export default {
   },
   methods: {
     playVideo(id) {
-      console.log("id:", id);
       socketService.emit("station new-song", id);
       socketService.emit("chat topic", this.currStation._id);
     },
