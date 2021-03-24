@@ -204,7 +204,6 @@ export default {
     },
     async addToStationForSockets(payload) {
       try {
-        console.log("payload:", payload);
         await this.$store.dispatch({ type: "addToStation", payload });
         this.$message({ type: "success", message: "Song added successfuly!" });
       } catch {

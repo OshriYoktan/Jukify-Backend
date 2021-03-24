@@ -3,7 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image  row-layout-container">
+    <div v-if="song" class="song-image row-layout-container">
       <img :src="songImage" alt="" />
     </div>
     <div class="playing-now row-layout-container" v-if="song">
@@ -68,8 +68,7 @@ export default {
   },
   methods: {
     async togglePlay() {
-      const playing = await this.$store.dispatch({ type: "togglePlay" });
-      playing ? this.player.playVideo() : this.player.pauseVideo();
+      socketService.emit("player to-toggle-play-song");
     },
     async togglePlayForSockets() {
       try {
@@ -128,7 +127,10 @@ export default {
       return isMute ? this.player.mute() : this.player.unMute();
     },
     async setSongTime() {
-      this.player.seekTo(this.songPlayer.currTime);
+      socketService.emit("player to-set-song-time", this.songPlayer.currTime);
+    },
+    async setSongTimeForSockets(time) {
+      this.player.seekTo(time);
     },
   },
   computed: {
@@ -169,12 +171,9 @@ export default {
   },
   async created() {
     try {
-      socketService.on("player toggle-play-song", () => {
-        console.log("socket (player toggle-play-song) arrived");
-        this.togglePlayForSockets();
-      });
+      socketService.on("player toggle-play-song", this.togglePlayForSockets);
+      socketService.on("player set-song-time", this.setSongTimeForSockets);
       socketService.on("player next-previouse-song", (dif) => {
-        console.log("socket (player next-previouse-song) arrived");
         this.changeSongForSockets(dif);
       });
     } catch (err) {
@@ -182,8 +181,12 @@ export default {
     }
   },
   destroyed() {
-    socketService.off("player toggle-play-song");
-    socketService.off("player next-previouse-song");
+    socketService.off("player toggle-play-song", this.togglePlayForSockets);
+    socketService.off("player set-song-time", this.setSongTimeForSockets);
+    socketService.off(
+      "player next-previouse-song",
+      this.changeSongForSockets(dif)
+    );
     socketService.terminate();
   },
 };
