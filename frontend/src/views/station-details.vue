@@ -13,7 +13,7 @@
           </div>
           <div>
             <font-awesome-icon
-            style="color: red;"
+              style="color: red"
               icon="heart"
               @click="addStationLike"
             />
@@ -73,7 +73,7 @@
       <div v-if="currStation" class="station-songs-container">
         <ul>
           <li
-            @click="playVideo(song.videoId)"
+            @click="playVideo(song.videoId) "
             v-for="song in currStation.songs"
             :key="song._id"
           >
@@ -103,8 +103,9 @@
 
 <script>
 import { stationService } from "../services/station.service";
+import { socketService } from "../services/socket.service.js";
 import playerControl from "../cmps/player-control";
-import stationChat from '../cmps/station-chat';
+import stationChat from "../cmps/station-chat";
 export default {
   name: "station-details",
   data() {
@@ -120,6 +121,21 @@ export default {
   methods: {
     playVideo(id) {
       if (!id) id = this.currStation.songs[0].videoId;
+      this.videoId = id;
+      this.$store.dispatch({
+        type: "setStation",
+        currStation: this.currStation,
+      });
+      this.$store.dispatch({ type: "setVideoId", videoId: this.videoId });
+      this.$root.$emit("startPlaySong");
+      socketService.emit(
+        "station new-song",
+        this.$store.state.playerStore.songId
+      );
+      socketService.emit("chat topic", this.currStation._id);
+    },
+    playSongForSockets(id){
+          if (!id) id = this.currStation.songs[0].videoId;
       this.videoId = id;
       this.$store.dispatch({
         type: "setStation",
@@ -251,7 +267,13 @@ export default {
       const id = this.$route.params.stationName;
       this.$store.dispatch({ type: "setCurrStation", id });
       this.currStation = this.$store.state.stationStore.currStation;
+      socketService.on("station change-song", this.playSongForSockets);
     } catch {}
+  },
+  destroyed(){
+    socketService.off("station change-song", this.playSongForSockets);
+    socketService.terminate();
+
   },
   components: {
     playerControl,

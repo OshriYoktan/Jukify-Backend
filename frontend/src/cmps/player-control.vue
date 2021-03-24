@@ -16,16 +16,16 @@
         @click="togglePlay"
         v-if="!$store.getters.getIsPlaying"
       />
-      <font-awesome-icon
-        icon="pause-circle"
-        @click="togglePlay"
-        v-else
-      />
+      <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
       <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
     </div>
     <div class="music-btns row-layout-container">
-        <font-awesome-icon icon="volume-mute" @click="muteSong" v-if="$store.getters.getIsSongMuted" />
-        <font-awesome-icon icon="volume-up" @click="muteSong" v-else />
+      <font-awesome-icon
+        icon="volume-mute"
+        @click="muteSong"
+        v-if="$store.getters.getIsSongMuted"
+      />
+      <font-awesome-icon icon="volume-up" @click="muteSong" v-else />
       <div class="volume-range-container">
         <el-slider
           @input="setSongVolume(songPlayer.volumeRange)"
@@ -90,7 +90,7 @@ export default {
     },
     song() {
       var song = JSON.parse(JSON.stringify(this.$store.getters.getSongName));
-      if (!song) return
+      if (!song) return;
       const name = song.slice(0, 30) + "...";
       return name;
     },
@@ -103,6 +103,15 @@ export default {
       this.playVideo(this.songId);
       this.$store.getters.getSongName;
     });
+  },
+  async created() {
+    try {
+      // socketService.on("station change-song", this.playSongForSockets);
+    } catch {}
+  },
+  destroyed() {
+    // socketService.off("station change-song", this.playSongForSockets);
+    // socketService.terminate();
   },
 };
 </script>
