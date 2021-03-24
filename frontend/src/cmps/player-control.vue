@@ -73,16 +73,22 @@ export default {
     },
     async togglePlayForSockets() {
       try {
-        console.log('heyyy');
         const playing = await this.$store.dispatch({ type: "togglePlay" });
         playing ? this.player.playVideo() : this.player.pauseVideo();
       } catch (err) {
         throw err;
       }
     },
-
     async getDuration() {
-      this.songPlayer.duration = await this.player.getDuration();
+      try {
+        this.$nextTick(() => {
+          this.player.getDuration();
+          this.player.playVideo();
+        });
+        this.songPlayer.duration = await this.player.getDuration();
+      } catch (err) {
+        console.log("err", err);
+      }
     },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
@@ -97,13 +103,25 @@ export default {
       });
     },
     async changeSong(dif) {
-      const payload = { dif };
-      await this.$store.dispatch({ type: "changeSong", payload });
-      this.$nextTick(() => {
-        this.player.playVideo();
-      });
-      this.$store.getters.getSongName;
+      try {
+        socketService.emit("player to-next-previouse-song", dif);
+      } catch (err) {
+        throw err;
+      }
     },
+    async changeSongForSockets(dif) {
+      try {
+        const payload = { dif };
+        await this.$store.dispatch({ type: "changeSong", payload });
+        this.$nextTick(() => {
+          this.player.playVideo();
+        });
+        this.$store.getters.getSongName;
+      } catch (err) {
+        throw err;
+      }
+    },
+
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
@@ -151,11 +169,21 @@ export default {
   },
   async created() {
     try {
-      // socketService.on("station change-song", this.playSongForSockets);
-    } catch {}
+      socketService.on("player toggle-play-song", () => {
+        console.log("socket (player toggle-play-song) arrived");
+        this.togglePlayForSockets();
+      });
+      socketService.on("player next-previouse-song", (dif) => {
+        console.log("socket (player next-previouse-song) arrived");
+        this.changeSongForSockets(dif);
+      });
+    } catch (err) {
+      console.log("error: ", err);
+    }
   },
   destroyed() {
-    socketService.off('player toggle-play-song');
+    socketService.off("player toggle-play-song");
+    socketService.off("player next-previouse-song");
     socketService.terminate();
   },
 };

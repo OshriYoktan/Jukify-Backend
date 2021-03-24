@@ -42,8 +42,26 @@ function connectSockets(http, session) {
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
-        socket.on('station new-song', songName => {
-            socket.to(socket.myTopic).emit('station change-song', songName)
+        socket.on('station new-song', songId => {
+            gIo.in(socket.myTopic).emit('station change-song', songId)
+        })
+        socket.on('player to-toggle-play-song', () => {
+            socket.broadcast.emit('player toggle-play-song')
+        })
+        socket.on('player to-next-previouse-song', (dif) => {
+            socket.broadcast.emit('player next-previouse-song', dif)
+        })
+        socket.on('station to-change-song', (songRemove) => {
+            gIo.in(socket.myTopic).emit('station remove-song', songRemove)
+        })
+        socket.on('station to-add-song', (payload) => {
+            gIo.in(socket.myTopic).emit('station add-song', payload)
+        })
+        socket.on('station to-like', (addLike) => {
+            gIo.in(socket.myTopic).emit('station like', addLike)
+        })
+        socket.on('station to-shuffleSongs', (stationId) => {
+            gIo.in(socket.myTopic).emit('station shuffleSongs', stationId)
         })
 
     })
