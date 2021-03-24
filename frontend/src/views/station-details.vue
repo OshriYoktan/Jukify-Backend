@@ -134,8 +134,14 @@ export default {
       try {
         if (!id) id = this.currStation.songs[0].videoId;
         this.videoId = id;
-        await this.$store.dispatch({type: "setStation",currStation: this.currStation});
-        await this.$store.dispatch({type: "setVideoId",videoId: this.videoId,});
+        await this.$store.dispatch({
+          type: "setStation",
+          currStation: this.currStation,
+        });
+        await this.$store.dispatch({
+          type: "setVideoId",
+          videoId: this.videoId,
+        });
         this.$root.$emit("startPlaySong");
       } catch (err) {}
     },
@@ -146,8 +152,6 @@ export default {
       try {
         if (!this.search) this.isResult = false;
         this.isResult = true;
-        console.log("in search");
-        console.log("this.isResult:", this.isResult);
         const songs = await stationService.askSearch(this.search);
         this.foundSongs = songs;
       } catch {}
@@ -167,6 +171,13 @@ export default {
           songId,
           stationId: this.currStation._id,
         };
+        socketService.emit("station to-change-song", songRemove);
+      } catch (err) {
+        console.log("err", err);
+      }
+    },
+    async removeSongForSockets(songRemove) {
+      try {
         await this.$store.dispatch({ type: "removeSong", songRemove });
         this.$message({
           type: "success",
@@ -187,7 +198,14 @@ export default {
           selectedSong,
           stationId: this.currStation._id,
         };
-        console.log("selectedSong:", selectedSong);
+        socketService.emit("station to-add-song", payload);
+      } catch (err) {
+        console.log("err:", err);
+      }
+    },
+    async addToStationForSockets(payload) {
+      try {
+        console.log("payload:", payload);
         await this.$store.dispatch({ type: "addToStation", payload });
         this.$message({ type: "success", message: "Song added successfuly!" });
       } catch {
@@ -233,9 +251,18 @@ export default {
           station: this.currStation._id,
           num,
         };
+        socketService.emit("station to-like", addLike);
+      } catch (err) {
+        console.log("err:", err);
+      }
+    },
+    async addStationLikeForSockets(addLike) {
+      try {
         await this.$store.dispatch({ type: "addStationLike", addLike });
         this.isLiked = !this.isLiked;
-      } catch {}
+      } catch (err) {
+        console.log("err:", err);
+      }
     },
     songNameDisplay(song) {
       var songName = JSON.parse(JSON.stringify(song.name));
@@ -250,7 +277,15 @@ export default {
     async shuffleSongs() {
       try {
         const stationId = this.currStation._id;
-        await this.$store.dispatch({ type: "shuffleSongs", stationId });
+        // await this.$store.dispatch({ type: "shuffleSongs", stationId });
+        socketService.emit("station to-shuffleSongs", stationId);
+      } catch (err) {
+        console.log("err", err);
+      }
+    },
+    async shuffleSongsForSockets(stationId) {
+      await this.$store.dispatch({ type: "shuffleSongs", stationId });
+      try {
         this.playVideo();
       } catch {}
     },
@@ -281,11 +316,19 @@ export default {
       this.$store.dispatch({ type: "setCurrStation", id });
       this.currStation = this.$store.state.stationStore.currStation;
       socketService.on("station change-song", this.playSongForSockets);
+      socketService.on("station remove-song", this.removeSongForSockets);
+      socketService.on("station add-song", this.addToStationForSockets);
+      socketService.on("station like", this.addStationLikeForSockets);
+      socketService.on("station shuffleSongs", this.shuffleSongsForSockets);
       this.debounceInput = this.debounce(this.searchSongs);
     } catch {}
   },
   destroyed() {
     socketService.off("station change-song", this.playSongForSockets);
+    socketService.off("station remove-song", this.removeSongForSockets);
+    socketService.off("station add-song", this.addToStationForSockets);
+    socketService.off("station like", this.addStationLikeForSockets);
+    socketService.off("station shuffleSongs", this.shuffleSongsForSockets);
     socketService.terminate();
   },
   components: {
