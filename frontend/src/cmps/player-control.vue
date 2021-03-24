@@ -3,9 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image row-layout-container">
-      <img :src="songImage" alt="" />
-    </div>
+    <img v-if="song" :src="songImage" alt="" :class="imgRotate" />
     <div class="playing-now row-layout-container" v-if="song">
       <h3>{{ song }}</h3>
     </div>
@@ -23,10 +21,10 @@
         <font-awesome-icon icon="pause-circle" @click="togglePlay" v-else />
         <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
       </div>
-      <!-- <div v-if="songPlayer.currTime" class="duration-song row-layout-container"> -->
       <div class="duration-song row-layout-container">
         <span>{{ songPlayer.currTime }}</span>
         <input
+          class="song-duration"
           @input="setSongTime"
           v-model="songPlayer.currTime"
           type="range"
@@ -78,17 +76,13 @@ export default {
         throw err;
       }
     },
-    async getDuration() {
-      try {
-        this.$nextTick(() => {
-          this.player.getDuration();
-          this.player.playVideo();
-        });
-        this.songPlayer.duration = await this.player.getDuration();
-      } catch (err) {
-        console.log("err", err);
-      }
-    },
+    // async getDuration() {
+    //   try {
+    //     this.songPlayer.duration = await this.player.getDuration();
+    //   } catch (err) {
+    //     console.log("err", err);
+    //   }
+    // },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
       return this.player.setVolume(volume);
@@ -152,6 +146,11 @@ export default {
       const name = song.slice(0, 30) + "...";
       return name;
     },
+    imgRotate() {
+      return this.$store.state.playerStore.songPlayer.isPlaying
+        ? "song-image rotating"
+        : "song-image";
+    },
   },
   created() {},
   mounted() {
@@ -163,8 +162,13 @@ export default {
             this.songPlayer.currTime = duration.toFixed(0);
           });
         }, 1000);
+        // this.getDuration();
+        setTimeout(() => {
+          this.player.getDuration().then((duration) => {
+            this.songPlayer.duration = duration
+          })
+        },1000)
       });
-      this.getDuration();
       this.playVideo(this.songId);
       this.$store.getters.getSongName;
     });
