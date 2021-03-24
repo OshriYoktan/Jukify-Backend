@@ -73,7 +73,6 @@ export default {
     async togglePlayForSockets() {
       try {
         const playing = await this.$store.dispatch({ type: "togglePlay" });
-        console.log("heyyy");
         playing ? this.player.playVideo() : this.player.pauseVideo();
       } catch (err) {
         throw err;
