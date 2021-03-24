@@ -210,6 +210,15 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
             margin: 0;
+            width: 530px;
+            height: 592px;
+            max-width: 0;
+            transition: max-width 1s;
+            position: absolute;
+            right: 0;
+            top: 60px;
+            background-color: $clr3;
+            transform: translateX(-4%);
             &::-webkit-scrollbar {
                 display: none;
             }
@@ -220,6 +229,10 @@
             ul {
                 margin-top: 11px;
                 li {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    width: 100%;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -228,6 +241,7 @@
                     margin: 5px;
                     border: 1px solid $clr4;
                     transition: .3s;
+                    transition: max-width 1s;
                     cursor: pointer;
                     button {
                         display: flex;

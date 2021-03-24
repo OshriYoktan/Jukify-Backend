@@ -3,11 +3,24 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
+    <div v-if="song" class="song-image">
+      <img :src="songImage" alt="" />
+    </div>
     <div class="playing-now row-layout-container" v-if="song">
-      <h3>Playing Now:<br />{{ song }}</h3>
+      <h3>{{ song }}</h3>
     </div>
     <div class="playing-now row-layout-container" v-else>
       <h3>No song has been playing</h3>
+    </div>
+    <div v-if="songPlayer.currTime" class="duration-song">
+      <span>{{ songPlayer.currTime }}</span>
+      <input
+        @input="setSongTime"
+        v-model="songPlayer.currTime"
+        type="range"
+        :max="songPlayer.duration"
+      />
+      <span>{{ songPlayer.duration }}</span>
     </div>
     <div class="playing-btns row-layout-container">
       <font-awesome-icon icon="step-backward" @click="changeSong(-1)" />
@@ -44,6 +57,8 @@ export default {
     return {
       songPlayer: {
         volumeRange: 100,
+        currTime: null,
+        duration: null,
       },
     };
   },
@@ -65,6 +80,9 @@ export default {
       }
     },
 
+    async getDuration() {
+      this.songPlayer.duration = await this.player.getDuration();
+    },
     async setSongVolume(vol) {
       try {
         const volume = await this.$store.dispatch({
@@ -101,6 +119,9 @@ export default {
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
       return isMute ? this.player.mute() : this.player.unMute();
     },
+    async setSongTime() {
+      this.player.seekTo(this.songPlayer.currTime)
+    },
   },
   computed: {
     player() {
@@ -112,6 +133,9 @@ export default {
     songId() {
       return this.$store.getters.getSongId;
     },
+    songImage() {
+      return this.$store.getters.getSongImage;
+    },
     song() {
       var song = JSON.parse(JSON.stringify(this.$store.getters.getSongName));
       if (!song) return;
@@ -119,8 +143,18 @@ export default {
       return name;
     },
   },
+  created() {},
   mounted() {
     this.$root.$on("startPlaySong", () => {
+      this.$nextTick(() => {
+        this.player.playVideo();
+        setInterval(() => {
+          this.player.getCurrentTime().then((duration) => {
+            this.songPlayer.currTime = duration.toFixed(0);
+          });
+        }, 1000);
+      });
+      this.getDuration();
       this.playVideo(this.songId);
     });
   },

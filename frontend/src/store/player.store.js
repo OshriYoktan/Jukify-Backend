@@ -8,6 +8,7 @@ export const playerStore = {
             isMuted: false,
             volumeRange: 50,
             songName: "",
+            songImg: ""
         },
     },
     getters: {
@@ -16,6 +17,9 @@ export const playerStore = {
         },
         getSongName(state) {
             return state.songPlayer.songName
+        },
+        getSongImage(state) {
+            return state.songPlayer.songImg
         },
         getIsPlaying(state) {
             return state.songPlayer.isPlaying
@@ -49,6 +53,7 @@ export const playerStore = {
             const currSong = state.currStation.songs.find((song) => {
                 return song.videoId === state.songId;
             });
+            state.songPlayer.songImg = currSong.img
             state.songPlayer.songName = currSong.name;
         },
         changeSong(state, { payload }) {

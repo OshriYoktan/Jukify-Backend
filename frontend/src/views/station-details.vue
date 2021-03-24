@@ -61,7 +61,7 @@
               placeholder="Search song online"
               v-model="search"
             />
-            <button>Find</button>
+            <button @click="isResult = !isResult">Find</button>
           </form>
         </div>
       </div>
@@ -85,14 +85,20 @@
           </li>
         </ul>
       </div>
-      <div v-if="foundSongs && isSearch" class="songs-result-container">
+      <!-- <div v-if="foundSongs && isSearch" class="songs-result-container"> -->
+      <div
+        class="songs-result-container"
+        :style="{ 'max-width': resultsMaxwidth}"
+      >
         <ul>
           <li
             @click="addToStation(idx)"
             v-for="(song, idx) in foundSongs"
             :key="idx"
           >
-            {{ songResaultNameDisplay(song.snippet.title) }}
+            <span>
+              {{ songResaultNameDisplay(song.snippet.title) }}
+            </span>
             <button>➕</button>
           </li>
         </ul>
@@ -116,6 +122,7 @@ export default {
       search: "",
       videoId: null,
       isLiked: false,
+      isResult: false,
     };
   },
   methods: {
@@ -126,20 +133,11 @@ export default {
     },
     async playSongForSockets(id) {
       try {
-        console.log("id:", id);
         if (!id) id = this.currStation.songs[0].videoId;
         this.videoId = id;
-        console.log("heyyyyyyyyyyy");
-        await this.$store.dispatch({
-          type: "setStation",
-          currStation: this.currStation,
-        });
-        await this.$store.dispatch({
-          type: "setVideoId",
-          videoId: this.videoId,
-        });
+        await this.$store.dispatch({type: "setStation",currStation: this.currStation});
+        await this.$store.dispatch({type: "setVideoId",videoId: this.videoId,});
         this.$root.$emit("startPlaySong");
-        console.log("gfghtjyf");
       } catch (err) {}
     },
     likes(likes) {
@@ -257,6 +255,9 @@ export default {
   computed: {
     genres() {
       return this.$store.state.stationStore.genres;
+    },
+    resultsMaxwidth() {
+      return this.isResult ? "100vw" : "0";
     },
   },
   async created() {
