@@ -3,7 +3,7 @@
     <div class="song-video">
       <youtube :video-id="songId" ref="youtube"></youtube>
     </div>
-    <div v-if="song" class="song-image">
+    <div v-if="song" class="song-image row-layout-container">
       <img :src="songImage" alt="" />
     </div>
     <div class="playing-now row-layout-container" v-if="song">
@@ -12,7 +12,7 @@
     <div class="playing-now row-layout-container" v-else>
       <h3>No song has been playing</h3>
     </div>
-    <div v-if="songPlayer.currTime" class="duration-song">
+    <div v-if="songPlayer.currTime" class="duration-song row-layout-container">
       <span>{{ songPlayer.currTime }}</span>
       <input
         @input="setSongTime"
@@ -119,7 +119,7 @@ export default {
       return isMute ? this.player.mute() : this.player.unMute();
     },
     async setSongTime() {
-      this.player.seekTo(this.songPlayer.currTime)
+      this.player.seekTo(this.songPlayer.currTime);
     },
   },
   computed: {
