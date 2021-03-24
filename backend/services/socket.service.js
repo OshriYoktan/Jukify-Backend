@@ -1,5 +1,3 @@
-
-
 const asyncLocalStorage = require('./als.service');
 const logger = require('./logger.service');
 
@@ -15,17 +13,21 @@ function connectSockets(http, session) {
         autoSave: true
     }));
     gIo.on('connection', socket => {
-        console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
+        console.log('Someone connected')
+        // console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
         // TODO: emitToUser feature - need to tested for CaJan21
         // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
         socket.on('disconnect', socket => {
             console.log('Someone disconnected')
             if (socket.handshake) {
+                console.log('socket.handshake:', socket.handshake)
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
         socket.on('chat topic', topic => {
+            console.log('topic:', topic)
+            console.log('socket.myTopic:', socket.myTopic)
             if (socket.myTopic === topic) return;
             if (socket.myTopic) {
                 socket.leave(socket.myTopic)
@@ -33,6 +35,7 @@ function connectSockets(http, session) {
             socket.join(topic)
             // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic
+            console.log('socket.myTopic:', socket.myTopic)
         })
         socket.on('chat newMsg', msg => {
             // emits to all sockets:
