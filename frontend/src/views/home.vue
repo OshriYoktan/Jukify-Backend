@@ -127,7 +127,6 @@ export default {
   },
   methods: {
     loading(val) {
-      console.log(val);
       this.isLoading = val;
     },
   },

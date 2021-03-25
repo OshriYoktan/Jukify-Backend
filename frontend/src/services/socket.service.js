@@ -29,7 +29,6 @@ function createSocketService() {
     },
     on(eventName, cb) {
       if (!socket) socketService.setup();
-      console.log(eventName);
       socket.on(eventName, cb)
     },
     off(eventName, cb = null) {

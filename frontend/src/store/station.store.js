@@ -44,6 +44,10 @@ export const stationStore = {
             const station = state.stations.find((s) => s._id === stationMsgsAdd._id)
             station.msgs = stationMsgsAdd.msgs
         },
+        updateSongs(state, { stationOrdered }) {
+            const station = state.stations.find((s) => s._id === stationOrdered._id)
+            station.songs = stationOrdered.songs
+        },
     },
     actions: {
         async loadStations({ commit }) {
@@ -104,6 +108,12 @@ export const stationStore = {
             try {
                 const stationMsgsAdd = await stationService.addStationMsg(addMsg)
                 commit({ type: 'addStationMsg', stationMsgsAdd })
+            } catch {}
+        },
+        async updateSongs( {commit} ,  {draggedSongs} ) {
+            try {
+                const stationOrdered = await stationService.updateSongs(draggedSongs)
+                commit({ type: 'updateSongs', stationOrdered })
             } catch {}
         },
     }
