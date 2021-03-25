@@ -17,8 +17,12 @@
           </div>
         </div>
         <div class="menu-container">
-          <span class="station-menu">⋮</span>
-          <span class="station-menu-delete" @click="removeStation">🗑</span>
+          <span class="station-menu" v-if="!isDelete" @click="showDeleteStation"
+            >⋮</span
+          >
+          <span class="station-menu-delete" v-else @click="removeStation"
+            >🗑</span
+          >
         </div>
       </div>
       <div class="station-play-like row-layout-container">
@@ -118,6 +122,8 @@ export default {
       videoId: null,
       isLiked: false,
       isResult: false,
+      isChat: false,
+      isDelete: false,
     };
   },
   methods: {
@@ -314,6 +320,12 @@ export default {
       } catch (err) {
         console.log("err:", err);
       }
+    },
+    showDeleteStation() {
+      this.isDelete = true;
+      setTimeout(() => {
+        this.isDelete = false;
+      }, 3000);
     },
   },
   computed: {

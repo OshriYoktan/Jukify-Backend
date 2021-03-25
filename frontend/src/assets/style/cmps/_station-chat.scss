@@ -4,13 +4,19 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 50px 1fr 48px;
-    h2 {
+    .chat-header {
         border-bottom: 1px solid white;
-        margin: 0;
-        margin-left: 10px;
-        padding: 0;
-        height: 100%;
-        font-size: 30px;
+        h2 {
+            margin: 0;
+            margin-left: 10px;
+            padding: 0;
+            height: 100%;
+            font-size: 30px;
+        }
+        .close-chat {
+            color: $clr2;
+            display: none;
+        }
     }
     h3 {
         text-align: center;
@@ -101,12 +107,23 @@
     padding: 0;
 }
 
-// #messages>li:nth-child(odd) {
-//     background-color: white;
-// }
-.chat-room-container {
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: space-between;
+@include for-mobile-layout {
+    .chat-room-container {
+        .chat-header {
+            justify-content: space-between;
+            >* {
+                margin: 10px;
+            }
+            .close-chat {
+                margin-right: 10px;
+                cursor: pointer;
+                font-size: 25px;
+                display: block;
+                transform: rotate(45deg);
+                &:hover {
+                    color: $clr1;
+                }
+            }
+        }
+    }
 }
