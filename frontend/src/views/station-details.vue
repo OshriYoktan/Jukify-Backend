@@ -41,22 +41,30 @@
         />
       </div>
       <div class="search-songs-container row-layout-container">
-        <font-awesome-icon
-          class="plus-icon"
-          :style="{ transform: searchClass }"
-          icon="plus"
-          @click="changeToSearch"
-        />
-        <div class="search-songs row-layout-container">
-          <form v-if="isSearch">
-            <input
-              @input="debounceInput"
-              type="text"
-              placeholder="Search song online"
-              v-model="search"
-            />
-          </form>
+        <div class="search-container row-layout-container">
+          <font-awesome-icon
+            class="plus-icon"
+            :style="{ transform: searchClass }"
+            icon="plus"
+            @click="changeToSearch"
+          />
+          <div class="search-songs row-layout-container">
+            <form v-if="isSearch">
+              <input
+                @input="debounceInput"
+                type="text"
+                placeholder="Search song online"
+                v-model="search"
+              />
+            </form>
+          </div>
         </div>
+        <font-awesome-icon
+          class="pen-icon"
+          @click="showDeleteSong"
+          :style="{ color: penClass }"
+          icon="pen"
+        />
       </div>
     </div>
     <div class="chat-room column-layout-container">
@@ -73,15 +81,18 @@
             >
               <div class="song-desc row-layout-container">
                 <img :src="song.img" />
-                {{ song.name }}
+                <p>{{ song.name }}</p>
                 <!-- {{ songNameDisplay(song) }} -->
               </div>
-              <font-awesome-icon
-                class="delete-song"
-                icon="trash-alt"
-                @click.stop="removeSong(song._id)"
-                style="color: red"
-              />
+              <div class="sog-menu-container">
+                <font-awesome-icon
+                  v-if="isSongDelete"
+                  class="delete-song"
+                  icon="trash-alt"
+                  @click.stop="removeSong(song._id)"
+                  style="color: red"
+                />
+              </div>
             </li>
           </draggable>
         </ul>
@@ -124,6 +135,7 @@ export default {
       isResult: false,
       isChat: false,
       isDelete: false,
+      isSongDelete: false,
     };
   },
   methods: {
@@ -311,6 +323,9 @@ export default {
         this.isDelete = false;
       }, 3000);
     },
+    showDeleteSong() {
+      this.isSongDelete = !this.isSongDelete;
+    },
   },
   computed: {
     myList: {
@@ -334,6 +349,9 @@ export default {
     },
     searchClass() {
       return this.isSearch ? "rotate(135deg)" : "";
+    },
+    penClass() {
+      return this.isSongDelete ? "#1db954" : "";
     },
   },
   async created() {
