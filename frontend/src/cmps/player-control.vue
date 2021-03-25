@@ -22,7 +22,8 @@
         <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
       </div>
       <div class="duration-song row-layout-container">
-        <span>{{ songPlayer.currTime }}</span>
+        <span v-if="songPlayer.currTime">{{ songPlayer.currTime }}</span>
+        <span v-else >00:00</span>
         <input
           class="song-duration"
           @input="setSongTime"
