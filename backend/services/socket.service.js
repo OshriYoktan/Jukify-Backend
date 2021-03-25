@@ -14,10 +14,10 @@ function connectSockets(http, session) {
     }));
     gIo.on('connection', socket => {
         console.log('Someone connected')
-            // console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
+        // console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
-            // TODO: emitToUser feature - need to tested for CaJan21
-            // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
+        // TODO: emitToUser feature - need to tested for CaJan21
+        // if (socket.handshake?.session?.user) socket.join(socket.handshake.session.user._id)
         socket.on('disconnect', socket => {
             console.log('Someone disconnected')
             if (socket.handshake) {
@@ -30,7 +30,7 @@ function connectSockets(http, session) {
                 socket.leave(socket.myTopic)
             }
             socket.join(topic)
-                // logger.debug('Session ID is', socket.handshake.sessionID)
+            // logger.debug('Session ID is', socket.handshake.sessionID)
             socket.myTopic = topic
         })
         socket.on('chat newMsg', msg => {
@@ -60,8 +60,13 @@ function connectSockets(http, session) {
         socket.on('station to-like', (addLike) => {
             gIo.in(socket.myTopic).emit('station like', addLike)
         })
-        socket.on('station to-shuffleSongs', (stationId) => {
-            gIo.in(socket.myTopic).emit('station shuffleSongs', stationId)
+        socket.on('station to-shuffleSongs', (shuffledStation) => {
+            gIo.in(socket.myTopic).emit('station shuffleSongs', shuffledStation)
+        })
+        socket.on('player to-set-song-time', (time) => {
+            socket.broadcast.emit('player set-song-time', time)
+            socket.to(socket.myTopic).emit('player set-song-time', time)
+            gIo.in(socket.myTopic).emit('player set-song-time', time)
         })
 
     })

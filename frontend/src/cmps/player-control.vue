@@ -67,8 +67,7 @@ export default {
   },
   methods: {
     async togglePlay() {
-      const playing = await this.$store.dispatch({ type: "togglePlay" });
-      playing ? this.player.playVideo() : this.player.pauseVideo();
+      socketService.emit("player to-toggle-play-song");
     },
     async togglePlayForSockets() {
       try {
@@ -116,14 +115,16 @@ export default {
         throw err;
       }
     },
-
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;
       return isMute ? this.player.mute() : this.player.unMute();
     },
     async setSongTime() {
-      this.player.seekTo(this.songPlayer.currTime);
+      socketService.emit("player to-set-song-time", this.songPlayer.currTime);
+    },
+    async setSongTimeForSockets(time) {
+      this.player.seekTo(time);
     },
   },
   computed: {
@@ -164,7 +165,11 @@ export default {
         // this.getDuration();
         setTimeout(() => {
           this.player.getDuration().then((duration) => {
-            this.songPlayer.duration = duration
+            var minutes = duration / 60
+            var seconds = duration - minutes
+            minutes = minutes.toFixed(0)
+            seconds = Math.round(seconds.toFixed(0) / 10)
+            this.songPlayer.duration = minutes + ':' + seconds
           })
         },1000)
       });
@@ -174,12 +179,9 @@ export default {
   },
   async created() {
     try {
-      socketService.on("player toggle-play-song", () => {
-        console.log("socket (player toggle-play-song) arrived");
-        this.togglePlayForSockets();
-      });
+      socketService.on("player toggle-play-song", this.togglePlayForSockets);
+      socketService.on("player set-song-time", this.setSongTimeForSockets);
       socketService.on("player next-previouse-song", (dif) => {
-        console.log("socket (player next-previouse-song) arrived");
         this.changeSongForSockets(dif);
       });
     } catch (err) {
@@ -187,8 +189,12 @@ export default {
     }
   },
   destroyed() {
-    socketService.off("player toggle-play-song");
-    socketService.off("player next-previouse-song");
+    socketService.off("player toggle-play-song", this.togglePlayForSockets);
+    socketService.off("player set-song-time", this.setSongTimeForSockets);
+    socketService.off(
+      "player next-previouse-song",
+      this.changeSongForSockets(dif)
+    );
     socketService.terminate();
   },
 };

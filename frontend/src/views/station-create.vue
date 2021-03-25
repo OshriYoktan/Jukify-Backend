@@ -28,6 +28,7 @@
         <form @submit.prevent="addStation">
           <input
             type="text"
+            maxlength="17"
             placeholder="Station name"
             v-model="newStation.name"
           />
