@@ -38,17 +38,10 @@
       </div>
       <div class="search-songs-container row-layout-container">
         <font-awesome-icon
-          class="search-icon"
-          icon="search"
-          v-if="!isSearch"
-          @click="isSearch = !isSearch"
-        />
-        <font-awesome-icon
-          class="search-icon"
-          icon="search"
-          style="color: #1db954"
-          v-else
-          @click="isSearch = !isSearch"
+          class="plus-icon"
+          :style="{ 'transform': searchClass }"
+          icon="plus"
+          @click="changeToSearch"
         />
         <div class="search-songs row-layout-container">
           <form v-if="isSearch">
@@ -299,6 +292,10 @@ export default {
         timeout = setTimeout(later, wait);
       };
     },
+    changeToSearch() {
+      this.isSearch = !this.isSearch;
+      this.isResult = false
+    },
   },
   computed: {
     myList: {
@@ -319,6 +316,9 @@ export default {
     },
     resultsMaxwidth() {
       return this.isResult ? "100vw" : "0";
+    },
+    searchClass() {
+      return this.isSearch ? "rotate(135deg)" : "";
     },
   },
   async created() {

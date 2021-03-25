@@ -105,10 +105,11 @@
             .search-songs-container {
                 justify-content: flex-start;
                 height: 100%;
-                .search-icon {
+                .plus-icon {
                     width: 25px;
                     height: 25px;
                     margin-right: 30px;
+                    transition: .3s;
                     cursor: pointer;
                     &:hover {
                         color: $clr1;

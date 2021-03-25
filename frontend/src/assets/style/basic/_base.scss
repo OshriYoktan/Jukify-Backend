@@ -56,6 +56,9 @@ input {
     &:hover {
         border: 1px solid #C0C4CC;
     }
+    &:focus {
+        outline: none;
+    }
 }
 
 iframe {

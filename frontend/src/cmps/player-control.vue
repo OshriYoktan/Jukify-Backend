@@ -164,7 +164,11 @@ export default {
         // this.getDuration();
         setTimeout(() => {
           this.player.getDuration().then((duration) => {
-            this.songPlayer.duration = duration
+            var minutes = duration / 60
+            var seconds = duration - minutes
+            minutes = minutes.toFixed(0)
+            seconds = Math.round(seconds.toFixed(0) / 10)
+            this.songPlayer.duration = minutes + ':' + seconds
           })
         },1000)
       });
