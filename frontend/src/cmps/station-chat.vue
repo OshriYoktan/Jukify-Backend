@@ -9,6 +9,7 @@
       </li>
     </ul>
     <h3 v-else>Quiet here...</h3>
+
     <form id="form" @submit.prevent="sendMsg">
       <input id="input" v-model="msg.txt" autocomplete="off" />
       <button>Send</button>
@@ -34,10 +35,10 @@ export default {
     sendMsg() {
       try {
         this.msg.sentAt = Date.now();
-        if(!this.$store.state.userStore.user)this.msg.from='guest'
-        else{
+        if (!this.$store.state.userStore.user) this.msg.from = "guest";
+        else {
           this.msg.from = this.$store.state.userStore.user.username;
-          if(!this.msg.from)this.msg.from='guest'
+          if (!this.msg.from) this.msg.from = "guest";
         }
         socketService.emit("chat newMsg", this.msg);
         this.msg = { from: "Guest", txt: "" };

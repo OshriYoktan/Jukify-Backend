@@ -1,24 +1,23 @@
-
 @mixin for-mobile-layout {
-    @media (max-width: $break-narrow) {
+    @media (max-width: $break-mobile) {
         @content;
     }
 }
 
 @mixin for-narrow-layout {
-    @media (min-width: $break-narrow) {
+    @media (max-width: $break-narrow) {
         @content;
     }
 }
 
 @mixin for-normal-layout {
-    @media (min-width: $break-normal) {
+    @media (max-width: $break-normal) {
         @content;
     }
 }
 
 @mixin for-wide-layout {
-    @media (min-width: $break-wide) {
+    @media (max-width: $break-wide) {
         @content;
     }
 }
@@ -36,14 +35,14 @@
         width: 100%;
         padding-top: ($height / $width) * 100%;
     }
-    > * {
+    >* {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
     }
-    > img {
+    >img {
         height: 100%;
         object-fit: cover;
     }

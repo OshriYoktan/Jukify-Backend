@@ -67,8 +67,11 @@
               v-for="song in currStation.songs"
               :key="song._id"
             >
-              <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
-              <div>{{ songNameDisplay(song) }}</div>
+              <div class="song-desc row-layout-container">
+                <img :src="song.img" />
+                {{ song.name }}
+                <!-- {{ songNameDisplay(song) }} -->
+              </div>
               <font-awesome-icon
                 class="delete-song"
                 icon="trash-alt"
@@ -208,9 +211,24 @@ export default {
     },
     async removeStation() {
       try {
-        if (!this.$store.state.userStore.user ||this.$store.state.userStore.user === "guest")return this.$message({type: "warning",message: "You are not authorized!",});
-        if (this.$store.state.userStore.user._id !==this.currStation.createdBy)return this.$message({type: "warning",message: "You are not authorized!",});
-        await this.$confirm("Are you sure you want to delete this station?","Warning",{confirmButtonText: "Yes",cancelButtonText: "No",type: "warning",});
+        if (
+          !this.$store.state.userStore.user ||
+          this.$store.state.userStore.user === "guest"
+        )
+          return this.$message({
+            type: "warning",
+            message: "You are not authorized!",
+          });
+        if (this.$store.state.userStore.user._id !== this.currStation.createdBy)
+          return this.$message({
+            type: "warning",
+            message: "You are not authorized!",
+          });
+        await this.$confirm(
+          "Are you sure you want to delete this station?",
+          "Warning",
+          { confirmButtonText: "Yes", cancelButtonText: "No", type: "warning" }
+        );
         const stationId = this.currStation._id;
         await this.$store.dispatch({
           type: "removeStation",

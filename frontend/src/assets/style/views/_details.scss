@@ -187,6 +187,18 @@
                     font-size: 17px;
                     transition: .3s;
                     height: 50px;
+                    .song-desc {
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        img {
+                            border-radius: 50px;
+                            width: 40px;
+                            height: 40px;
+                            margin-right: 1em;
+                            object-fit: cover;
+                        }
+                    }
                     .delete-song {
                         display: none;
                         margin: 0;
@@ -199,6 +211,11 @@
                         filter: brightness(85%);
                         .delete-song {
                             display: block;
+                        }
+                        .song-desc {
+                            img {
+                                animation: rotating 5s linear infinite;
+                            }
                         }
                     }
                 }
@@ -260,6 +277,70 @@
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    @keyframes rotating {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    @include for-mobile-layout {
+        .details-container {
+            grid-template-columns: 100%;
+            grid-template-rows: 50% 1fr;
+            .station-details {
+                grid-template-columns: 35% 65%;
+                grid-template-rows: 70% 30%;
+                .station-img {
+                    img {
+                        width: 150px;
+                        height: 150px;
+                    }
+                }
+                .search-songs-container {
+                    .search-songs {
+                        form {
+                            input {
+                                width: 95%;
+                            }
+                        }
+                    }
+                }
+            }
+            .songs-container {
+                overflow: unset;
+                ul {
+                    li {
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        font-size: 15px;
+                    }
+                }
+                .songs-result-container {
+                    width: 33.3375rem;
+                    right: .9375rem;
+                    height: 15.75rem;
+                    top: 23.125rem;
+                    overflow: auto;
+                }
+            }
+            .station-desc {
+                 :first-child {
+                    margin: 0;
+                }
+            }
+            .chat-room {
+                position: absolute;
+                left: 50%;
+                height: 72.4vh;
+                z-index: 20;
             }
         }
     }

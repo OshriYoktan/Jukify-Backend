@@ -92,7 +92,8 @@ function getEmptyStation() {
         desc: '',
         likes: 0,
         songs: [],
-        genres: []
+        genres: [],
+        msgs: [],
     }
 }
 
