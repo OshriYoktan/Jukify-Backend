@@ -39,7 +39,7 @@
       <div class="search-songs-container row-layout-container">
         <font-awesome-icon
           class="plus-icon"
-          :style="{ 'transform': searchClass }"
+          :style="{ transform: searchClass }"
           icon="plus"
           @click="changeToSearch"
         />
@@ -67,8 +67,11 @@
               v-for="song in currStation.songs"
               :key="song._id"
             >
-              <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
-              <div>{{ songNameDisplay(song) }}</div>
+              <div class="song-desc row-layout-container">
+                <img :src="song.img" />
+                {{song.name}}
+                <!-- {{ songNameDisplay(song) }} -->
+              </div>
               <font-awesome-icon
                 class="delete-song"
                 icon="trash-alt"
@@ -294,7 +297,7 @@ export default {
     },
     changeToSearch() {
       this.isSearch = !this.isSearch;
-      this.isResult = false
+      this.isResult = false;
     },
   },
   computed: {

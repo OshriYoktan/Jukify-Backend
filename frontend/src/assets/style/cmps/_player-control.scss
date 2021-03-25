@@ -29,6 +29,9 @@
         justify-content: start;
         overflow: hidden;
         text-overflow: ellipsis;
+        h3 {
+            margin: 0;
+        }
     }
     .main-player-section {
         grid-column: 3/4;
@@ -185,5 +188,50 @@ input[type=range] {
         background: transparent;
         border-color: transparent;
         color: transparent;
+    }
+}
+
+@include for-mobile-layout {
+    .main-layout {
+        grid-template-columns: 1fr 34rem 1fr;
+        grid-template-rows: 100px 1fr 100px;
+    }
+    .song-player {
+        grid-template-columns: 1fr 1fr;
+        .song-image {
+            display: none;
+        }
+        .playing-now {
+            grid-column: 1/2;
+            h3 {
+                font-size: 17px;
+                margin: 0;
+            }
+        }
+        .main-player-section {
+            grid-column: 2/3;
+            .playing-btns {
+                width: 100%;
+                >* {
+                    width: 20px;
+                    height: 20px;
+                    margin: 15px;
+                    transition: 0.3s;
+                    &:hover {
+                        color: $clr1;
+                    }
+                }
+                 :nth-child(2) {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+            .duration-song {
+                display: none;
+            }
+        }
+        .music-btns {
+            display: none;
+        }
     }
 }

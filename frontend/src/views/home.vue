@@ -5,7 +5,6 @@
         >start listening now</router-link
       >
     </div>
-
     <div class="home-cards-container column-layout-container">
       <div v-if="isLoading" class="loading">
         <svg

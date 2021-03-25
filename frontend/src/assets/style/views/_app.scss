@@ -32,7 +32,8 @@
 }
 
 .view-router {
-    overflow: auto;
+    width: 100%;
+    overflow-y: auto;
     background-color: $clr4;
     -ms-overflow-style: none;
     scrollbar-width: none;

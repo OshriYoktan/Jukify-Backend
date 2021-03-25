@@ -1,6 +1,6 @@
 <template>
   <div class="chat-room-container" v-if="currStation">
-    <h2>Chat</h2>
+    <h2>Wall</h2>
       <ul v-if="currStation.msgs.length" id="messages">
         <li v-for="(msg, idx) in msgs" :key="idx">
           <p>{{ msg.from }}</p>

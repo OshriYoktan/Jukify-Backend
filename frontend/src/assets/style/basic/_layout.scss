@@ -1,6 +1,7 @@
 .main-layout {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     display: grid;
+    width: 100%;
     height: 100vh;
     grid-template-columns: 1fr 93rem 1fr;
     grid-template-rows: 60px 1fr 110px;
@@ -10,25 +11,29 @@
     >.full {
         grid-column: 1 / -1;
     }
-    // @include for-narrow-layout {
-    //     grid-template-columns: 
-    //     minmax(2rem, 1fr)
-    //     minmax(auto, $break-narrow)
-    //     minmax(2rem, 1fr)
-    //     ;     
-    // }
-    // @include for-normal-layout {
-    //     grid-template-columns: 
-    //     minmax(2rem, 1fr)
-    //     minmax(auto, $break-normal)
-    //     minmax(2rem, 1fr)
-    //     ;     
-    // }
-    // @include for-wide-layout {
-    //     grid-template-columns: 
-    //     minmax(2rem, 1fr)
-    //     minmax(auto, $break-wide)
-    //     minmax(2rem, 1fr)
-    //     ;     
-    // }
+}
+
+@include for-wide-layout {
+    .main-layout {
+        grid-template-columns: 1fr 67rem 1fr;
+    }
+}
+
+@include for-normal-layout {
+    .main-layout {
+        grid-template-columns: 1fr 56rem 1fr;
+    }
+}
+
+@include for-narrow-layout {
+    .main-layout {
+        grid-template-columns: 1fr 43rem 1fr;
+    }
+}
+
+@include for-mobile-layout {
+    .main-layout {
+        grid-template-columns: 1fr 38rem 1fr;
+        grid-template-rows: 13.8vh 72.4vh 13.8vh;
+    }
 }
