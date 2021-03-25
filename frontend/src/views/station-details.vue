@@ -229,14 +229,23 @@ export default {
     },
     async removeStation() {
       try {
+        if (
+          !this.$store.state.userStore.user ||
+          this.$store.state.userStore.user === "guest"
+        )
+          return this.$message({
+            type: "warning",
+            message: "You are not authorized!",
+          });
+        if (this.$store.state.userStore.user._id !== this.currStation.createdBy)
+          return this.$message({
+            type: "warning",
+            message: "You are not authorized!",
+          });
         await this.$confirm(
           "Are you sure you want to delete this station?",
           "Warning",
-          {
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            type: "warning",
-          }
+          { confirmButtonText: "Yes", cancelButtonText: "No", type: "warning" }
         );
         const stationId = this.currStation._id;
         await this.$store.dispatch({
@@ -317,6 +326,13 @@ export default {
       this.isSearch = !this.isSearch;
       this.isResult = false;
     },
+    setDragNDropForSockets(newStation) {
+      try {
+        this.currStation = newStation;
+      } catch (err) {
+        console.log("err:", err);
+      }
+    },
     showDeleteStation() {
       this.isDelete = true;
       setTimeout(() => {
@@ -339,6 +355,8 @@ export default {
         };
 
         this.$store.dispatch({ type: "updateSongs", draggedSongs });
+        this.currStation = this.$store.state.stationStore.currStation;
+        socketService.emit("station to-drag-n-drop", this.currStation);
       },
     },
     genres() {
@@ -365,6 +383,7 @@ export default {
       socketService.on("station add-song", this.addToStationForSockets);
       socketService.on("station like", this.addStationLikeForSockets);
       socketService.on("station shuffleSongs", this.shuffleSongsForSockets);
+      socketService.on("station drag-n-drop", this.setDragNDropForSockets);
       this.debounceInput = this.debounce(this.searchSongs);
     } catch {}
   },
@@ -374,6 +393,8 @@ export default {
     socketService.off("station add-song", this.addToStationForSockets);
     socketService.off("station like", this.addStationLikeForSockets);
     socketService.off("station shuffleSongs", this.shuffleSongsForSockets);
+    socketService.off("station drag-n-drop", this.setDragNDropForSockets);
+
     socketService.terminate();
   },
   components: {

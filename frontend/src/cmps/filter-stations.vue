@@ -52,7 +52,8 @@ export default {
       this.filterSong();
     },
     isClicked(genre) {
-      if (genre === "popular") return (this.filterBy.byPopular) ? 'clicked-filter-btn' : '';  
+      if (genre === "popular")
+        return this.filterBy.byPopular ? "clicked-filter-btn" : "";
       return (genre === this.genre && genre === "All") || genre === this.genre
         ? "clicked-filter-btn"
         : "";

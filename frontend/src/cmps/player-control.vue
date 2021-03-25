@@ -22,8 +22,6 @@
         <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
       </div>
       <div class="duration-song row-layout-container">
-        <span v-if="songPlayer.currTime">{{ songPlayer.currTime }}</span>
-        <span v-else>00:00</span>
         <span>{{ songPlayer.formattedTime }}</span>
         <input
           class="song-duration"
@@ -80,13 +78,6 @@ export default {
         throw err;
       }
     },
-    // async getDuration() {
-    //   try {
-    //     this.songPlayer.duration = await this.player.getDuration();
-    //   } catch (err) {
-    //     console.log("err", err);
-    //   }
-    // },
     async setSongVolume(vol) {
       const volume = await this.$store.dispatch({ type: "setSongVolume", vol });
       return this.player.setVolume(volume);
@@ -162,18 +153,17 @@ export default {
         this.player.playVideo();
         setInterval(() => {
           this.player.getCurrentTime().then((duration) => {
-            var minutes = Math.floor(duration / 60);
-            var seconds = parseInt(duration.toFixed(0));
-            if (seconds > 59) {
+            var minutes = Math.floor(parseInt(duration.toFixed(0)) / 60);
+            var seconds = parseInt(duration.toFixed(0)) - minutes * 60;
+            if (duration - minutes * 60 > 59.9) {
               seconds = 0;
-              setInterval(() => {
-                seconds++;
-              }, 1000);
             }
-            this.songPlayer.formattedTime = "0" + minutes + ":" + seconds;
+            if (seconds < 10)
+              this.songPlayer.formattedTime =  minutes + ":0" + seconds;
+            else this.songPlayer.formattedTime =  minutes + ":" + seconds;
             this.songPlayer.currTime = duration.toFixed(0);
           });
-        }, 1000);
+        }, 100);
         setTimeout(() => {
           this.player.getDuration().then((duration) => {
             this.songPlayer.songLength = duration;
@@ -183,7 +173,7 @@ export default {
             seconds = Math.round(seconds.toFixed(0) / 10);
             this.songPlayer.duration = minutes + ":" + seconds;
           });
-        }, 1000);
+        }, 1500);
       });
       this.playVideo(this.songId);
       this.$store.getters.getSongName;

@@ -1,7 +1,10 @@
 <template>
   <section class="profile-container column-layout-container">
     <div class="profile-sub-container column-layout-container">
-      <div class="login-container login-form column-layout-container" v-if="!$store.state.userStore.user">
+      <div
+        class="login-container login-form column-layout-container"
+        v-if="!$store.state.userStore.user"
+      >
         <div v-if="!isSignup">
           <button @click="toLogin">Login</button>
         </div>
@@ -20,7 +23,10 @@
         </form>
         <!-- <button v-if="$store.getters.getUser" @click="logout">logout</button> -->
       </div>
-      <div class="sign-up-container login-form column-layout-container" v-if="!$store.state.userStore.user">
+      <div
+        class="sign-up-container login-form column-layout-container"
+        v-if="!$store.state.userStore.user"
+      >
         <div v-if="!isLogin">
           <button @click="toSignup">Sign-Up</button>
         </div>
@@ -43,9 +49,11 @@
           <button>Sign-Up</button>
         </form>
       </div>
-      <button @click="closeAll">Back</button>
-      <div v-if="$store.getters.getUser">{{ $store.getters.getUser }}</div>
+      <div v-if="$store.getters.getUser">
+        {{ $store.getters.getUser.fullname }} is logged in
+      </div>
       <div v-else>{{ $store.getters.getMsgToUser }}</div>
+      <button @click="closeAll">Back</button>
       <button v-if="$store.state.userStore.user" @click="logout">logout</button>
     </div>
   </section>
@@ -94,7 +102,7 @@ export default {
           this.userSignup.password === ""
         )
           throw error;
-        await this.$store.dispatch({ type: "signup", user: this.userSignup });
+        await this.$store.dispatch({ type: "signUp", user: this.userSignup });
         this.$message({ type: "success", message: "congrads, you'r in" });
         this.userSignup = {
           fullname: "",
@@ -137,11 +145,18 @@ export default {
           type: "success",
           message: "Logged out seccesfully",
         });
-      } catch {
-        this.$message.error({
-          type: "success",
-          message: "You stayed after all",
-        });
+      } catch (err) {
+        if ((err = "cancel")) {
+          this.$message({
+            type: "success",
+            message: "You stayed after all 😊",
+          });
+        } else {
+          this.$message({
+          type: "warning",
+            message: "something went wrong, please try again later",
+          });
+        }
       }
     },
   },

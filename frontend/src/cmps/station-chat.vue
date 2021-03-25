@@ -36,24 +36,28 @@ export default {
     };
   },
   methods: {
+    sendMsg() {
+      try {
+        this.msg.sentAt = Date.now();
+        if (!this.$store.state.userStore.user) this.msg.from = "guest";
+        else {
+          this.msg.from = this.$store.state.userStore.user.username;
+          if (!this.msg.from) this.msg.from = "guest";
+        }
+        socketService.emit("chat newMsg", this.msg);
+        this.msg = { from: "Guest", txt: "" };
+      } catch (err) {
+        console.log("err:", err);
+      }
+    },
     async addMsg(msg) {
       try {
-        msg.from = this.$store.state.userStore.user;
         const addMsg = { msg, stationId: this.currStation._id };
         await this.$store.dispatch({
           type: "addStationMsg",
           addMsg,
         });
       } catch {}
-    },
-    sendMsg() {
-      try {
-        this.msg.sentAt = Date.now();
-        socketService.emit("chat newMsg", this.msg);
-        this.msg = { from: "Guest", txt: "" };
-      } catch (err) {
-        console.log("err:", err);
-      }
     },
     changeTopic(id) {
       socketService.emit("chat topic", id);
