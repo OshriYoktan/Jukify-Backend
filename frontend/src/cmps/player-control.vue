@@ -22,13 +22,14 @@
         <font-awesome-icon icon="step-forward" @click="changeSong(1)" />
       </div>
       <div class="duration-song row-layout-container">
-        <span>{{ songPlayer.currTime }}</span>
+        <span>{{ songPlayer.formattedTime  }}</span>
+        <!-- <span>{{ songPlayer.currTime | moment("mm:ss ") }}</span> -->
         <input
           class="song-duration"
           @input="setSongTime"
           v-model="songPlayer.currTime"
           type="range"
-          :max="songPlayer.duration"
+          :max="songPlayer.songLength"
         />
         <span v-if="songPlayer.duration">{{ songPlayer.duration }}</span>
         <span v-else>00:00</span>
@@ -61,6 +62,8 @@ export default {
         volumeRange: 100,
         currTime: null,
         duration: null,
+        songLength: null,
+        formattedTime: null
       },
     };
   },
@@ -158,19 +161,29 @@ export default {
         this.player.playVideo();
         setInterval(() => {
           this.player.getCurrentTime().then((duration) => {
+            var minutes = Math.floor(duration / 60)
+            var seconds = parseInt(duration.toFixed(0)) 
+            if(seconds > 59) {
+              seconds = 0
+              setInterval(() => {
+
+                seconds++
+              },1000)
+            }
+            this.songPlayer.formattedTime = '0' + minutes + ':' + seconds
             this.songPlayer.currTime = duration.toFixed(0);
           });
         }, 1000);
-        // this.getDuration();
         setTimeout(() => {
           this.player.getDuration().then((duration) => {
-            var minutes = duration / 60
-            var seconds = duration - minutes
-            minutes = minutes.toFixed(0)
-            seconds = Math.round(seconds.toFixed(0) / 10)
-            this.songPlayer.duration = minutes + ':' + seconds
-          })
-        },1000)
+            this.songPlayer.songLength = duration;
+            var minutes = duration / 60;
+            var seconds = duration - minutes;
+            minutes = minutes.toFixed(0);
+            seconds = Math.round(seconds.toFixed(0) / 10);
+            this.songPlayer.duration = minutes + ":" + seconds;
+          });
+        }, 1000);
       });
       this.playVideo(this.songId);
       this.$store.getters.getSongName;
@@ -178,8 +191,16 @@ export default {
   },
   async created() {
     try {
+<<<<<<< HEAD
+      this.songPlayer.currTime = 0;
+      socketService.on("player toggle-play-song", () => {
+        console.log("socket (player toggle-play-song) arrived");
+        this.togglePlayForSockets();
+      });
+=======
       socketService.on("player toggle-play-song", this.togglePlayForSockets);
       socketService.on("player set-song-time", this.setSongTimeForSockets);
+>>>>>>> 83d3064abfdf0569475cd38ecfc544a495f4a079
       socketService.on("player next-previouse-song", (dif) => {
         this.changeSongForSockets(dif);
       });
