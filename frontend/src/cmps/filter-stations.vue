@@ -8,6 +8,9 @@
         v-model="filterBy.byName"
       />
     </div>
+    <button :class="isClicked('popular')" @click="genreSelect('popular')">
+      Popular
+    </button>
     <div class="filter-genre-container">
       <button :class="isClicked('all')" @click="genreSelect('all')">All</button>
       <button
@@ -26,10 +29,11 @@
 export default {
   data() {
     return {
-      genre: "All",
+      genre: "all",
       filterBy: {
         byName: "",
         byGenre: "",
+        byPopular: false,
       },
     };
   },
@@ -39,11 +43,16 @@ export default {
       this.$store.dispatch({ type: "setFilter", filter });
     },
     genreSelect(genre) {
-      this.genre = genre;
-      this.filterBy.byGenre = genre.toLowerCase();
+      if (genre === "popular") {
+        this.filterBy.byPopular = !this.filterBy.byPopular;
+      } else {
+        this.genre = genre;
+        this.filterBy.byGenre = genre.toLowerCase();
+      }
       this.filterSong();
     },
     isClicked(genre) {
+      if (genre === "popular") return (this.filterBy.byPopular) ? 'clicked-filter-btn' : '';  
       return (genre === this.genre && genre === "All") || genre === this.genre
         ? "clicked-filter-btn"
         : "";
