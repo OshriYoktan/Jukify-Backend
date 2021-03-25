@@ -94,6 +94,7 @@ export const stationStore = {
         },
         async setFilter({ commit }, { filter }) {
             try {
+                console.log('filter:', filter)
                 const stations = await stationService.query(filter)
                 commit({ type: 'setStations', stations })
             } catch {}

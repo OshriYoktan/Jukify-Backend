@@ -106,6 +106,12 @@
         :key="idx"
       >
         <h2>{{ genre }}</h2>
+        <router-link
+          class="link"
+          @click="genreUrl(genre)"
+          :to="'/explore/'+genreUrl(genre)"
+          >See All</router-link
+        >
         <home-list :genre="genre" @loader="loading" />
       </div>
     </div>
@@ -124,10 +130,14 @@ export default {
     genres() {
       return this.$store.state.stationStore.genres;
     },
+   
   },
   methods: {
     loading(val) {
       this.isLoading = val;
+    },
+     genreUrl(genre) {
+      return genre.toLowerCase();
     },
   },
   components: {
