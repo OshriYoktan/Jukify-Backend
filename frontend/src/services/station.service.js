@@ -20,6 +20,7 @@ export const stationService = {
     shuffleSongs,
     askSearch,
     addStationMsg,
+    updateSongs,
 }
 
 async function askSearch(txt) {
@@ -64,6 +65,7 @@ async function save(station) {
         console.log('Error from stationService - ', err);
     }
 }
+
 
 
 async function remove(stationId) {
@@ -151,10 +153,19 @@ async function shuffleSongs(stationId) {
 async function addStationMsg(addMsg) {
     try {
         var station = await getStationById(addMsg.stationId)
-        console.log('station:', station.msgs)
         station.msgs.push(addMsg.msg)
-        console.log('station:', station.msgs)
         await save(station);
+        return station;
+    } catch (err) {
+        console.log('Error from stationService - ', err);
+    }
+}
+
+async function updateSongs(draggedSongs) {
+    try {
+        var station = await getStationById(draggedSongs.stationId)
+        station.songs = draggedSongs.value
+        await save(station)
         return station;
     } catch (err) {
         console.log('Error from stationService - ', err);

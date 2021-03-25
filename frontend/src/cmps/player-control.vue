@@ -145,10 +145,6 @@ export default {
       return name;
     },
     imgRotate() {
-      console.log(
-        "this.$store.state.playerStore.songPlayer.isPlaying:",
-        this.$store.state.playerStore.songPlayer.isPlaying
-      );
       return this.$store.state.playerStore.songPlayer.isPlaying
         ? "song-image rotating"
         : "song-image";

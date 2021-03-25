@@ -61,20 +61,22 @@
     <div class="songs-container row-layout-container">
       <div v-if="currStation" class="station-songs-container">
         <ul>
-          <li
-            @click="playVideo(song.videoId)"
-            v-for="song in currStation.songs"
-            :key="song._id"
-          >
-            <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
-            <div>{{ songNameDisplay(song) }}</div>
-            <font-awesome-icon
-              class="delete-song"
-              icon="trash-alt"
-              @click.stop="removeSong(song._id)"
-              style="color: red"
-            />
-          </li>
+          <draggable v-model="myList">
+            <li
+              @click="playVideo(song.videoId)"
+              v-for="song in currStation.songs"
+              :key="song._id"
+            >
+              <!-- <div v-if="foundSongs && isSearch">{{ songNameDisplay(song) }}</div> -->
+              <div>{{ songNameDisplay(song) }}</div>
+              <font-awesome-icon
+                class="delete-song"
+                icon="trash-alt"
+                @click.stop="removeSong(song._id)"
+                style="color: red"
+              />
+            </li>
+          </draggable>
         </ul>
       </div>
       <div
@@ -82,14 +84,14 @@
         :style="{ 'max-width': resultsMaxwidth }"
       >
         <ul>
-          <li
-            @click="addToStation(idx)"
-            v-for="(song, idx) in foundSongs"
-            :key="idx"
-          >
-            <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
-            <font-awesome-icon class="add-song" icon="plus" />
-          </li>
+            <li
+              @click="addToStation(idx)"
+              v-for="(song, idx) in foundSongs"
+              :key="idx"
+            >
+              <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
+              <font-awesome-icon class="add-song" icon="plus" />
+            </li>
         </ul>
       </div>
     </div>
@@ -97,6 +99,7 @@
 </template>
 
 <script>
+import draggable from "vuedraggable";
 import { stationService } from "../services/station.service";
 import { socketService } from "../services/socket.service.js";
 import playerControl from "../cmps/player-control";
@@ -194,7 +197,6 @@ export default {
     },
     async addToStationForSockets(payload) {
       try {
-        console.log("payload:", payload);
         await this.$store.dispatch({ type: "addToStation", payload });
         this.$message({ type: "success", message: "Song added successfuly!" });
       } catch {
@@ -295,6 +297,19 @@ export default {
     },
   },
   computed: {
+    myList: {
+      get() {
+        return this.$store.state.stationStore.currStation.songs;
+      },
+      set(value) {
+        const draggedSongs = {
+          stationId: this.currStation._id,
+          value,
+        };
+
+        this.$store.dispatch({ type: "updateSongs", draggedSongs });
+      },
+    },
     genres() {
       return this.$store.state.stationStore.genres;
     },
@@ -330,6 +345,7 @@ export default {
   components: {
     playerControl,
     stationChat,
+    draggable,
   },
 };
 </script>
