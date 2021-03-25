@@ -60,8 +60,8 @@ function connectSockets(http, session) {
         socket.on('station to-like', (addLike) => {
             gIo.in(socket.myTopic).emit('station like', addLike)
         })
-        socket.on('station to-shuffleSongs', (stationId) => {
-            gIo.in(socket.myTopic).emit('station shuffleSongs', stationId)
+        socket.on('station to-shuffleSongs', (shuffledStation) => {
+            gIo.in(socket.myTopic).emit('station shuffleSongs', shuffledStation)
         })
         socket.on('player to-set-song-time', (time) => {
             socket.broadcast.emit('player set-song-time', time)
