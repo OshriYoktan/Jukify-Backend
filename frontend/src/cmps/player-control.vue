@@ -160,15 +160,19 @@ export default {
         this.player.playVideo();
         setInterval(() => {
           this.player.getCurrentTime().then((duration) => {
-            var minutes = duration / 60
-            minutes = Math.floor(minutes)
-            var seconds = duration.toFixed(0);
-            seconds = parseInt(seconds)
+            var minutes = Math.floor(duration / 60)
+            var seconds = parseInt(duration.toFixed(0)) 
+            if(seconds > 59) {
+              seconds = 0
+              setInterval(() => {
+
+                seconds++
+              },1000)
+            }
             this.songPlayer.formattedTime = '0' + minutes + ':' + seconds
             this.songPlayer.currTime = duration.toFixed(0);
           });
         }, 1000);
-        // this.getDuration();
         setTimeout(() => {
           this.player.getDuration().then((duration) => {
             this.songPlayer.songLength = duration;
