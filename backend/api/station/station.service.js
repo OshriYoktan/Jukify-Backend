@@ -12,28 +12,34 @@ module.exports = {
 
 async function query(filterBy = {}) {
     try {
+        filterBy.popular = (filterBy.popular === 'true') ? true : false
         const collection = await dbService.getCollection('station')
         const stations = await collection.find().toArray()
-        var stationCopy = stations;
-        if (!filterBy || (!filterBy.name && !filterBy.genre)) return stations
-        var stationCopy = stations
+        var stationsCopy = stations;
+        if (!filterBy || (!filterBy.name && !filterBy.genre && !filterBy.popular)) return stations
         if (filterBy.name) {
-            stationCopy = stations.filter(s => {
+            stationsCopy = stations.filter(s => {
                 return s.name.toLowerCase().includes(filterBy.name)
             })
         }
-        if (filterBy.genre === 'all') return stationCopy;
-        else {
-            stationCopy = stationCopy.filter(s => {
-                return s.genres.includes(filterBy.genre.toLowerCase())
-            })
-            return stationCopy;
+        if (filterBy.genre) {
+            if (filterBy.genre === 'all') stationsCopy = stationsCopy;
+            else {
+                stationsCopy = stationsCopy.filter(s => {
+                    return s.genres.includes(filterBy.genre.toLowerCase())
+                })
+            }
         }
+        if (filterBy.popular) {
+            stationsCopy = stationsCopy.sort((s1, s2) => {
+                return s2.likes - s1.likes;
+            })
+        }
+        return stationsCopy
     } catch (err) {
         logger.error('cannot find stations', err)
         throw err
     }
-
 }
 
 async function remove(stationId) {
