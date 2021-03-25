@@ -114,7 +114,6 @@ export default {
         throw err;
       }
     },
-
     async muteSong() {
       const isMute = await this.$store.dispatch({ type: "muteSong" });
       this.songPlayer.isMuted = !this.songPlayer.isMuted;

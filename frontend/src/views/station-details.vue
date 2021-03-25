@@ -91,14 +91,14 @@
         :style="{ 'max-width': resultsMaxwidth }"
       >
         <ul>
-            <li
-              @click="addToStation(idx)"
-              v-for="(song, idx) in foundSongs"
-              :key="idx"
-            >
-              <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
-              <font-awesome-icon class="add-song" icon="plus" />
-            </li>
+          <li
+            @click="addToStation(idx)"
+            v-for="(song, idx) in foundSongs"
+            :key="idx"
+          >
+            <span>{{ songResaultNameDisplay(song.snippet.title) }}</span>
+            <font-awesome-icon class="add-song" icon="plus" />
+          </li>
         </ul>
       </div>
     </div>
@@ -249,6 +249,7 @@ export default {
           station: this.currStation._id,
           num,
         };
+        this.isLiked = !this.isLiked;
         socketService.emit("station to-like", addLike);
       } catch (err) {
         console.log("err:", err);
@@ -257,7 +258,6 @@ export default {
     async addStationLikeForSockets(addLike) {
       try {
         await this.$store.dispatch({ type: "addStationLike", addLike });
-        this.isLiked = !this.isLiked;
       } catch (err) {
         console.log("err:", err);
       }
@@ -275,15 +275,16 @@ export default {
     async shuffleSongs() {
       try {
         const stationId = this.currStation._id;
-        // await this.$store.dispatch({ type: "shuffleSongs", stationId });
-        socketService.emit("station to-shuffleSongs", stationId);
+        await this.$store.dispatch({ type: "shuffleSongs", stationId });
+        this.currStation = this.$store.state.stationStore.currStation;
+        socketService.emit("station to-shuffleSongs", this.currStation);
       } catch (err) {
         console.log("err", err);
       }
     },
-    async shuffleSongsForSockets(stationId) {
-      await this.$store.dispatch({ type: "shuffleSongs", stationId });
+    async shuffleSongsForSockets(shuffledStation) {
       try {
+        this.currStation = shuffledStation;
         this.playVideo();
       } catch {}
     },
