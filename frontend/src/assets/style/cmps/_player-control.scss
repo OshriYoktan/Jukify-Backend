@@ -192,12 +192,8 @@ input[type=range] {
 }
 
 @include for-mobile-layout {
-    .main-layout {
-        grid-template-columns: 1fr 34rem 1fr;
-        grid-template-rows: 100px 1fr 100px;
-    }
     .song-player {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 54.7vw 27.3vw;
         .song-image {
             display: none;
         }

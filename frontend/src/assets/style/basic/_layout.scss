@@ -33,7 +33,7 @@
 
 @include for-mobile-layout {
     .main-layout {
-        grid-template-columns: 1fr 38rem 1fr;
+        grid-template-columns: 9vw 82vw 9vw;
         grid-template-rows: 13.8vh 72.4vh 13.8vh;
     }
 }

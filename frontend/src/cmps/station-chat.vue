@@ -1,16 +1,21 @@
 <template>
   <div class="chat-room-container" v-if="currStation">
-    <h2>Wall</h2>
-      <ul v-if="currStation.msgs.length" id="messages">
-        <li v-for="(msg, idx) in msgs" :key="idx">
-          <p>{{ msg.from }}</p>
-          <p>{{ msg.txt }}</p>
-          <span>{{ msg.sentAt | moment("from", "now", true) }} ago</span>
-        </li>
-      </ul>
-      <h3 v-else>Quiet here...</h3>
+    <div class="chat-header row-layout-container">
+      <h2>Wall</h2>
+      <font-awesome-icon icon="plus" class="close-chat" />
+    </div>
+    <ul v-if="currStation.msgs.length" id="messages">
+      <li v-for="(msg, idx) in msgs" :key="idx">
+        <p>{{ msg.from }}</p>
+        <p>{{ msg.txt }}</p>
+        <span>{{ msg.sentAt | moment("from", "now", true) }} ago</span>
+      </li>
+    </ul>
+    <div v-else class="empty-chat column-layout-container">
+      <h3>Quiet here...</h3>
+    </div>
     <form id="form" @submit.prevent="sendMsg">
-      <input id="input" v-model="msg.txt" autocomplete="off" />
+      <input id="input" v-model="msg.txt" placeholder="Type a message" autocomplete="off" />
       <button>Send</button>
     </form>
   </div>

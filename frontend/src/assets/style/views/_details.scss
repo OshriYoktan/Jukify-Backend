@@ -35,18 +35,9 @@
                     cursor: pointer;
                     transition: .3s;
                     .station-menu-delete {
-                        display: none;
                         font-size: 35px;
                         margin: 0px 10px 0 0;
                         color: red;
-                    }
-                    &:hover {
-                        .station-menu-delete {
-                            display: block;
-                        }
-                        .station-menu {
-                            display: none;
-                        }
                     }
                     .station-menu {
                         cursor: pointer;
@@ -59,6 +50,9 @@
                         width: 27px;
                         border-radius: 50%;
                         margin: 5px 10px 0 0;
+                        &:hover {
+                            color: $clr1;
+                        }
                     }
                 }
             }
@@ -293,21 +287,31 @@
     @include for-mobile-layout {
         .details-container {
             grid-template-columns: 100%;
-            grid-template-rows: 50% 1fr;
+            grid-template-rows: 55% 1fr;
             .station-details {
-                grid-template-columns: 35% 65%;
-                grid-template-rows: 70% 30%;
+                grid-template-columns: 36% 1fr;
+                grid-template-rows: 80% 1fr;
+                .station-desc {
+                    align-items: center;
+                }
+                .menu-container {
+                    display: flex;
+                    height: 100%;
+                }
                 .station-img {
                     img {
-                        width: 150px;
-                        height: 150px;
+                        width: 140px;
+                        height: 140px;
                     }
                 }
                 .search-songs-container {
+                    .plus-icon {
+                        margin-left: 12px;
+                    }
                     .search-songs {
                         form {
                             input {
-                                width: 95%;
+                                width: 93.5%;
                             }
                         }
                     }
@@ -338,7 +342,8 @@
             }
             .chat-room {
                 position: absolute;
-                left: 50%;
+                width: 82vw;
+                right: 9vw;
                 height: 72.4vh;
                 z-index: 20;
             }

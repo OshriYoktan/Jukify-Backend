@@ -17,8 +17,12 @@
           </div>
         </div>
         <div class="menu-container">
-          <span class="station-menu">⋮</span>
-          <span class="station-menu-delete" @click="removeStation">🗑</span>
+          <span class="station-menu" v-if="!isDelete" @click="showDeleteStation"
+            >⋮</span
+          >
+          <span class="station-menu-delete" v-else @click="removeStation"
+            >🗑</span
+          >
         </div>
       </div>
       <div class="station-play-like row-layout-container">
@@ -69,7 +73,7 @@
             >
               <div class="song-desc row-layout-container">
                 <img :src="song.img" />
-                {{song.name}}
+                {{ song.name }}
                 <!-- {{ songNameDisplay(song) }} -->
               </div>
               <font-awesome-icon
@@ -118,6 +122,8 @@ export default {
       videoId: null,
       isLiked: false,
       isResult: false,
+      isChat: false,
+      isDelete: false,
     };
   },
   methods: {
@@ -298,6 +304,12 @@ export default {
     changeToSearch() {
       this.isSearch = !this.isSearch;
       this.isResult = false;
+    },
+    showDeleteStation() {
+      this.isDelete = true;
+      setTimeout(() => {
+        this.isDelete = false;
+      }, 3000);
     },
   },
   computed: {
